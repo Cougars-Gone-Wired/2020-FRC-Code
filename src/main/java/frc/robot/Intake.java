@@ -20,7 +20,6 @@ public class Intake {
 
     public void initialize() {
         intakeMotor.set(0);
-        funnelMotor.set(0);
         currentState = States.NOT_MOVING;
     }
 
@@ -31,7 +30,6 @@ public class Intake {
             case NOT_MOVING:
                 if (intakeButton) {
                     intakeMotor.set(INTAKE_SPEED);
-                    funnelMotor.set(INTAKE_SPEED);
                     currentState = States.INTAKING;
                 }
                 break;
@@ -39,7 +37,7 @@ public class Intake {
             case INTAKING:
                 if (!intakeButton) {
                     intakeMotor.set(0);
-                    funnelMotor.set(0);
+
                     currentState = States.NOT_MOVING;
                 }
                 break;
