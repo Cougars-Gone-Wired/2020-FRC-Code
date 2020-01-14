@@ -1,8 +1,9 @@
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import edu.wpi.first.wpilibj.RobotController;
+// import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 public class Drive {
@@ -19,19 +20,21 @@ public class Drive {
 
   public Drive() {
 
-    midLeftMotor = new WPI_TalonSRX(Constants.MID_LEFT_MOTOR_ID);
-    frontLeftMotor = new WPI_TalonSRX(Constants.FRONT_LEFT_MOTOR_ID)
-    backLeftMotor = new WPI_TalonSRX(Constants.BACK_LEFT_MOTOR_ID);
+    midLeftMotor = new WPI_TalonSRX(99);
+    frontLeftMotor = new WPI_TalonSRX(98);
+    backLeftMotor = new WPI_TalonSRX(97);
+
+    midRightMotor = new WPI_TalonSRX(96);
+    frontRightMotor = new WPI_TalonSRX(95);
+    backRightMotor =  new WPI_TalonSRX(94);
+
 
     frontLeftMotor.follow(midLeftMotor);
     backLeftMotor.follow(frontLeftMotor);
 
-    midRightMotor = new WPI_TalonSRX(Constants.MID_RIGHT_MOTOR_ID);
-    frontRightMotor = new WPI_TalonSRX(Constants.FRONT_RIGHT_MOTOR_ID);
-    backRightMotor =  new WPI_TalonSRX(Constants.BACK_RIGHT_MOTOR_ID);
-
     frontRightMotor.follow(midRightMotor);
     backRightMotor.follow(frontRightMotor);
+
     initMotors();
 
     robotDrive = new DifferentialDrive(midLeftMotor, midRightMotor);
@@ -40,7 +43,6 @@ public class Drive {
   }
 
   public void initalize() {
-
     midLeftMotor.set(0);
     frontLeftMotor.set(0);
     backLeftMotor.set(0);
@@ -48,31 +50,31 @@ public class Drive {
     midRightMotor.set(0);
     frontRightMotor.set(0);
     backRightMotor.set(0);
-
   }
 
   public void initMotors() {
     midLeftMotor.setNeutralMode(NeutralMode.Brake);
-    midLeftMotor.configOpenloopRamp(Constants.RAMP_TIME);
+    midLeftMotor.configOpenloopRamp(0);
 
     frontLeftMotor.setNeutralMode(NeutralMode.Brake);
-    frontLeftMotor.configOpenloopRamp(Constants.RAMP_TIME);
+    frontLeftMotor.configOpenloopRamp(0);
 
     backLeftMotor.setNeutralMode(NeutralMode.Brake);
-    backLeftMotor.configOpenloopRamp(Constants.RAMP_TIME);
+    backLeftMotor.configOpenloopRamp(0);
 
 
     midRightMotor.setNeutralMode(NeutralMode.Brake);
-    midRightMotor.configOpenloopRamp(Constants.RAMP_TIME);
+    midRightMotor.configOpenloopRamp(0);
     
     frontRightMotor.setNeutralMode(NeutralMode.Brake);
-    frontRightMotor.configOpenloopRamp(Constants.RAMP_TIME);
+    frontRightMotor.configOpenloopRamp(0);
 
     backRightMotor.setNeutralMode(NeutralMode.Brake);
-    backRightMotor.configOpenloopRamp(Constants.RAMP_TIME);
+    backRightMotor.configOpenloopRamp(0);
   }
 
   public void robotDrive(double driveSpeedAxis, double driveTurnAxis) {
     robotDrive.arcadeDrive(driveSpeedAxis, driveTurnAxis);
   }
 }
+
