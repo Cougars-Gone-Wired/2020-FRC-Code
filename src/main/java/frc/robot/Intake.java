@@ -15,6 +15,7 @@ public class Intake {
 
     public void initialize() {
         intakeMotor.set(0);
+
         currentState = States.NOT_MOVING;
     }
 
@@ -31,6 +32,7 @@ public class Intake {
             case NOT_MOVING:
                 if (intakeButton) {
                     intakeMotor.set(INTAKE_SPEED);
+                    
                     currentState = States.INTAKING;
                 }
                 break;
