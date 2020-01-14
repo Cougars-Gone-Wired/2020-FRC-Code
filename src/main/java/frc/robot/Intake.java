@@ -6,16 +6,10 @@ public class Intake {
     // We can use intake speed for both funnel motor and intake motor
     private static final double INTAKE_SPEED = 1;
     private WPI_TalonSRX intakeMotor;
-    private WPI_TalonSRX funnelMotor; 
+    private WPI_TalonSRX funnelMotor;
 
     public Intake() {
         intakeMotor = new WPI_TalonSRX(0);
-        currentState = States.NOT_MOVING;
-    }
-
-    public void initialize() {
-        intakeMotor.set(0);
-        funnelMotor.set(0);
         currentState = States.NOT_MOVING;
     }
 
@@ -25,6 +19,12 @@ public class Intake {
 
     private States currentState;
 
+    public void initialize() {
+        intakeMotor.set(0);
+
+        currentState = States.NOT_MOVING;
+    }
+
     public void intake(boolean intakeButton) {
         // Can use same states for it
         // Runs off same button as intake
@@ -32,7 +32,7 @@ public class Intake {
             case NOT_MOVING:
                 if (intakeButton) {
                     intakeMotor.set(INTAKE_SPEED);
-                    funnelMotor.set(INTAKE_SPEED);
+                    
                     currentState = States.INTAKING;
                 }
                 break;
@@ -40,7 +40,7 @@ public class Intake {
             case INTAKING:
                 if (!intakeButton) {
                     intakeMotor.set(0);
-                    funnelMotor.set(0);
+
                     currentState = States.NOT_MOVING;
                 }
                 break;
