@@ -4,7 +4,15 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.DriverStation;
 public class ControlPanel {
- 
+
+    //BIG NOTE                                                  |   OTHER REFERENCE DATA
+    // Blue = Red                                               |   Wheels ratio: ??:??
+    // Red = Blue                                               |   hi
+    // Green = Yellow                                           |
+    // Yellow = Green                                           |
+    // Yes, we live in the Phantom Tollbooth. Get used to it.   |
+
+
     private static final double COLORWHEEL_SPEED = .4;
     private WPI_TalonSRX wheelMotor;
     private States currentState;
