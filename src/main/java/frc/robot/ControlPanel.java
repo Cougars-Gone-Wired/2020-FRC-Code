@@ -2,6 +2,7 @@ package frc.robot;
 
 // import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.I2C;
 // import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
@@ -25,15 +26,20 @@ public class ControlPanel {
     private WPI_TalonSRX wheelMotor;
     private States currentState;
     private String gameData;
+    private Boolean gameDataError;
+    private String colorString;
 
     private Color kBlueTarget;
     private Color kGreenTarget;
     private Color kRedTarget;
     private Color kYellowTarget;
     private ColorMatch m_colorMatcher;
+    private ColorSensorV3 m_colorSensor;
     private Color colorRead;
+    private Color detectedColor;
+    ColorMatchResult match;
 
-    public ControlPanel() {
+    public ControlPanel() { // Constructor 
         wheelMotor = new WPI_TalonSRX(0);
         currentState = States.NOT_MOVING;
         // gameData = DriverStation.getInstance().getGameSpecificMessage();
@@ -67,25 +73,50 @@ public class ControlPanel {
 
     public void color() {
         colorRead = m_colorSensor.getColor();
+        
+        // ColorMatchResult match = m_colorMatcher.matchClosestColor(detectedColor);
+        
+        // if (match.color == kBlueTarget) {
+        //   colorString = "Blue";
+        // } else if (match.color == kRedTarget) {
+        //   colorString = "Red";
+        // } else if (match.color == kGreenTarget) {
+        //   colorString = "Green";
+        // } else if (match.color == kYellowTarget) {
+        //   colorString = "Yellow";
+        // } else {
+        //   colorString = "Unknown";
+        // }
         switch (gameData.charAt(0))
         {
             case 'B' :
               //Blue case code
-                if ( colorRead != "R" ) {
+                if ( colorString != "Red" ) {
 
                 }
               break;
             case 'G' :
               //Green case code
+              if ( colorString != "Yellow" ) {
+
+              }
               break;
             case 'R' :
               //Red case code
+              if ( colorString != "Blue" ) {
+
+              }
               break;
             case 'Y' :
               //Yellow case code
+              if ( colorString != "Green" ) {
+
+              }
               break;
             default :
               //This is corrupt data
+              gameDataError = true;
+              SmartDashboard.putBoolean("Game Data Status", gameDataError)
               break;
         }
     }
@@ -108,6 +139,18 @@ public class ControlPanel {
         }
     }
 
+    public void writeDash() {
+      SmartDashboard.putString("Game Data", gameData);
+      match = m_colorMatcher.matchClosestColor(detectedColor);
+      detectedColor = m_colorSensor.getColor();
+
+      SmartDashboard.putNumber("Proximity", m_colorSensor.getProximity());
+      SmartDashboard.putNumber("Red", m_colorSensor.getRed());
+      SmartDashboard.putNumber("Green", m_colorSensor.getGreen());
+      SmartDashboard.putNumber("Blue", m_colorSensor.getBlue());
+      SmartDashboard.putNumber("Confidence", match.confidence);
+      SmartDashboard.putString("Detected Color", colorString);
+    }
 
 }
 
