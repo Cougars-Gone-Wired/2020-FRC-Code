@@ -6,7 +6,7 @@ public class Intake {
     // We can use intake speed for both funnel motor and intake motor
     private static final double INTAKE_SPEED = 1;
     private WPI_TalonSRX intakeMotor;
-    private WPI_TalonSRX funnelMotor;
+    // private WPI_TalonSRX funnelMotor;
 
     public Intake() {
         intakeMotor = new WPI_TalonSRX(0);

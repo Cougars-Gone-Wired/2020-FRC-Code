@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 public class Drive {
 
-  private WPI_TalonSRX frontLeftMotor; //Based off Hatch Side
+  private WPI_TalonSRX frontLeftMotor;
   private WPI_TalonSRX midLeftMotor;
   private WPI_TalonSRX backLeftMotor;
 
@@ -26,8 +26,7 @@ public class Drive {
 
     midRightMotor = new WPI_TalonSRX(96);
     frontRightMotor = new WPI_TalonSRX(95);
-    backRightMotor =  new WPI_TalonSRX(94);
-
+    backRightMotor = new WPI_TalonSRX(94);
 
     frontLeftMotor.follow(midLeftMotor);
     backLeftMotor.follow(frontLeftMotor);
@@ -62,10 +61,9 @@ public class Drive {
     backLeftMotor.setNeutralMode(NeutralMode.Brake);
     backLeftMotor.configOpenloopRamp(0);
 
-
     midRightMotor.setNeutralMode(NeutralMode.Brake);
     midRightMotor.configOpenloopRamp(0);
-    
+
     frontRightMotor.setNeutralMode(NeutralMode.Brake);
     frontRightMotor.configOpenloopRamp(0);
 
@@ -74,7 +72,6 @@ public class Drive {
   }
 
   public void robotDrive(double driveSpeedAxis, double driveTurnAxis) {
-    robotDrive.arcadeDrive(driveSpeedAxis, driveTurnAxis);
+    robotDrive.arcadeDrive(driveSpeedAxis, -driveTurnAxis);
   }
 }
-
