@@ -27,7 +27,7 @@ public class ColorWheel {
         switch(currentState) {
             case NOT_MOVING:
                 if (spinButton) {
-                    feederMotor.set(COLORWHEEL_SPEED);
+                    wheelMotor.set(COLORWHEEL_SPEED);
                     currentState = States.SPINNING;
                 }
                 break;
