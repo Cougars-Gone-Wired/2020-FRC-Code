@@ -32,7 +32,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     controllers.updateControllerValues();
-    drive.setSide(controllers.isDriveSide());
+    drive.setSide(controllers.toggle());
   }
 
   @Override

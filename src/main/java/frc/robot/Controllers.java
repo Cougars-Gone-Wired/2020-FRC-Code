@@ -9,8 +9,7 @@ public class Controllers {
     private Joystick mobilityController;
     private double driveSpeedAxis;
     private double driveTurnAxis;
-    private ToggleButton driveSideToggle;
-    public boolean driveSide;
+    public boolean driveSide = false;
 
     // Manipulator
     private Joystick manipulatorController;
@@ -20,7 +19,6 @@ public class Controllers {
 
     public Controllers() {
         mobilityController = new Joystick(Constants.MOBILITY_CONTROLLER_ID);
-        driveSideToggle = new ToggleButton(mobilityController, Constants.SWITCH_SIDE_BUTTON);
 
         manipulatorController = new Joystick(Constants.MANIPULATOR_CONTROLLER_ID);
     }
@@ -29,13 +27,20 @@ public class Controllers {
         // Mobility
         driveSpeedAxis = mobilityController.getRawAxis(Constants.DRIVE_SPEED_AXIS);
         driveTurnAxis = mobilityController.getRawAxis(Constants.DRIVE_TURN_AXIS);
-        driveSide = driveSideToggle.toggle();
         SmartDashboard.putBoolean("TOGGLE BUTTON", driveSide);
 
         // Manipulator
         shooterButton = manipulatorController.getRawButton(Constants.SHOOTER_BUTTON);
         intakeButton = manipulatorController.getRawButton(Constants.INTAKE_BUTTON);
         feederButton = manipulatorController.getRawButton(Constants.FEEDER_BUTTON);
+    }
+
+    public boolean toggle() {
+        if (mobilityController.getRawButtonPressed(Constants.SWITCH_SIDE_BUTTON)) {
+            // Toggles the state here
+            driveSide = !driveSide;
+        }
+        return driveSide;
     }
 
     // Mobilty
@@ -45,10 +50,6 @@ public class Controllers {
 
     public double getDriveTurnAxis() {
         return driveTurnAxis;
-    }
-
-    public boolean isDriveSide() {
-        return driveSide;
     }
 
     // Manipulator
