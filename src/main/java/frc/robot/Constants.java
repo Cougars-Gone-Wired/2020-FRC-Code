@@ -27,4 +27,6 @@ public class Constants {
     static final int INTAKE_MOTOR_ID = 92;
     static final int FEEDER_MOTOR_ID = 91;
 
+    static final double DEADZONE = 0.15;
+
 }

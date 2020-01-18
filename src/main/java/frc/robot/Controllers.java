@@ -8,7 +8,8 @@ public class Controllers {
     private Joystick mobilityController;
     private double driveSpeedAxis;
     private double driveTurnAxis;
-    private boolean switchSideButton;
+    private Toggle switchSideToggle;
+    private boolean switchSide;
 
     //Manipulator
     private Joystick manipulatorController;
@@ -18,6 +19,8 @@ public class Controllers {
 
     public Controllers() {
         mobilityController = new Joystick(Constants.MOBILITY_CONTROLLER_ID);
+        switchSideToggle = new Toggle(mobilityController, Constants.SWITCH_SIDE_BUTTON);
+
         manipulatorController = new Joystick(Constants.MANIPULATOR_CONTROLLER_ID);
     }
 
@@ -25,7 +28,7 @@ public class Controllers {
         // Mobility
         driveSpeedAxis = mobilityController.getRawAxis(Constants.DRIVE_SPEED_AXIS);
         driveTurnAxis = mobilityController.getRawAxis(Constants.DRIVE_TURN_AXIS);
-        switchSideButton = mobilityController.getRawButton(Constants.SWITCH_SIDE_BUTTON);
+        switchSide = switchSideToggle.toggle();
 
         //Manipulator
         shooterButton = manipulatorController.getRawButton(Constants.SHOOTER_BUTTON);
@@ -40,8 +43,8 @@ public class Controllers {
     public double getDriveTurnAxis() {
         return driveTurnAxis;
     }
-    public boolean isSwitchSideButton() {
-        return switchSideButton;
+    public boolean isSwitchSide() {
+        return switchSide;
     }
 
     // Manipulator
