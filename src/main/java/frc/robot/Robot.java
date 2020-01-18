@@ -7,12 +7,13 @@ public class Robot extends TimedRobot {
 
   private Drive drive;
   private Controllers controllers;
+  private Arm arm;
 
   @Override
   public void robotInit() {
     controllers = new Controllers();
     drive = new Drive();
-
+    arm = new Arm();
   }
 
   @Override
@@ -32,7 +33,9 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     controllers.updateControllerValues();
-    drive.setSide(controllers.toggle());
+    drive.robotDrive(controllers.getDriveSpeedAxis(), controllers.getDriveTurnAxis());
+    drive.setSide(controllers.driveSideToggle.getValue());
+    arm.pistonArm(controllers.shooterPosToggle, controllers.startPosToggle, controllers.climingPosToggle);
   }
 
   @Override

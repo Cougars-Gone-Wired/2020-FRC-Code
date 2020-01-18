@@ -6,7 +6,11 @@ public class Constants {
     static final int MOBILITY_CONTROLLER_ID = 0;
     static final int DRIVE_SPEED_AXIS = 1;
     static final int DRIVE_TURN_AXIS = 4;
+
     static final int SWITCH_SIDE_BUTTON = 1;
+    static final int SHOOTING_POSITION_BUTTON = 1;
+    static final int STARTING_POSITION_BUTTON = 2;
+    static final int CLIMING_POSITION_BUTTON = 4;
 
     // Manipulator Controller
     static final int MANIPULATOR_CONTROLLER_ID = 1;
