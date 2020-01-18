@@ -23,13 +23,13 @@ public class Drive {
 
   public Drive() {
 
-    midLeftMotor = new WPI_TalonSRX(99);
-    frontLeftMotor = new WPI_TalonSRX(98);
-    backLeftMotor = new WPI_TalonSRX(97);
+    midLeftMotor = new WPI_TalonSRX(Constants.MIDDLE_LEFT_MOTOR_ID);
+    frontLeftMotor = new WPI_TalonSRX(Constants.FRONT_LEFT_MOTOR_ID);
+    backLeftMotor = new WPI_TalonSRX(Constants.BACK_LEFT_MOTOR_ID);
 
-    midRightMotor = new WPI_TalonSRX(96);
-    frontRightMotor = new WPI_TalonSRX(95);
-    backRightMotor = new WPI_TalonSRX(94);
+    midRightMotor = new WPI_TalonSRX(Constants.MIDDLE_RIGHT_MOTOR_ID);
+    frontRightMotor = new WPI_TalonSRX(Constants.FRONT_RIGHT_MOTOR_ID);
+    backRightMotor = new WPI_TalonSRX(Constants.BACK_RIGHT_MOTOR_ID);
 
     frontLeftMotor.follow(midLeftMotor);
     backLeftMotor.follow(frontLeftMotor);
@@ -98,8 +98,8 @@ public class Drive {
     }
   }
 
-  public void setSide(boolean switchSide) {
-    if (switchSide) {
+  public void setSide(boolean driveSide) {
+    if (driveSide) {
       driveState = DriveStates.SHOOTER_SIDE;
     } else {
       driveState = DriveStates.INTAKE_SIDE;
