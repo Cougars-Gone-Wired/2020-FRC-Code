@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Controllers {
 
@@ -29,6 +30,7 @@ public class Controllers {
         driveSpeedAxis = mobilityController.getRawAxis(Constants.DRIVE_SPEED_AXIS);
         driveTurnAxis = mobilityController.getRawAxis(Constants.DRIVE_TURN_AXIS);
         driveSide = driveSideToggle.toggle();
+        SmartDashboard.putBoolean("TOGGLE BUTTON", driveSide);
 
         // Manipulator
         shooterButton = manipulatorController.getRawButton(Constants.SHOOTER_BUTTON);
