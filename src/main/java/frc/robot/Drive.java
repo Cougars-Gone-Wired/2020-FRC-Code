@@ -41,6 +41,15 @@ public class Drive {
     frontRightMotor = new WPI_TalonFX(Constants.FRONT_RIGHT_MOTOR_ID);
     backRightMotor = new WPI_TalonFX(Constants.BACK_RIGHT_MOTOR_ID);
 
+    frontLeftSensors = new TalonFXSensorCollection(frontLeftMotor);
+    middleLeftSensors = new TalonFXSensorCollection(midLeftMotor);
+    backLeftSensors = new TalonFXSensorCollection(backLeftMotor);
+
+    frontRightSensors = new TalonFXSensorCollection(frontRightMotor);
+    middleRightSensors = new TalonFXSensorCollection(midRightMotor);
+    backRightSensors = new TalonFXSensorCollection(backRightMotor);
+    
+
     frontLeftMotor.follow(midLeftMotor);
     backLeftMotor.follow(frontLeftMotor);
 
