@@ -1,35 +1,45 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.TalonFXSensorCollection;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 // import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Drive {
 
   public static double DRIVE_SPEED = 0.9;
   public static double TURN_SPEED = 0.9;
 
-  private WPI_TalonSRX frontLeftMotor;
-  private WPI_TalonSRX midLeftMotor;
-  private WPI_TalonSRX backLeftMotor;
+  private WPI_TalonFX frontLeftMotor;
+  private WPI_TalonFX midLeftMotor;
+  private WPI_TalonFX backLeftMotor;
 
-  private WPI_TalonSRX frontRightMotor;
-  private WPI_TalonSRX midRightMotor;
-  private WPI_TalonSRX backRightMotor;
+  private WPI_TalonFX frontRightMotor;
+  private WPI_TalonFX midRightMotor;
+  private WPI_TalonFX backRightMotor;
+
+  private TalonFXSensorCollection frontLeftSensors;
+  private TalonFXSensorCollection middleLeftSensors;
+  private TalonFXSensorCollection backLeftSensors;
+
+  private TalonFXSensorCollection frontRightSensors;
+  private TalonFXSensorCollection middleRightSensors;
+  private TalonFXSensorCollection backRightSensors;
 
   private DifferentialDrive robotDrive;
 
   public Drive() {
 
-    midLeftMotor = new WPI_TalonSRX(Constants.MIDDLE_LEFT_MOTOR_ID);
-    frontLeftMotor = new WPI_TalonSRX(Constants.FRONT_LEFT_MOTOR_ID);
-    backLeftMotor = new WPI_TalonSRX(Constants.BACK_LEFT_MOTOR_ID);
+    midLeftMotor = new WPI_TalonFX(Constants.MIDDLE_LEFT_MOTOR_ID);
+    frontLeftMotor = new WPI_TalonFX(Constants.FRONT_LEFT_MOTOR_ID);
+    backLeftMotor = new WPI_TalonFX(Constants.BACK_LEFT_MOTOR_ID);
 
-    midRightMotor = new WPI_TalonSRX(Constants.MIDDLE_RIGHT_MOTOR_ID);
-    frontRightMotor = new WPI_TalonSRX(Constants.FRONT_RIGHT_MOTOR_ID);
-    backRightMotor = new WPI_TalonSRX(Constants.BACK_RIGHT_MOTOR_ID);
+    midRightMotor = new WPI_TalonFX(Constants.MIDDLE_RIGHT_MOTOR_ID);
+    frontRightMotor = new WPI_TalonFX(Constants.FRONT_RIGHT_MOTOR_ID);
+    backRightMotor = new WPI_TalonFX(Constants.BACK_RIGHT_MOTOR_ID);
 
     frontLeftMotor.follow(midLeftMotor);
     backLeftMotor.follow(frontLeftMotor);
@@ -104,5 +114,25 @@ public class Drive {
     } else {
       driveState = DriveStates.INTAKE_SIDE;
     }
+  }
+
+  public void dashboard() {
+    double fls = frontLeftSensors.getIntegratedSensorPosition();
+    double mls = middleLeftSensors.getIntegratedSensorPosition();
+    double bls = backLeftSensors.getIntegratedSensorPosition();
+    double frs = frontRightSensors.getIntegratedSensorPosition();
+    double mrs = middleRightSensors.getIntegratedSensorPosition();
+    double brs = backRightSensors.getIntegratedSensorPosition();
+
+    SmartDashboard.putNumber("Front Left", fls);
+    SmartDashboard.putNumber("Middle Left", mls);
+    SmartDashboard.putNumber("Back Left", bls);
+    SmartDashboard.putNumber("Front Right", frs);
+    SmartDashboard.putNumber("Middle Right", mrs);
+    SmartDashboard.putNumber("Back Right", brs);
+
+    SmartDashboard.putNumber("Left Average", (fls + mls + bls) / 3);
+    SmartDashboard.putNumber("Right Average", (frs + mrs + brs) / 3);
+
   }
 }
