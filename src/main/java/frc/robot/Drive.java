@@ -64,6 +64,14 @@ public class Drive {
     frontRightMotor.set(0);
     backRightMotor.set(0);
 
+    frontLeftSensors.setIntegratedSensorPosition(0, 10);
+    middleLeftSensors.setIntegratedSensorPosition(0, 10);
+    backLeftSensors.setIntegratedSensorPosition(0, 10);
+
+    frontRightSensors.setIntegratedSensorPosition(0, 10);
+    middleRightSensors.setIntegratedSensorPosition(0, 10);
+    backRightSensors.setIntegratedSensorPosition(0, 10);
+
     driveState = DriveStates.SHOOTER_SIDE;
   }
 
