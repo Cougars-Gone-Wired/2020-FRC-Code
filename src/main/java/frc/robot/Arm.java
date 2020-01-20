@@ -30,37 +30,36 @@ public class Arm {
   // shooterPositionButton = A button
 
   public void pistonArm(boolean shootingPosButton, boolean startPosButton, boolean climberPosButton) {
-    // CARTER: Set the ToggleButtons in the different cases with
-    // <button>.setValue(true/false);
+
     switch (currentPistonState) {
     case STARTING_POSITION:
-      if (climberPosButton) {
+      if (!shootingPosButton && !startPosButton && climberPosButton) {
         solenoid1.set(true);
         solenoid2.set(true);
         currentPistonState = PistonStates.CLIMBING_POSITION;
-      } else if (shootingPosButton) {
+      } else if (shootingPosButton && !startPosButton && !climberPosButton) {
         solenoid1.set(false);
         solenoid2.set(false);
         currentPistonState = PistonStates.SHOOTING_POSITION;
       }
       break;
     case CLIMBING_POSITION:
-      if (startPosButton) {
+      if (!shootingPosButton && startPosButton && !climberPosButton) {
         solenoid1.set(false);
         solenoid2.set(true);
         currentPistonState = PistonStates.STARTING_POSITION;
-      } else if (shootingPosButton) {
+      } else if (shootingPosButton && !startPosButton && !climberPosButton) {
         solenoid1.set(false);
         solenoid2.set(false);
         currentPistonState = PistonStates.SHOOTING_POSITION;
       }
       break;
     case SHOOTING_POSITION:
-      if (climberPosButton) {
+      if (!shootingPosButton && !startPosButton && climberPosButton) {
         solenoid1.set(true);
         solenoid2.set(true);
         currentPistonState = PistonStates.CLIMBING_POSITION;
-      } else if (startPosButton) {
+      } else if (!shootingPosButton && startPosButton && !climberPosButton) {
         solenoid1.set(false);
         solenoid2.set(true);
         currentPistonState = PistonStates.STARTING_POSITION;
