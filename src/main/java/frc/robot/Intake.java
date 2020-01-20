@@ -9,6 +9,7 @@ public class Intake {
     
     private WPI_TalonSRX intakeMotor;
     private Solenoid intakeArmSolenoid;
+    private boolean intakeTriggerBool;
 
     public Intake() {
         intakeMotor = new WPI_TalonSRX(0);
@@ -54,17 +55,18 @@ public class Intake {
 
     private IntakeStates currentIntakeState;
 
-    public void intake(boolean intakeButton) {
+    public void intake(double intakeTrigger) {
+        intakeTriggerBool = (intakeTrigger >= Constants.DEADZONE);
         switch(currentIntakeState) {
             case NOT_MOVING:
-                if (intakeButton) {
+                if (intakeTriggerBool) {
                     intakeMotor.set(INTAKE_SPEED);
                     currentIntakeState = IntakeStates.INTAKING;
                 }
                 break;
 
             case INTAKING:
-                if (!intakeButton) {
+                if (!intakeTriggerBool) {
                     intakeMotor.set(0);
                     currentIntakeState = IntakeStates.NOT_MOVING;
                 }
