@@ -2,55 +2,47 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.Solenoid;
+
 public class Intake {
     private static final double INTAKE_SPEED = 1;
-    private static final double PIVOT_SPEED = 1;
+    
     private WPI_TalonSRX intakeMotor;
-    private WPI_TalonSRX pivotMotor;
+    private Solenoid intakeArmSolenoid;
 
     public Intake() {
         intakeMotor = new WPI_TalonSRX(0);
         currentIntakeState = IntakeStates.NOT_MOVING;
-        pivotMotor = new WPI_TalonSRX(0);
-        currentPivotState = PivotStates.NOT_MOVING;
+        intakeArmSolenoid = new Solenoid(0);
+        currentIntakeArmState = IntakeArmStates.UP;
     }
 
     public void initialize() {
         intakeMotor.set(0);
-        pivotMotor.set(0);
+        intakeArmSolenoid.set(false);
         currentIntakeState = IntakeStates.NOT_MOVING;
-        currentPivotState = PivotStates.NOT_MOVING;
+        currentIntakeArmState = IntakeArmStates.UP;
     }
 
-    public enum PivotStates {
-        NOT_MOVING, PIVOTING_UP, PIVOTING_DOWN
+    public enum IntakeArmStates {
+        UP, DOWN
     }
 
-    private PivotStates currentPivotState;
+    private IntakeArmStates currentIntakeArmState;
 
-    public void pivotAxis(double pivotAxis) {
-        switch(currentPivotState) {
-            case NOT_MOVING:
-                if (pivotAxis > 0.15) {
-                    pivotMotor.set(PIVOT_SPEED);
-                    currentPivotState = PivotStates.PIVOTING_UP;
-                } else if (pivotAxis < -0.15) {
-                    pivotMotor.set(-PIVOT_SPEED);
-                    currentPivotState = PivotStates.PIVOTING_DOWN;
+    public void intakeArm(boolean intakePosToggle) {
+        switch(currentIntakeArmState) {
+            case UP:
+                if (intakePosToggle) {
+                    intakeArmSolenoid.set(true);
+                    currentIntakeArmState = IntakeArmStates.DOWN;
                 }
                 break;
 
-            case PIVOTING_UP:
-                if (pivotAxis <= 0.15) {
-                    pivotMotor.set(0);
-                    currentPivotState = PivotStates.NOT_MOVING;
-                }
-                break; 
-
-            case PIVOTING_DOWN:
-                if (pivotAxis >= -0.15) {
-                    pivotMotor.set(0);
-                    currentPivotState = PivotStates.NOT_MOVING;
+            case DOWN:
+                if (!intakePosToggle) {
+                    intakeArmSolenoid.set(false);
+                    currentIntakeArmState = IntakeArmStates.UP;
                 }
                 break;
         }
