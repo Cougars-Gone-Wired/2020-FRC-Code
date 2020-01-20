@@ -8,9 +8,8 @@ public class Arm {
   private Solenoid solenoid2;
 
   public Arm() {
-    solenoid1 = new Solenoid(0);
-    solenoid2 = new Solenoid(1);
-
+    solenoid1 = new Solenoid(Constants.ARM_SOLENOID_1_PORT);
+    solenoid2 = new Solenoid(Constants.ARM_SOLENOID_2_PORT);
   }
 
   public void initialize() {
