@@ -7,69 +7,52 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 public class Climber {
     private static double LIFT_SPEED = 0.3;
     private WPI_TalonSRX climbMotor;
-    private thresh = 0.5;
 
     public Climber() {
         climbMotor = new WPI_TalonSRX(42);
 
-
-        // initMotors();
     }
-
-    public void initMotors() {
-        // midLeftMotor.setNeutralMode(NeutralMode.Brake);
-        // midLeftMotor.configOpenloopRamp(0);
-    
-    }
-
-    private enum ClimbStates {
-        STATIONARY, LEVITATING, DESCENDING
-    }
-    private ClimbStates climbState;
 
     public void initalize() {
         climbMotor.set(0);
         climbState = ClimbStates.STATIONARY;
     }
 
+    private enum ClimbStates {
+        NOT_MOVING, MOVING_UP, MOVING_DOWN
+    }
+    private ClimbStates climbState;
+
     public void climb(double upTrigger, double downTrigger) {
-        if (upTrigger >= thresh) {
-            upTriggerBool = true;
-        }else{
-            upTriggerBool = false;
-        }
-
-        if (downTrigger >= thresh) {
-            downTriggerBool = true;
-        }else{
-            downTriggerBool = false;
-        }
-
+        upTriggerBool = (upTrigger >= Constants.DEADZONE);
+        downTriggerBool = (downTrigger >= Constants.DEADZONE);
+        
         switch (climbState) {
-            case LEVITATING:
-                if (!upTriggerBool) {
+            case NOT_MOVING:
+                if (upTriggerBool && !downTriggerBool) {
+                    climbMotor.set(LIFT_SPEED);
+                    climbState = ClimbStates.MOVING_UP;
+                }
+                if (downTriggerBool && !upTriggerBool) {
+                    climbMotor.set(-LIFT_SPEED);
+                    climbState = ClimbStates.MOVING_DOWN;
+                }
+                break;
+
+            case MOVING_UP:
+                if (!upTriggerBool || downTriggerBool) {
                     climbMotor.set(0);
-                    climbState = ClimbStates.STATIONARY;
+                    climbState = ClimbStates.NOT_MOVING;
                 }
                 break;
         
-            case DESCENDING:
-                if (!downTriggerBool) {
+            case MOVING_DOWN:
+                if (!downTriggerBool || upTriggerBool) {
                     climbMotor.set(0);
-                    climbState = ClimbStates.STATIONARY;
+                    climbState = ClimbStates.NOT_MOVING;
                 }
                 break;
 
-            default:
-                if (upTriggerBool) {
-                    climbMotor.set(LIFT_SPEED);
-                    climbState = ClimbStates.LEVITATING;
-                }
-                if (downTriggerBool) {
-                    climbMotor.set(-LIFT_SPEED);
-                    climbState = ClimbStates.DESCENDING;
-                }
-                break;
         }
     }
 }
