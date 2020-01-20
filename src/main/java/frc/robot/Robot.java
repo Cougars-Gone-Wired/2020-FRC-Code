@@ -5,14 +5,18 @@ import edu.wpi.first.wpilibj.TimedRobot;
 
 public class Robot extends TimedRobot {
 
-  private Drive drive;
   private Controllers controllers;
+  private Drive drive;
+  private Intake intake;
+  private Feeder feeder;
   private Arm arm;
 
   @Override
   public void robotInit() {
     controllers = new Controllers();
     drive = new Drive();
+    intake = new Intake();
+    feeder = new Feeder();
     arm = new Arm();
   }
 
@@ -22,12 +26,18 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-
   }
 
   @Override
   public void autonomousPeriodic() {
+  }
 
+  @Override
+  public void teleopInit() {
+    drive.initalize();
+    intake.initialize();
+    feeder.initialize();
+    arm.initialize();
   }
 
   @Override
@@ -35,6 +45,9 @@ public class Robot extends TimedRobot {
     controllers.updateControllerValues();
     drive.robotDrive(controllers.getDriveSpeedAxis(), controllers.getDriveTurnAxis());
     drive.setSide(controllers.isDriveSideButton());
+    intake.intake(controllers.isIntakeButton());
+    intake.intakeArm(controllers.isIntakeArmButton());
+    feeder.feed(controllers.isFeederButton());
     arm.pistonArm(controllers.isShootingPosButton(), controllers.isStartingPosButton(),
         controllers.isClimbingPosButton());
   }
