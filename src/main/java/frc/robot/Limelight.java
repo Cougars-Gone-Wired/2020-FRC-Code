@@ -28,7 +28,7 @@ public class Limelight {
     private double driveKp = 0.05; //Drive multiplier
     private double aim_adjust = 0.00; //0 By Default so robot doesn't move initially
     private double drive_adjust = 0.00; // ↑ ↑ ↑ 
-    private double desired_distance = 0.00; // ↑ ↑ ↑ 
+    private double desired_distance = 0.00; // Needs to be set later
 
     private enum LimelightStates {
         DO_NOTHING, AIM, AIM_AND_DRIVE, SEEK_AIM_AND_DRIVE 
@@ -56,34 +56,65 @@ public class Limelight {
             case DO_NOTHING:
                 //why doesn't this do anything
                 if(aimButton) {
-                    limelightState = LimelightStates.AIM; //Default State
+                    limelightState = LimelightStates.SEEK_AIM_AND_DRIVE; //What the limelight should do when the button is pressed
                 }
-                aim_adjust = 0;
-                drive_adjust = 0;
             break;
 
             case SEEK_AIM_AND_DRIVE:
-                if(tv == 1) {
+            //Stays in seek until button stops being pressed or it finds a valid target
+                if(!aimButton) {
+                    limelightState = LimelightStates.DO_NOTHING;
+                    aim_adjust = 0; 
+                    drive_adjust = 0;
+                }
+
+                if(tv == 1) { 
+                    limelightState = LimelightStates.AIM_AND_DRIVE;
+                } else {
                     aim_adjust = min;
                     drive_adjust = 0;
-                } else {
-                    limelightState = LimelightStates.AIM_AND_DRIVE;
                 }
             break;
+
             case AIM_AND_DRIVE:
-                drive_adjust = driveKp*(currentDistance() - desired_distance);
-                //drive_adjust = driveKp*(ty/24.85); //used if limelight looks directly at center when at correct distance
-                if (currentDistance() - desired_distance  > 5) {
-                    drive_adjust += min; //If too far away, move closer
-                }
-                else if (currentDistance() - desired_distance < -5) {
-                    drive_adjust -= min; //If too close, move away
-                } else {
+                //A lot of copy and paste here that could be changed later but it's not necessary 
+                if(!aimButton) {
+                    limelightState = LimelightStates.DO_NOTHING;
+                    aim_adjust = 0; 
                     drive_adjust = 0;
                 }
+
+                aim_adjust = aimKp*(tx/29.8);
+                if (tx > 1.0) {
+                    aim_adjust += min;
+                    drive_adjust = 0;
+                }
+                else if (tx < -1.0) {
+                    aim_adjust -= min;
+                    drive_adjust = 0;
+                } else {
+                    aim_adjust = 0;
+
+                    //Won't drive until centered, will stop driving and center again if not centered
+                    drive_adjust = driveKp*(currentDistance() - desired_distance);
+                    //drive_adjust = driveKp*(ty/24.85); //used if limelight looks directly at center when at correct distance
+                    if (currentDistance() - desired_distance  > 5) {
+                        drive_adjust += min; //If too far away, move closer
+                    }
+                    else if (currentDistance() - desired_distance < -5) {
+                        drive_adjust -= min; //If too close, move away
+                    } else {
+                        drive_adjust = 0;
+                    }
+                }
+
+                break;
+
             case AIM:
                 if(!aimButton) {
                     limelightState = LimelightStates.DO_NOTHING;
+                    aim_adjust = 0; 
+                    drive_adjust = 0;
                 }
 
                 aim_adjust = aimKp*(tx/29.8);
