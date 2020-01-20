@@ -1,7 +1,6 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Controllers {
 
@@ -9,27 +8,28 @@ public class Controllers {
     private Joystick mobilityController;
     private double driveSpeedAxis;
     private double driveTurnAxis;
+
     public ToggleButton driveSideToggle;
+    private double climberUpTrigger;
+    private double climberDownTrigger;
 
     // Manipulator
     private Joystick manipulatorController;
     private boolean shooterButton;
-    private boolean intakeButton;
+    private double intakeTrigger;
     private boolean feederButton;
-    public ToggleButton shooterPosToggle;
-    public ToggleButton startPosToggle;
-    public ToggleButton climingPosToggle;
+
+    private boolean shootingPosButton;
+    private boolean startPosButton;
+    private boolean climbingPosButton;
+    public ToggleButton intakeArmToggle;
 
     public Controllers() {
         mobilityController = new Joystick(Constants.MOBILITY_CONTROLLER_ID);
-
         manipulatorController = new Joystick(Constants.MANIPULATOR_CONTROLLER_ID);
 
         driveSideToggle = new ToggleButton(mobilityController, Constants.SWITCH_SIDE_BUTTON);
-        shooterPosToggle = new ToggleButton(manipulatorController, Constants.SHOOTING_POSITION_BUTTON);
-        startPosToggle = new ToggleButton(manipulatorController, Constants.STARTING_POSITION_BUTTON);
-        climingPosToggle = new ToggleButton(manipulatorController, Constants.CLIMING_POSITION_BUTTON);
-
+        intakeArmToggle = new ToggleButton(manipulatorController, Constants.INTAKE_ARM_BUTTON);
     }
 
     public void updateControllerValues() {
@@ -37,16 +37,17 @@ public class Controllers {
         driveSpeedAxis = mobilityController.getRawAxis(Constants.DRIVE_SPEED_AXIS);
         driveTurnAxis = mobilityController.getRawAxis(Constants.DRIVE_TURN_AXIS);
         driveSideToggle.toggle();
-        SmartDashboard.putBoolean("TOGGLE BUTTON", driveSideToggle.getValue());
+        climberUpTrigger = mobilityController.getRawAxis(Constants.CLIMBER_UP_TRIGGER);
+        climberDownTrigger = mobilityController.getRawAxis(Constants.CLIMBER_DOWN_TRIGGER);
 
         // Manipulator
         shooterButton = manipulatorController.getRawButton(Constants.SHOOTER_BUTTON);
-        intakeButton = manipulatorController.getRawButton(Constants.INTAKE_BUTTON);
+        intakeTrigger = manipulatorController.getRawAxis(Constants.INTAKE_TRIGGER);
         feederButton = manipulatorController.getRawButton(Constants.FEEDER_BUTTON);
-
-        shooterPosToggle.toggle();
-        startPosToggle.toggle();
-        climingPosToggle.toggle();
+        shootingPosButton = manipulatorController.getRawButtonPressed(Constants.SHOOTING_POSITION_BUTTON);
+        startPosButton = manipulatorController.getRawButtonPressed(Constants.STARTING_POSITION_BUTTON);
+        climbingPosButton = manipulatorController.getRawButtonPressed(Constants.CLIMBING_POSITION_BUTTON);
+        intakeArmToggle.toggle();
     }
 
     // Mobilty
@@ -58,16 +59,36 @@ public class Controllers {
         return driveTurnAxis;
     }
 
+    public double getClimberUpTrigger() {
+        return climberUpTrigger;
+    }
+
+    public double getClimberDownTrigger() {
+        return climberDownTrigger;
+    }
+
     // Manipulator
     public boolean isShooterButton() {
         return shooterButton;
     }
 
-    public boolean isIntakeButton() {
-        return intakeButton;
+    public double getIntakeTrigger() {
+        return intakeTrigger;
     }
 
     public boolean isFeederButton() {
         return feederButton;
+    }
+
+    public boolean isShootingPosButton() {
+        return shootingPosButton;
+    }
+
+    public boolean isStartingPosButton() {
+        return startPosButton;
+    }
+
+    public boolean isClimbingPosButton() {
+        return climbingPosButton;
     }
 }
