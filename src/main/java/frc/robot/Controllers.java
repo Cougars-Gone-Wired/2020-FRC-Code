@@ -18,6 +18,7 @@ public class Controllers {
     private boolean shootingPosButton;
     private boolean startPosButton;
     private boolean climingPosButton;
+    private boolean intakeArmButton;
 
     public Controllers() {
         mobilityController = new Joystick(Constants.MOBILITY_CONTROLLER_ID);
@@ -40,6 +41,7 @@ public class Controllers {
         shootingPosButton = manipulatorController.getRawButtonPressed(Constants.SHOOTING_POSITION_BUTTON);
         startPosButton = manipulatorController.getRawButtonPressed(Constants.STARTING_POSITION_BUTTON);
         climingPosButton = manipulatorController.getRawButtonPressed(Constants.CLIMING_POSITION_BUTTON);
+        intakeArmButton = manipulatorController.getRawButtonPressed(Constants.INTAKE_ARM_BUTTON);
     }
 
     // Mobilty
@@ -78,5 +80,9 @@ public class Controllers {
 
     public boolean isClimbingPosButton() {
         return climingPosButton;
+    }
+
+    public boolean isIntakeArmButton() {
+        return intakeArmButton;
     }
 }
