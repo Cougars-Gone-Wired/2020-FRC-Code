@@ -8,6 +8,7 @@ public class Robot extends TimedRobot {
   private Controllers controllers;
   private Drive drive;
   private Climber climber;
+  private Shooter shooter;
   private Intake intake;
   private Feeder feeder;
   private Arm arm;
@@ -17,6 +18,7 @@ public class Robot extends TimedRobot {
     controllers = new Controllers();
     drive = new Drive();
     climber = new Climber();
+    shooter = new Shooter();
     intake = new Intake();
     feeder = new Feeder();
     arm = new Arm();
@@ -38,6 +40,7 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     drive.initalize();
     climber.initalize();
+    shooter.initialize();
     intake.initialize();
     feeder.initialize();
     arm.initialize();
@@ -46,11 +49,14 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     controllers.updateControllerValues();
+    
     // Mobility
     drive.robotDrive(controllers.getDriveSpeedAxis(), controllers.getDriveTurnAxis());
     drive.setSide(controllers.driveSideToggle.getValue());
     climber.climb(controllers.getClimberUpTrigger(), controllers.getClimberDownTrigger());
+
     // Manipulator
+    shooter.shoot(controllers.getShooterTrigger());
     intake.intake(controllers.getIntakeTrigger());
     intake.intakeArm(controllers.intakeArmToggle.getValue());
     feeder.feed(controllers.isFeederButton());

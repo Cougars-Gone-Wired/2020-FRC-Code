@@ -68,7 +68,7 @@ public class Controllers {
     }
 
     // Manipulator
-    public double getShooterButton() {
+    public double getShooterTrigger() {
         return shooterTrigger;
     }
 
