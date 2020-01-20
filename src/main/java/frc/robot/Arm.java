@@ -29,7 +29,7 @@ public class Arm {
   // startConfigButton = B button
   // shooterPositionButton = A button
 
-  public void pistonArm(boolean shooterPosButton, boolean startPosButton, boolean climberPosButton) {
+  public void pistonArm(boolean shootingPosButton, boolean startPosButton, boolean climberPosButton) {
     // CARTER: Set the ToggleButtons in the different cases with
     // <button>.setValue(true/false);
     switch (currentPistonState) {
@@ -38,7 +38,7 @@ public class Arm {
         solenoid1.set(true);
         solenoid2.set(true);
         currentPistonState = PistonStates.CLIMBING_POSITION;
-      } else if (shooterPosButton) {
+      } else if (shootingPosButton) {
         solenoid1.set(false);
         solenoid2.set(false);
         currentPistonState = PistonStates.SHOOTING_POSITION;
@@ -49,7 +49,7 @@ public class Arm {
         solenoid1.set(false);
         solenoid2.set(true);
         currentPistonState = PistonStates.STARTING_POSITION;
-      } else if (shooterPosButton) {
+      } else if (shootingPosButton) {
         solenoid1.set(false);
         solenoid2.set(false);
         currentPistonState = PistonStates.SHOOTING_POSITION;
