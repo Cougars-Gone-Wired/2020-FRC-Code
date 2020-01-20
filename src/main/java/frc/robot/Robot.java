@@ -65,4 +65,8 @@ public class Robot extends TimedRobot {
     @Override
     public void testPeriodic() {
     }
+
+    public Drive getDrive() {
+        return drive;
+    }
 }

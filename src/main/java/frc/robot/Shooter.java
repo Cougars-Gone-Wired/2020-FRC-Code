@@ -1,5 +1,8 @@
-public class Shooter {
+package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
+public class Shooter {
 	private static final double SHOOTER_SPEED = 1;
 
 	private WPI_TalonSRX shooterMotor;
@@ -7,8 +10,8 @@ public class Shooter {
 	private boolean shooterTriggerBool;
 
 	public Shooter() {
-		shooterMotor = new WPI_TalonSRX(0);
-		currentShooterState = ShooterStates.NOT_MOVING;
+		shooterMotor = new WPI_TalonSRX(Constants.SHOOTER_MOTOR_ID);
+		initialize();
 	}
 
 	public void initialize() {
@@ -26,19 +29,18 @@ public class Shooter {
 		shooterTriggerBool = (shooterTrigger >= Constants.DEADZONE);
 		
 		switch (currentShooterState) {
-		case NOT_MOVING:
-			if (shooterTriggerBool) {
-				shooterMotor.set(SHOOTER_SPEED);
-				currentShooterState = ShooterStates.SPINNING;
-			}
-			break;
-		case SPINNING:
-			if (!shooterTriggerBool) {
-				shooterMotor.set(0);
-				currentShooterState = ShooterStates.NOT_MOVING;
-			}
-			break;
+			case NOT_MOVING:
+				if (shooterTriggerBool) {
+					shooterMotor.set(SHOOTER_SPEED);
+					currentShooterState = ShooterStates.SPINNING;
+				}
+				break;
+			case SPINNING:
+				if (!shooterTriggerBool) {
+					shooterMotor.set(0);
+					currentShooterState = ShooterStates.NOT_MOVING;
+				}
+				break;
 		}
-
 	}
 }
