@@ -4,37 +4,38 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 public class Feeder {
     private static final double FEEDER_SPEED = 1;
+
     private WPI_TalonSRX feederMotor;
 
     public Feeder() {
-        feederMotor = new WPI_TalonSRX(0);
-        currentState = States.NOT_MOVING;
+        feederMotor = new WPI_TalonSRX(Constants.FEEDER_MOTOR_ID);
+        initialize();
     }
 
     public void initialize() {
         feederMotor.set(0);
-        currentState = States.NOT_MOVING;
+        currentFeederState = FeederStates.NOT_MOVING;
     }
 
-    public enum States {
+    public enum FeederStates {
         NOT_MOVING, FEEDING
     }
 
-    private States currentState;
+    private FeederStates currentFeederState;
 
-    public void feed(boolean feedButton) {
-        switch(currentState) {
+    public void feed(boolean feederButton) {
+        switch(currentFeederState) {
             case NOT_MOVING:
-                if (feedButton) {
+                if (feederButton) {
                     feederMotor.set(FEEDER_SPEED);
-                    currentState = States.FEEDING;
+                    currentFeederState = FeederStates.FEEDING;
                 }
                 break;
             
             case FEEDING:
-                if (!feedButton) {
+                if (!feederButton) {
                     feederMotor.set(0);
-                    currentState = States.NOT_MOVING;
+                    currentFeederState = FeederStates.NOT_MOVING;
                 }
                 break;
         }

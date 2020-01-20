@@ -9,13 +9,13 @@ public class Intake {
     
     private WPI_TalonSRX intakeMotor;
     private Solenoid intakeArmSolenoid;
+
     private boolean intakeTriggerBool;
 
     public Intake() {
-        intakeMotor = new WPI_TalonSRX(0);
-        currentIntakeState = IntakeStates.NOT_MOVING;
+        intakeMotor = new WPI_TalonSRX(Constants.INTAKE_MOTOR_ID);
         intakeArmSolenoid = new Solenoid(Constants.INTAKE_SOLENOID_PORT);
-        currentIntakeArmState = IntakeArmStates.UP;
+        initialize();
     }
 
     public void initialize() {
@@ -23,6 +23,32 @@ public class Intake {
         intakeArmSolenoid.set(false);
         currentIntakeState = IntakeStates.NOT_MOVING;
         currentIntakeArmState = IntakeArmStates.UP;
+    }
+
+    public enum IntakeStates {
+        NOT_MOVING, INTAKING
+    }
+
+    private IntakeStates currentIntakeState;
+
+    public void intake(double intakeTrigger) {
+        intakeTriggerBool = (intakeTrigger >= Constants.DEADZONE);
+        
+        switch(currentIntakeState) {
+            case NOT_MOVING:
+                if (intakeTriggerBool) {
+                    intakeMotor.set(INTAKE_SPEED);
+                    currentIntakeState = IntakeStates.INTAKING;
+                }
+                break;
+
+            case INTAKING:
+                if (!intakeTriggerBool) {
+                    intakeMotor.set(0);
+                    currentIntakeState = IntakeStates.NOT_MOVING;
+                }
+                break;
+        }
     }
 
     public enum IntakeArmStates {
@@ -44,31 +70,6 @@ public class Intake {
                 if (!intakePosToggle) {
                     intakeArmSolenoid.set(false);
                     currentIntakeArmState = IntakeArmStates.UP;
-                }
-                break;
-        }
-    }
-
-    public enum IntakeStates {
-        NOT_MOVING, INTAKING
-    }
-
-    private IntakeStates currentIntakeState;
-
-    public void intake(double intakeTrigger) {
-        intakeTriggerBool = (intakeTrigger >= Constants.DEADZONE);
-        switch(currentIntakeState) {
-            case NOT_MOVING:
-                if (intakeTriggerBool) {
-                    intakeMotor.set(INTAKE_SPEED);
-                    currentIntakeState = IntakeStates.INTAKING;
-                }
-                break;
-
-            case INTAKING:
-                if (!intakeTriggerBool) {
-                    intakeMotor.set(0);
-                    currentIntakeState = IntakeStates.NOT_MOVING;
                 }
                 break;
         }
