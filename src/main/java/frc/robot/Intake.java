@@ -13,7 +13,7 @@ public class Intake {
     public Intake() {
         intakeMotor = new WPI_TalonSRX(0);
         currentIntakeState = IntakeStates.NOT_MOVING;
-        intakeArmSolenoid = new Solenoid(0);
+        intakeArmSolenoid = new Solenoid(Constants.INTAKE_SOLENOID_PORT);
         currentIntakeArmState = IntakeArmStates.UP;
     }
 
