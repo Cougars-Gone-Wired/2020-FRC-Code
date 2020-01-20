@@ -34,8 +34,9 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     controllers.updateControllerValues();
     drive.robotDrive(controllers.getDriveSpeedAxis(), controllers.getDriveTurnAxis());
-    drive.setSide(controllers.driveSideToggle.getValue());
-    arm.pistonArm(controllers.shooterPosToggle, controllers.startPosToggle, controllers.climingPosToggle);
+    drive.setSide(controllers.isDriveSideButton());
+    arm.pistonArm(controllers.isShootingPosButton(), controllers.isStartingPosButton(),
+        controllers.isClimbingPosButton());
   }
 
   @Override

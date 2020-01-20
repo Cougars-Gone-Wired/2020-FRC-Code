@@ -1,7 +1,6 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Controllers {
 
@@ -9,26 +8,21 @@ public class Controllers {
     private Joystick mobilityController;
     private double driveSpeedAxis;
     private double driveTurnAxis;
-    public ToggleButton driveSideToggle;
+    private boolean driveSide;
 
     // Manipulator
     private Joystick manipulatorController;
     private boolean shooterButton;
     private boolean intakeButton;
     private boolean feederButton;
-    public ToggleButton shooterPosToggle;
-    public ToggleButton startPosToggle;
-    public ToggleButton climingPosToggle;
+    private boolean shooterPosition;
+    private boolean startPosition;
+    private boolean climingPosition;
 
     public Controllers() {
         mobilityController = new Joystick(Constants.MOBILITY_CONTROLLER_ID);
 
         manipulatorController = new Joystick(Constants.MANIPULATOR_CONTROLLER_ID);
-
-        driveSideToggle = new ToggleButton(mobilityController, Constants.SWITCH_SIDE_BUTTON);
-        shooterPosToggle = new ToggleButton(manipulatorController, Constants.SHOOTING_POSITION_BUTTON);
-        startPosToggle = new ToggleButton(manipulatorController, Constants.STARTING_POSITION_BUTTON);
-        climingPosToggle = new ToggleButton(manipulatorController, Constants.CLIMING_POSITION_BUTTON);
 
     }
 
@@ -36,17 +30,16 @@ public class Controllers {
         // Mobility
         driveSpeedAxis = mobilityController.getRawAxis(Constants.DRIVE_SPEED_AXIS);
         driveTurnAxis = mobilityController.getRawAxis(Constants.DRIVE_TURN_AXIS);
-        driveSideToggle.toggle();
-        SmartDashboard.putBoolean("TOGGLE BUTTON", driveSideToggle.getValue());
+        driveSide = mobilityController.getRawButtonPressed(Constants.SWITCH_SIDE_BUTTON);
 
         // Manipulator
         shooterButton = manipulatorController.getRawButton(Constants.SHOOTER_BUTTON);
         intakeButton = manipulatorController.getRawButton(Constants.INTAKE_BUTTON);
         feederButton = manipulatorController.getRawButton(Constants.FEEDER_BUTTON);
 
-        shooterPosToggle.toggle();
-        startPosToggle.toggle();
-        climingPosToggle.toggle();
+        shooterPosition = manipulatorController.getRawButtonPressed(Constants.SHOOTING_POSITION_BUTTON);
+        startPosition = manipulatorController.getRawButtonPressed(Constants.STARTING_POSITION_BUTTON);
+        climingPosition = manipulatorController.getRawButtonPressed(Constants.CLIMING_POSITION_BUTTON);
     }
 
     // Mobilty
@@ -56,6 +49,10 @@ public class Controllers {
 
     public double getDriveTurnAxis() {
         return driveTurnAxis;
+    }
+
+    public boolean isDriveSideButton() {
+        return driveSide;
     }
 
     // Manipulator
@@ -69,5 +66,17 @@ public class Controllers {
 
     public boolean isFeederButton() {
         return feederButton;
+    }
+
+    public boolean isShootingPosButton() {
+        return shooterPosition;
+    }
+
+    public boolean isStartingPosButton() {
+        return startPosition;
+    }
+
+    public boolean isClimbingPosButton() {
+        return climingPosition;
     }
 }
