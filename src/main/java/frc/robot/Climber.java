@@ -1,12 +1,12 @@
 package frc.robot;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
+
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-// import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 public class Climber {
     private static double LIFT_SPEED = 0.3;
     private WPI_TalonSRX climbMotor;
+    private boolean upTriggerBool;
+    private boolean downTriggerBool;
 
     public Climber() {
         climbMotor = new WPI_TalonSRX(42);
@@ -15,7 +15,7 @@ public class Climber {
 
     public void initalize() {
         climbMotor.set(0);
-        climbState = ClimbStates.STATIONARY;
+        climbState = ClimbStates.NOT_MOVING;
     }
 
     private enum ClimbStates {

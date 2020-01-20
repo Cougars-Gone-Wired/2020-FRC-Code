@@ -9,6 +9,8 @@ public class Controllers {
     private double driveSpeedAxis;
     private double driveTurnAxis;
     private boolean driveSide;
+    private double climberUpTrigger;
+    private double climberDownTrigger;
 
     // Manipulator
     private Joystick manipulatorController;
@@ -22,9 +24,7 @@ public class Controllers {
 
     public Controllers() {
         mobilityController = new Joystick(Constants.MOBILITY_CONTROLLER_ID);
-
         manipulatorController = new Joystick(Constants.MANIPULATOR_CONTROLLER_ID);
-
     }
 
     public void updateControllerValues() {
@@ -32,6 +32,8 @@ public class Controllers {
         driveSpeedAxis = mobilityController.getRawAxis(Constants.DRIVE_SPEED_AXIS);
         driveTurnAxis = mobilityController.getRawAxis(Constants.DRIVE_TURN_AXIS);
         driveSide = mobilityController.getRawButtonPressed(Constants.SWITCH_SIDE_BUTTON);
+        climberUpTrigger = mobilityController.getRawAxis(Constants.CLIMBER_UP_TRIGGER);
+        climberDownTrigger = mobilityController.getRawAxis(Constants.CLIMBER_DOWN_TRIGGER);
 
         // Manipulator
         shooterButton = manipulatorController.getRawButton(Constants.SHOOTER_BUTTON);
@@ -55,6 +57,14 @@ public class Controllers {
 
     public boolean isDriveSideButton() {
         return driveSide;
+    }
+
+    public double getClimberUpTrigger() {
+        return climberUpTrigger;
+    }
+
+    public double getClimberDownTrigger() {
+        return climberDownTrigger;
     }
 
     // Manipulator

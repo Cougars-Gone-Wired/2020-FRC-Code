@@ -6,8 +6,9 @@ public class Constants {
     static final int MOBILITY_CONTROLLER_ID = 0;
     static final int DRIVE_SPEED_AXIS = 1;
     static final int DRIVE_TURN_AXIS = 4;
-
     static final int SWITCH_SIDE_BUTTON = 1;
+    static final int CLIMBER_UP_TRIGGER = 3;
+    static final int CLIMBER_DOWN_TRIGGER = 2;
 
     // Manipulator Controller
     static final int MANIPULATOR_CONTROLLER_ID = 1;
@@ -26,6 +27,7 @@ public class Constants {
     static final int FRONT_RIGHT_MOTOR_ID = 96;
     static final int MIDDLE_RIGHT_MOTOR_ID = 95;
     static final int BACK_RIGHT_MOTOR_ID = 94;
+    static final int CLIMBER_MOTOR_ID = 90;
 
     // Manipulator Ids
     static final int SHOOTER_MOTOR_ID = 93;
