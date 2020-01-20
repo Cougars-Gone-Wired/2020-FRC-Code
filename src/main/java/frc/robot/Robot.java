@@ -51,7 +51,7 @@ public class Robot extends TimedRobot {
     drive.setSide(controllers.driveSideToggle.getValue());
     climber.climb(controllers.getClimberUpTrigger(), controllers.getClimberDownTrigger());
     // Manipulator
-    intake.intake(controllers.isIntakeButton());
+    intake.intake(controllers.getIntakeTrigger());
     intake.intakeArm(controllers.intakeArmToggle.getValue());
     feeder.feed(controllers.isFeederButton());
     arm.pistonArm(controllers.isShootingPosButton(), controllers.isStartingPosButton(),

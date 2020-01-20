@@ -16,7 +16,7 @@ public class Controllers {
     // Manipulator
     private Joystick manipulatorController;
     private boolean shooterButton;
-    private boolean intakeButton;
+    private double intakeTrigger;
     private boolean feederButton;
 
     private boolean shootingPosButton;
@@ -42,7 +42,7 @@ public class Controllers {
 
         // Manipulator
         shooterButton = manipulatorController.getRawButton(Constants.SHOOTER_BUTTON);
-        intakeButton = manipulatorController.getRawButton(Constants.INTAKE_BUTTON);
+        intakeTrigger = manipulatorController.getRawAxis(Constants.INTAKE_TRIGGER);
         feederButton = manipulatorController.getRawButton(Constants.FEEDER_BUTTON);
         shootingPosButton = manipulatorController.getRawButtonPressed(Constants.SHOOTING_POSITION_BUTTON);
         startPosButton = manipulatorController.getRawButtonPressed(Constants.STARTING_POSITION_BUTTON);
@@ -72,8 +72,8 @@ public class Controllers {
         return shooterButton;
     }
 
-    public boolean isIntakeButton() {
-        return intakeButton;
+    public double getIntakeTrigger() {
+        return intakeTrigger;
     }
 
     public boolean isFeederButton() {
