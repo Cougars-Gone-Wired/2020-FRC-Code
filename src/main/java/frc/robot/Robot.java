@@ -50,12 +50,10 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
         controllers.updateControllerValues();
 
-        // Mobility
         drive.robotDrive(controllers.getDriveSpeedAxis(), controllers.getDriveTurnAxis());
         drive.setSide(controllers.driveSideToggle.getValue());
         climber.climb(controllers.getClimberUpTrigger(), controllers.getClimberDownTrigger());
 
-        // Manipulator
         shooter.shoot(controllers.getShooterTrigger());
         intake.intake(controllers.getIntakeTrigger());
         intake.intakeArm(controllers.intakeArmToggle.getValue());
