@@ -8,42 +8,46 @@ public class Controllers {
     private Joystick mobilityController;
     private double driveSpeedAxis;
     private double driveTurnAxis;
-    private boolean driveSide;
+
+    public ToggleButton driveSideToggle;
     private double climberUpTrigger;
     private double climberDownTrigger;
 
     // Manipulator
     private Joystick manipulatorController;
-    private boolean shooterButton;
-    private boolean intakeButton;
+    private double shooterTrigger;
+    private double intakeTrigger;
     private boolean feederButton;
+
     private boolean shootingPosButton;
     private boolean startPosButton;
-    private boolean climingPosButton;
-    private boolean intakeArmButton;
+    private boolean climbingPosButton;
+    public ToggleButton intakeArmToggle;
 
     public Controllers() {
         mobilityController = new Joystick(Constants.MOBILITY_CONTROLLER_ID);
         manipulatorController = new Joystick(Constants.MANIPULATOR_CONTROLLER_ID);
+
+        driveSideToggle = new ToggleButton(mobilityController, Constants.SWITCH_SIDE_BUTTON);
+        intakeArmToggle = new ToggleButton(manipulatorController, Constants.INTAKE_ARM_BUTTON);
     }
 
     public void updateControllerValues() {
         // Mobility
         driveSpeedAxis = mobilityController.getRawAxis(Constants.DRIVE_SPEED_AXIS);
         driveTurnAxis = mobilityController.getRawAxis(Constants.DRIVE_TURN_AXIS);
-        driveSide = mobilityController.getRawButtonPressed(Constants.SWITCH_SIDE_BUTTON);
+        driveSideToggle.toggle();
         climberUpTrigger = mobilityController.getRawAxis(Constants.CLIMBER_UP_TRIGGER);
         climberDownTrigger = mobilityController.getRawAxis(Constants.CLIMBER_DOWN_TRIGGER);
 
         // Manipulator
-        shooterButton = manipulatorController.getRawButton(Constants.SHOOTER_BUTTON);
-        intakeButton = manipulatorController.getRawButton(Constants.INTAKE_BUTTON);
+        shooterTrigger = manipulatorController.getRawAxis(Constants.SHOOTER_TRIGGER);
+        intakeTrigger = manipulatorController.getRawAxis(Constants.INTAKE_TRIGGER);
         feederButton = manipulatorController.getRawButton(Constants.FEEDER_BUTTON);
-
         shootingPosButton = manipulatorController.getRawButtonPressed(Constants.SHOOTING_POSITION_BUTTON);
         startPosButton = manipulatorController.getRawButtonPressed(Constants.STARTING_POSITION_BUTTON);
-        climingPosButton = manipulatorController.getRawButtonPressed(Constants.CLIMING_POSITION_BUTTON);
-        intakeArmButton = manipulatorController.getRawButtonPressed(Constants.INTAKE_ARM_BUTTON);
+        climbingPosButton = manipulatorController.getRawButtonPressed(Constants.CLIMBING_POSITION_BUTTON);
+        intakeArmToggle.toggle();
     }
 
     // Mobilty
@@ -55,10 +59,6 @@ public class Controllers {
         return driveTurnAxis;
     }
 
-    public boolean isDriveSideButton() {
-        return driveSide;
-    }
-
     public double getClimberUpTrigger() {
         return climberUpTrigger;
     }
@@ -68,12 +68,12 @@ public class Controllers {
     }
 
     // Manipulator
-    public boolean isShooterButton() {
-        return shooterButton;
+    public double getShooterTrigger() {
+        return shooterTrigger;
     }
 
-    public boolean isIntakeButton() {
-        return intakeButton;
+    public double getIntakeTrigger() {
+        return intakeTrigger;
     }
 
     public boolean isFeederButton() {
@@ -89,10 +89,6 @@ public class Controllers {
     }
 
     public boolean isClimbingPosButton() {
-        return climingPosButton;
-    }
-
-    public boolean isIntakeArmButton() {
-        return intakeArmButton;
+        return climbingPosButton;
     }
 }
