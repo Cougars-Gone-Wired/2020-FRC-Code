@@ -17,7 +17,7 @@ public class Feeder {
         currentFeederState = FeederStates.NOT_MOVING;
     }
 
-    public enum States {
+    public enum FeederStates {
         NOT_MOVING, FEEDING, OUTTAKING
     }
 
@@ -32,14 +32,14 @@ public class Feeder {
                 }
                 if (feederAxis <= -Constants.DEADZONE) {
                     feederMotor.set(-FEEDER_SPEED);
-                    currentState = States.OUTTAKING;
+                    currentFeederState = FeederStates.OUTTAKING;
                 }
                 break;
 
             case FEEDING:
                 if (feederAxis < Constants.DEADZONE) {
                     feederMotor.set(0);
-                    currentState = States.NOT_MOVING;
+                    currentFeederState = FeederStates.NOT_MOVING;
                 }
                 break;
 
