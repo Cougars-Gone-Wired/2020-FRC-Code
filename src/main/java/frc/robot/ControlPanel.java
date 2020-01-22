@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.I2C;
 // import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
+// import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import com.revrobotics.ColorSensorV3;
@@ -23,10 +23,11 @@ public class ControlPanel {
     // Yes, we live in the Phantom Tollbooth. Get used to it.   |
 
     private static final double COLORWHEEL_SPEED = .4;
+    private static final double COLORWHEEL_SPEED_MULTIPLIER = 1;
     private WPI_TalonSRX wheelMotor;
     private States currentState;
     private String gameData;
-    private Boolean gameDataError;
+    // private Boolean gameDataError;
     private String colorString;
 
     private Color kBlueTarget;
@@ -46,12 +47,12 @@ public class ControlPanel {
 
         final I2C.Port i2cPort = I2C.Port.kOnboard;
         ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
-        ColorMatch m_colorMatcher = new ColorMatch();
+        // ColorMatch m_colorMatcher = new ColorMatch();
 
-        Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429); // #246d6d
-        Color kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240); // #328f3d
-        Color kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114); // #8f3b1d
-        Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113); // #5c861d
+        // Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429); // #246d6d
+        // Color kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240); // #328f3d
+        // Color kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114); // #8f3b1d
+        // Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113); // #5c861d
     }
 
     public void initialize() {
@@ -92,7 +93,7 @@ public class ControlPanel {
             case 'B' :
               //Blue case code
                 if ( colorString != "Red" ) {
-
+                  wheelMotor.set(COLORWHEEL_SPEED*COLORWHEEL_SPEED_MULTIPLIER);
                 }
               break;
             case 'G' :
@@ -113,11 +114,11 @@ public class ControlPanel {
 
               }
               break;
-            default :
-              //This is corrupt data
-              gameDataError = true;
-              SmartDashboard.putBoolean("Game Data Status", gameDataError)
-              break;
+            // default :
+            //   //This is corrupt data
+            //   gameDataError = true;
+            //   SmartDashboard.putBoolean("Game Data Status", gameDataError);
+            //   break;
         }
     }
     
