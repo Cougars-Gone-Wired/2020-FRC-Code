@@ -25,38 +25,38 @@ public class Arm {
 
     private PistonStates currentPistonState;
 
-    public void pistonArm(boolean shootingPosButton, boolean startPosButton, boolean climberPosButton) {
+    public void pistonArm(boolean armToggle, boolean climberPosButton) {
         switch (currentPistonState) {
             case STARTING_POSITION:
-                if (!shootingPosButton && !startPosButton && climberPosButton) {
-                    solenoid1.set(true);
-                    solenoid2.set(true);
-                    currentPistonState = PistonStates.CLIMBING_POSITION;
-                } else if (shootingPosButton && !startPosButton && !climberPosButton) {
+                if (armToggle && !climberPosButton) {
                     solenoid1.set(false);
                     solenoid2.set(false);
                     currentPistonState = PistonStates.SHOOTING_POSITION;
+                } else if (!armToggle && climberPosButton) {
+                    solenoid1.set(true);
+                    solenoid2.set(true);
+                    currentPistonState = PistonStates.CLIMBING_POSITION;
                 }
                 break;
 
             case SHOOTING_POSITION:
-                if (!shootingPosButton && !startPosButton && climberPosButton) {
+                if (!armToggle && !climberPosButton) {
+                    solenoid1.set(false);
+                    solenoid2.set(true);
+                    currentPistonState = PistonStates.STARTING_POSITION;
+                } else if (armToggle && climberPosButton) {
                     solenoid1.set(true);
                     solenoid2.set(true);
                     currentPistonState = PistonStates.CLIMBING_POSITION;
-                } else if (!shootingPosButton && startPosButton && !climberPosButton) {
-                    solenoid1.set(false);
-                    solenoid2.set(true);
-                    currentPistonState = PistonStates.STARTING_POSITION;
                 }
-                    break;
+                break;
 
             case CLIMBING_POSITION:
-                if (!shootingPosButton && startPosButton && !climberPosButton) {
+                if (!armToggle && !climberPosButton) {
                     solenoid1.set(false);
                     solenoid2.set(true);
                     currentPistonState = PistonStates.STARTING_POSITION;
-                } else if (shootingPosButton && !startPosButton && !climberPosButton) {
+                } else if (armToggle && !climberPosButton) {
                     solenoid1.set(false);
                     solenoid2.set(false);
                     currentPistonState = PistonStates.SHOOTING_POSITION;
