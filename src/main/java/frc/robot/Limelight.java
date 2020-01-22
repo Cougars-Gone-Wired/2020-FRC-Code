@@ -28,7 +28,8 @@ public class Limelight {
     private double driveKp = 0.05; //Drive multiplier
     private double aim_adjust = 0.00; //0 By Default so robot doesn't move initially
     private double drive_adjust = 0.00; // ↑ ↑ ↑ 
-    private double desired_distance = 0.00; // Needs to be set later
+    private double desired_angle = 1.00; //Needs to be set later, 1 degree right now
+    private double desired_distance = 0.00; //Needs to be set later
 
     private enum LimelightStates {
         DO_NOTHING, AIM, AIM_AND_DRIVE, SEEK_AIM_AND_DRIVE 
@@ -55,21 +56,22 @@ public class Limelight {
         switch(limelightState) {
             case DO_NOTHING:
                 //why doesn't this do anything
-                if(aimButton) {
+                if (aimButton) {
                     limelightState = LimelightStates.SEEK_AIM_AND_DRIVE; //What the limelight should do when the button is pressed
                 }
             break;
 
             case SEEK_AIM_AND_DRIVE:
             //Stays in seek until button stops being pressed or it finds a valid target
-                if(!aimButton) {
+                if (!aimButton) {
                     limelightState = LimelightStates.DO_NOTHING;
                     aim_adjust = 0; 
                     drive_adjust = 0;
                 }
 
-                if(tv == 1) { 
+                if (tv == 1) { 
                     limelightState = LimelightStates.AIM_AND_DRIVE;
+                    aim_adjust = 0;
                 } else {
                     aim_adjust = min;
                     drive_adjust = 0;
@@ -78,26 +80,25 @@ public class Limelight {
 
             case AIM_AND_DRIVE:
                 //A lot of copy and paste here that could be changed later but it's not necessary 
-                if(!aimButton) {
+                if (!aimButton) {
                     limelightState = LimelightStates.DO_NOTHING;
                     aim_adjust = 0; 
                     drive_adjust = 0;
                 }
 
-                aim_adjust = aimKp*(tx/29.8);
-                if (tx > 1.0) {
+                aim_adjust = aimKp * (tx / 29.8);
+                if (tx > desired_angle) {
                     aim_adjust += min;
                     drive_adjust = 0;
-                }
-                else if (tx < -1.0) {
+                } else if (tx < -desired_angle) {
                     aim_adjust -= min;
                     drive_adjust = 0;
                 } else {
                     aim_adjust = 0;
 
                     //Won't drive until centered, will stop driving and center again if not centered
-                    drive_adjust = driveKp*(currentDistance() - desired_distance);
                     //drive_adjust = driveKp*(ty/24.85); //used if limelight looks directly at center when at correct distance
+                    drive_adjust = driveKp * (currentDistance() - desired_distance);
                     if (currentDistance() - desired_distance  > 5) {
                         drive_adjust += min; //If too far away, move closer
                     }
@@ -111,18 +112,16 @@ public class Limelight {
                 break;
 
             case AIM:
-                if(!aimButton) {
+                if (!aimButton) {
                     limelightState = LimelightStates.DO_NOTHING;
                     aim_adjust = 0; 
                     drive_adjust = 0;
                 }
 
-                aim_adjust = aimKp*(tx/29.8);
-                if (tx > 1.0) {
+                aim_adjust = aimKp * (tx / 29.8);
+                if (tx > desired_angle) {
                     aim_adjust += min;
-                }
-                else if (tx < -1.0)
-                {
+                } else if (tx < -desired_angle) {
                     aim_adjust -= min;
                 } else {
                     aim_adjust = 0;
@@ -135,7 +134,7 @@ public class Limelight {
 
     //Calculates Distance
     public double currentDistance() {
-        distance = (h2-h1)/Math.tan(Math.toRadians(a1+ty));
+        distance = (h2 - h1) / Math.tan(Math.toRadians(a1 + ty));
         return distance;
     }
 
