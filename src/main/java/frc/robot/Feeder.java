@@ -17,23 +17,34 @@ public class Feeder {
         currentFeederState = FeederStates.NOT_MOVING;
     }
 
-    public enum FeederStates {
-        NOT_MOVING, FEEDING
+    public enum States {
+        NOT_MOVING, FEEDING, OUTTAKING
     }
 
     private FeederStates currentFeederState;
 
-    public void feed(boolean feederButton) {
-        switch(currentFeederState) {
+    public void feed(double feederAxis) {
+        switch(currentState) {
             case NOT_MOVING:
-                if (feederButton) {
+                if (feederAxis >= Constants.DEADZONE) {
                     feederMotor.set(FEEDER_SPEED);
                     currentFeederState = FeederStates.FEEDING;
                 }
+                if (feederAxis <= -Constants.DEADZONE) {
+                    feederMotor.set(-FEEDER_SPEED);
+                    currentState = States.OUTTAKING;
+                }
                 break;
-            
+
             case FEEDING:
-                if (!feederButton) {
+                if (feederAxis < Constants.DEADZONE) {
+                    feederMotor.set(0);
+                    currentState = States.NOT_MOVING;
+                }
+                break;
+
+            case OUTTAKING:
+                if (feederAxis > -Constants.DEADZONE) {
                     feederMotor.set(0);
                     currentFeederState = FeederStates.NOT_MOVING;
                 }
