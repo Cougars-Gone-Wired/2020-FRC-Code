@@ -11,10 +11,9 @@ public class Intake {
     private Solenoid intakeArmSolenoid;
 
     public Intake() {
-        intakeMotor = new WPI_TalonSRX(0);
-        currentIntakeState = IntakeStates.NOT_MOVING;
+        intakeMotor = new WPI_TalonSRX(Constants.INTAKE_MOTOR_ID);
         intakeArmSolenoid = new Solenoid(Constants.INTAKE_SOLENOID_PORT);
-        currentIntakeArmState = IntakeArmStates.UP;
+        initialize();
     }
 
     public void initialize() {
@@ -22,30 +21,6 @@ public class Intake {
         intakeArmSolenoid.set(false);
         currentIntakeState = IntakeStates.NOT_MOVING;
         currentIntakeArmState = IntakeArmStates.UP;
-    }
-
-    public enum IntakeArmStates {
-        UP, DOWN
-    }
-
-    private IntakeArmStates currentIntakeArmState;
-
-    public void intakeArm(boolean intakePosToggle) {
-        switch(currentIntakeArmState) {
-            case UP:
-                if (intakePosToggle) {
-                    intakeArmSolenoid.set(true);
-                    currentIntakeArmState = IntakeArmStates.DOWN;
-                }
-                break;
-
-            case DOWN:
-                if (!intakePosToggle) {
-                    intakeArmSolenoid.set(false);
-                    currentIntakeArmState = IntakeArmStates.UP;
-                }
-                break;
-        }
     }
 
     public enum IntakeStates {
@@ -78,6 +53,30 @@ public class Intake {
                 if (intakeAxis > -Constants.DEADZONE) {
                     intakeMotor.set(0);
                     currentIntakeState = IntakeStates.NOT_MOVING;
+                }
+                break;
+        }
+    }
+
+    public enum IntakeArmStates {
+        UP, DOWN
+    }
+
+    private IntakeArmStates currentIntakeArmState;
+
+    public void intakeArm(boolean intakePosToggle) {
+        switch(currentIntakeArmState) {
+            case UP:
+                if (intakePosToggle) {
+                    intakeArmSolenoid.set(true);
+                    currentIntakeArmState = IntakeArmStates.DOWN;
+                }
+                break;
+
+            case DOWN:
+                if (!intakePosToggle) {
+                    intakeArmSolenoid.set(false);
+                    currentIntakeArmState = IntakeArmStates.UP;
                 }
                 break;
         }
