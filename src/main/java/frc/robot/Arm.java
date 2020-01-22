@@ -25,14 +25,14 @@ public class Arm {
 
     private PistonStates currentPistonState;
 
-    public void pistonArm(boolean armToggle, boolean climberPosButton) {
+    public void pistonArm(boolean armToggle, boolean climberToggle) {
         switch (currentPistonState) {
             case STARTING_POSITION:
-                if (armToggle && !climberPosButton) {
+                if (armToggle && !climberToggle) {
                     solenoid1.set(false);
                     solenoid2.set(false);
                     currentPistonState = PistonStates.SHOOTING_POSITION;
-                } else if (!armToggle && climberPosButton) {
+                } else if (!armToggle && climberToggle) {
                     solenoid1.set(true);
                     solenoid2.set(true);
                     currentPistonState = PistonStates.CLIMBING_POSITION;
@@ -40,11 +40,11 @@ public class Arm {
                 break;
 
             case SHOOTING_POSITION:
-                if (!armToggle && !climberPosButton) {
+                if (!armToggle && !climberToggle) {
                     solenoid1.set(false);
                     solenoid2.set(true);
                     currentPistonState = PistonStates.STARTING_POSITION;
-                } else if (armToggle && climberPosButton) {
+                } else if (armToggle && climberToggle) {
                     solenoid1.set(true);
                     solenoid2.set(true);
                     currentPistonState = PistonStates.CLIMBING_POSITION;
@@ -52,11 +52,11 @@ public class Arm {
                 break;
 
             case CLIMBING_POSITION:
-                if (!armToggle && !climberPosButton) {
+                if (!armToggle && !climberToggle) {
                     solenoid1.set(false);
                     solenoid2.set(true);
                     currentPistonState = PistonStates.STARTING_POSITION;
-                } else if (armToggle && !climberPosButton) {
+                } else if (armToggle && !climberToggle) {
                     solenoid1.set(false);
                     solenoid2.set(false);
                     currentPistonState = PistonStates.SHOOTING_POSITION;
