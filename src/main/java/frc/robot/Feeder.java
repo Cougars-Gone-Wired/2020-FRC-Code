@@ -24,7 +24,7 @@ public class Feeder {
     private FeederStates currentFeederState;
 
     public void feed(double feederAxis) {
-        switch(currentState) {
+        switch(currentFeederState) {
             case NOT_MOVING:
                 if (feederAxis >= Constants.DEADZONE) {
                     feederMotor.set(FEEDER_SPEED);

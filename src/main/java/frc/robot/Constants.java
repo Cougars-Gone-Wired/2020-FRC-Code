@@ -13,11 +13,10 @@ public class Constants {
     // Manipulator Controller
     static final int MANIPULATOR_CONTROLLER_ID = 1;
     static final int SHOOTER_TRIGGER = 3;
-    static final int INTAKE_TRIGGER = 2;
-    static final int FEEDER_BUTTON = 6;
-    static final int SHOOTING_POSITION_BUTTON = 1;
-    static final int STARTING_POSITION_BUTTON = 2;
-    static final int CLIMBING_POSITION_BUTTON = 4;
+    static final int INTAKE_AXIS = 1;
+    static final int FEEDER_AXIS = 5;
+    static final int ARM_POSITION_BUTTON = 6;
+    static final int CLIMBING_POSITION_BUTTON = 2;
     static final int INTAKE_ARM_BUTTON = 5;
 
     // Mobility Ids
@@ -36,6 +35,8 @@ public class Constants {
     static final int ARM_SOLENOID_1_PORT = 88;
     static final int ARM_SOLENOID_2_PORT = 87;
     static final int INTAKE_SOLENOID_PORT = 86;
+    static final int ENGAGE_SOLENOID_PORT = 85;
+    static final int HARD_STOP_SOLENOID_PORT = 84;
 
     static final double DEADZONE = 0.15;
 

@@ -14,7 +14,7 @@ public class StateRecorder {
 	public void record(Controllers controllers) {
 		State s = new State();
 
-		s.setDriveRightAxisState(controllers.getDriveForwardAxis());
+		s.setDriveRightAxisState(controllers.getDriveSpeedAxis());
 		s.setDriveLeftAxisState(controllers.getDriveTurnAxis());
 
 		states.add(s);

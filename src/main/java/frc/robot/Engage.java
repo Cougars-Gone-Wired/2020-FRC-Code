@@ -8,8 +8,8 @@ public class Engage {
     private boolean engageBool;
 
     public Engage() {
-        engageSolenoid = new Solenoid(Constants.ENGAGE_SOLENOID_ID);
-        hardStopSolenoid = new Solenoid(Constants.HARD_STOP_SOLENOID_ID);
+        engageSolenoid = new Solenoid(Constants.ENGAGE_SOLENOID_PORT);
+        hardStopSolenoid = new Solenoid(Constants.HARD_STOP_SOLENOID_PORT);
         initialize();
     }
 
