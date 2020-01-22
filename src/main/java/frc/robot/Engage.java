@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 public class Engage {
     private Solenoid engageSolenoid;
     private Solenoid hardStopSolenoid;
-    private boolean shooterTriggerBool;
+    private boolean engageBool;
 
     public Engage() {
         engageSolenoid = new Solenoid(Constants.ENGAGE_SOLENOID_ID);
@@ -16,7 +16,7 @@ public class Engage {
     public void initialize() {
         engageSolenoid.set(false);
         hardStopSolenoid.set(false);
-        currentEngageState = EngageStates.DISENGAGED;
+        currentEngageState = EngageStates.ENGAGED;
     }
 
     public enum EngageStates {
@@ -25,25 +25,26 @@ public class Engage {
 
     private EngageStates currentEngageState;
 
-    public void engageShoot(double shooterTrigger) {
+    public void engageShoot(double enageAxis) {
 
-        shooterTriggerBool = (shooterTrigger >= Constants.DEADZONE);
+        engageBool = (enageAxis >= Constants.DEADZONE);
 
         switch(currentEngageState) {
-            case ENGAGED:
-                if (shooterTriggerBool) {
+            case DISENGAGED:
+                if (!engageBool) {
                     engageSolenoid.set(true);
+                    hardStopSolenoid.set(false);
+                    currentEngageState = EngageStates.ENGAGED;
+                }
+                break;
+
+            case ENGAGED:
+                if (engageBool) {
+                    engageSolenoid.set(false);
                     hardStopSolenoid.set(true);
                     currentEngageState = EngageStates.DISENGAGED;
                 }
                 break;
-
-            case DISENGAGED:
-                if (!shooterTriggerBool) {
-                    engageSolenoid.set(false);
-                    hardStopSolenoid.set(false);
-                    currentEngageState = EngageStates.ENGAGED;
-                }
         }
     }
 }
