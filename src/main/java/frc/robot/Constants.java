@@ -20,23 +20,23 @@ public class Constants {
     static final int INTAKE_ARM_BUTTON = 5;
 
     // Mobility Ids
-    static final int FRONT_LEFT_MOTOR_ID = 99;
-    static final int MIDDLE_LEFT_MOTOR_ID = 98;
-    static final int BACK_LEFT_MOTOR_ID = 97;
-    static final int FRONT_RIGHT_MOTOR_ID = 96;
-    static final int MIDDLE_RIGHT_MOTOR_ID = 95;
-    static final int BACK_RIGHT_MOTOR_ID = 94;
-    static final int CLIMBER_MOTOR_ID = 90;
+    static final int FRONT_LEFT_MOTOR_ID = 0;
+    static final int MIDDLE_LEFT_MOTOR_ID = 1;
+    static final int BACK_LEFT_MOTOR_ID = 2;
+    static final int FRONT_RIGHT_MOTOR_ID = 3;
+    static final int MIDDLE_RIGHT_MOTOR_ID = 4;
+    static final int BACK_RIGHT_MOTOR_ID = 5;
+    static final int CLIMBER_MOTOR_ID = 6;
 
     // Manipulator Ids
-    static final int SHOOTER_MOTOR_ID = 93;
-    static final int INTAKE_MOTOR_ID = 92;
-    static final int FEEDER_MOTOR_ID = 91;
-    static final int ARM_SOLENOID_1_PORT = 88;
-    static final int ARM_SOLENOID_2_PORT = 87;
-    static final int INTAKE_SOLENOID_PORT = 86;
-    static final int ENGAGE_SOLENOID_PORT = 85;
-    static final int HARD_STOP_SOLENOID_PORT = 84;
+    static final int SHOOTER_MOTOR_ID = 7;
+    static final int INTAKE_MOTOR_ID = 8;
+    static final int FEEDER_MOTOR_ID = 9;
+    static final int ARM_SOLENOID_1_PORT = 0;
+    static final int ARM_SOLENOID_2_PORT = 1;
+    static final int INTAKE_SOLENOID_PORT = 2;
+    static final int ENGAGE_SOLENOID_PORT = 3;
+    static final int HARD_STOP_SOLENOID_PORT = 4;
 
     static final double DEADZONE = 0.15;
 
