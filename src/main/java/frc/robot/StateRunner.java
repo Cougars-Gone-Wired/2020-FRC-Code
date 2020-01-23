@@ -26,7 +26,7 @@ public class StateRunner {
 		if (counter < states.size()) {
 			State s = states.get(counter);
 
-			drive.robotDrive(s.getDriveRightAxisState(), s.getDriveLeftAxisState());
+			drive.robotDrive(s.getDriveSpeedAxisState(), s.getDriveTurnAxisState());
 
 			counter++;
 		}

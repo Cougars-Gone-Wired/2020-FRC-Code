@@ -2,23 +2,23 @@ package frc.robot;
 
 public class State {
 
-	private double driveRightAxisState;
-	private double driveLeftAxisState;
+	private double driveSpeedAxisState;
+	private double driveTurnAxisState;
 
-	public double getDriveRightAxisState() {
-		return driveRightAxisState;
+	public double getDriveSpeedAxisState() {
+		return driveSpeedAxisState;
 	}
 
-	public void setDriveRightAxisState(double driveForwardAxisState) {
-		this.driveRightAxisState = driveForwardAxisState;
+	public void setDriveSpeedAxisState(double driveSpeedAxisState) {
+		this.driveSpeedAxisState = driveSpeedAxisState;
 	}
 
-	public double getDriveLeftAxisState() {
-		return driveLeftAxisState;
+	public double getDriveTurnAxisState() {
+		return driveTurnAxisState;
 	}
 
-	public void setDriveLeftAxisState(double driveTurnAxisState) {
-		this.driveLeftAxisState = driveTurnAxisState;
+	public void setDriveTurnAxisState(double driveTurnAxisState) {
+		this.driveTurnAxisState = driveTurnAxisState;
 	}
 
 }
