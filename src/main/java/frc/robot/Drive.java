@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXSensorCollection;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 // import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -28,6 +29,9 @@ public class Drive {
     private TalonFXSensorCollection middleRightSensors;
     private TalonFXSensorCollection backRightSensors;
 
+    private SpeedControllerGroup leftMotors;
+    private SpeedControllerGroup rightMotors;
+
     private DifferentialDrive robotDrive;
 
     public Drive() {
@@ -47,16 +51,19 @@ public class Drive {
         middleRightSensors = new TalonFXSensorCollection(middleRightMotor);
         backRightSensors = new TalonFXSensorCollection(backRightMotor);
 
-        frontLeftMotor.follow(middleLeftMotor);
-        backLeftMotor.follow(frontLeftMotor);
+        leftMotors = new SpeedControllerGroup(frontLeftMotor, middleLeftMotor, backLeftMotor);
+        rightMotors = new SpeedControllerGroup(frontRightMotor, middleRightMotor, backRightMotor);
 
-        frontRightMotor.follow(middleRightMotor);
-        backRightMotor.follow(frontRightMotor);
+        // frontLeftMotor.follow(middleLeftMotor);
+        // backLeftMotor.follow(middleLeftMotor);
+
+        // frontRightMotor.follow(middleRightMotor);
+        // backRightMotor.follow(middleRightMotor);
 
         initMotors();
         initalize();
 
-        robotDrive = new DifferentialDrive(middleLeftMotor, middleRightMotor);
+        robotDrive = new DifferentialDrive(leftMotors, rightMotors);
         robotDrive.setDeadband(Constants.DEADZONE);
         robotDrive.setSafetyEnabled(false);
     }
