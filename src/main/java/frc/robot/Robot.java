@@ -9,22 +9,23 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends TimedRobot {
 
     private Controllers controllers;
-    private Drive drive;
 
-    private StateRecorder recorder;
-    private StateRunner runner;
-    private Climber climber;
-    private Shooter shooter;
-    private Intake intake;
-    private Feeder feeder;
-    private Arm arm;
-    private Engage engage;
+    static Drive drive;
+    static Climber climber;
+    static Shooter shooter;
+    static Intake intake;
+    static Feeder feeder;
+    static Arm arm;
+    static Engage engage;
+
+    static StateRecorder recorder;
+    static StateRunner runner;
 
     @Override
     public void robotInit() {
         controllers = new Controllers();
-        drive = new Drive();
 
+        drive = new Drive();
         climber = new Climber();
         shooter = new Shooter();
         intake = new Intake();
@@ -60,7 +61,6 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
         drive.initalize();
-
         climber.initalize();
         shooter.initialize();
         intake.initialize();
@@ -79,7 +79,6 @@ public class Robot extends TimedRobot {
         drive.robotDrive(controllers.getDriveSpeedAxis(), controllers.getDriveTurnAxis());
         drive.setSide(controllers.isDriveSideToggle());
         climber.climb(controllers.getClimberUpTrigger(), controllers.getClimberDownTrigger());
-
         shooter.shoot(controllers.getShooterTrigger());
         intake.intake(controllers.getIntakeAxis());
         intake.intakeArm(controllers.isIntakeArmToggle());

@@ -37,6 +37,7 @@ public class Constants {
     static final int INTAKE_SOLENOID_PORT = 2;
     static final int ENGAGE_SOLENOID_PORT = 3;
     static final int HARD_STOP_SOLENOID_PORT = 4;
+    static final int FEEDER_LINEBREAK_PORT = 1;
 
     static final double DEADZONE = 0.15;
 

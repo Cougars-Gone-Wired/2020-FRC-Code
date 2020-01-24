@@ -2,6 +2,7 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 
 public class Intake {
@@ -10,9 +11,13 @@ public class Intake {
     private WPI_TalonSRX intakeMotor;
     private Solenoid intakeArmSolenoid;
 
+    private DigitalInput feederLineBreak;
+
     public Intake() {
         intakeMotor = new WPI_TalonSRX(Constants.INTAKE_MOTOR_ID);
         intakeArmSolenoid = new Solenoid(Constants.INTAKE_SOLENOID_PORT);
+
+        feederLineBreak = new DigitalInput(Constants.FEEDER_LINEBREAK_PORT);
         initialize();
     }
 
@@ -43,6 +48,10 @@ public class Intake {
                 break;
 
             case INTAKING:
+                if(feederLineBreak.get()) {
+                    Robot.feeder.setNotMoving();
+                }
+
                 if (intakeAxis < Constants.DEADZONE) {
                     intakeMotor.set(0);
                     currentIntakeState = IntakeStates.NOT_MOVING;
