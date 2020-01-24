@@ -12,6 +12,7 @@ public class Robot extends TimedRobot {
 
     static Drive drive;
     static Climber climber;
+
     static Shooter shooter;
     static Intake intake;
     static IntakeArm intakeArm;
@@ -28,6 +29,7 @@ public class Robot extends TimedRobot {
 
         drive = new Drive();
         climber = new Climber();
+
         shooter = new Shooter();
         intake = new Intake();
         intakeArm = new IntakeArm();
@@ -64,6 +66,7 @@ public class Robot extends TimedRobot {
     public void teleopInit() {
         drive.initalize();
         climber.initalize();
+
         shooter.initialize();
         intake.initialize();
         intakeArm.initialize();
@@ -82,6 +85,7 @@ public class Robot extends TimedRobot {
         drive.robotDrive(controllers.getDriveSpeedAxis(), controllers.getDriveTurnAxis());
         drive.setSide(controllers.isDriveSideToggle());
         climber.climb(controllers.getClimberUpTrigger(), controllers.getClimberDownTrigger());
+        
         shooter.shoot(controllers.getShooterTrigger());
         intake.intake(controllers.getIntakeAxis());
         intakeArm.intakeArm(controllers.isIntakeArmToggle());
