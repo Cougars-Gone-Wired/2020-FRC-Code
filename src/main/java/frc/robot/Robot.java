@@ -14,6 +14,7 @@ public class Robot extends TimedRobot {
     static Climber climber;
     static Shooter shooter;
     static Intake intake;
+    static IntakeArm intakeArm;
     static Feeder feeder;
     static Arm arm;
     static Engage engage;
@@ -29,6 +30,7 @@ public class Robot extends TimedRobot {
         climber = new Climber();
         shooter = new Shooter();
         intake = new Intake();
+        intakeArm = new IntakeArm();
         feeder = new Feeder();
         arm = new Arm();
         engage = new Engage();
@@ -64,6 +66,7 @@ public class Robot extends TimedRobot {
         climber.initalize();
         shooter.initialize();
         intake.initialize();
+        intakeArm.initialize();
         feeder.initialize();
         arm.initialize();
         engage.initialize();
@@ -81,7 +84,7 @@ public class Robot extends TimedRobot {
         climber.climb(controllers.getClimberUpTrigger(), controllers.getClimberDownTrigger());
         shooter.shoot(controllers.getShooterTrigger());
         intake.intake(controllers.getIntakeAxis());
-        intake.intakeArm(controllers.isIntakeArmToggle());
+        intakeArm.intakeArm(controllers.isIntakeArmToggle());
         feeder.feed(controllers.getFeederAxis());
         arm.pistonArm(controllers.isArmToggle(), controllers.isClimberToggle());
         engage.engageShoot(controllers.getIntakeAxis());

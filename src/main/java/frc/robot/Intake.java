@@ -9,13 +9,11 @@ public class Intake {
     private static final double INTAKE_SPEED = 1;
     
     private WPI_TalonSRX intakeMotor;
-    private Solenoid intakeArmSolenoid;
 
     private DigitalInput feederLineBreak;
 
     public Intake() {
         intakeMotor = new WPI_TalonSRX(Constants.INTAKE_MOTOR_ID);
-        intakeArmSolenoid = new Solenoid(Constants.INTAKE_SOLENOID_PORT);
 
         feederLineBreak = new DigitalInput(Constants.FEEDER_LINEBREAK_PORT);
         initialize();
@@ -23,9 +21,7 @@ public class Intake {
 
     public void initialize() {
         intakeMotor.set(0);
-        intakeArmSolenoid.set(false);
         currentIntakeState = IntakeStates.NOT_MOVING;
-        currentIntakeArmState = IntakeArmStates.UP;
     }
 
     public enum IntakeStates {
@@ -62,30 +58,6 @@ public class Intake {
                 if (intakeAxis > -Constants.DEADZONE) {
                     intakeMotor.set(0);
                     currentIntakeState = IntakeStates.NOT_MOVING;
-                }
-                break;
-        }
-    }
-
-    public enum IntakeArmStates {
-        UP, DOWN
-    }
-
-    private IntakeArmStates currentIntakeArmState;
-
-    public void intakeArm(boolean intakePosToggle) {
-        switch(currentIntakeArmState) {
-            case UP:
-                if (intakePosToggle) {
-                    intakeArmSolenoid.set(true);
-                    currentIntakeArmState = IntakeArmStates.DOWN;
-                }
-                break;
-
-            case DOWN:
-                if (!intakePosToggle) {
-                    intakeArmSolenoid.set(false);
-                    currentIntakeArmState = IntakeArmStates.UP;
                 }
                 break;
         }
