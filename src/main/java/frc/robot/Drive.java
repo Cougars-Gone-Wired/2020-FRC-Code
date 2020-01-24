@@ -141,14 +141,18 @@ public class Drive {
         double mrs = middleRightSensors.getIntegratedSensorPosition();
         double brs = backRightSensors.getIntegratedSensorPosition();
 
-        SmartDashboard.putNumber("Front Left", fls);
-        SmartDashboard.putNumber("Middle Left", mls);
-        SmartDashboard.putNumber("Back Left", bls);
-        SmartDashboard.putNumber("Front Right", frs);
-        SmartDashboard.putNumber("Middle Right", mrs);
-        SmartDashboard.putNumber("Back Right", brs);
+        SmartDashboard.putNumber("Front Left", ticksToInches(fls));
+        SmartDashboard.putNumber("Middle Left", ticksToInches(mls));
+        SmartDashboard.putNumber("Back Left", ticksToInches(bls));
+        SmartDashboard.putNumber("Front Right", ticksToInches(frs));
+        SmartDashboard.putNumber("Middle Right", ticksToInches(mrs));
+        SmartDashboard.putNumber("Back Right", ticksToInches(brs));
 
-        SmartDashboard.putNumber("Left Average", (fls + mls + bls) / 3);
-        SmartDashboard.putNumber("Right Average", (frs + mrs + brs) / 3);
+        SmartDashboard.putNumber("Left Average", ticksToInches((fls + mls + bls) / 3));
+        SmartDashboard.putNumber("Right Average", ticksToInches((frs + mrs + brs) / 3));
+    }
+
+    public static double ticksToInches(double ticks) {
+        return (9*Math.PI*ticks)/16384;
     }
 }

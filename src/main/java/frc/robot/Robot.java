@@ -87,6 +87,7 @@ public class Robot extends TimedRobot {
         arm.pistonArm(controllers.isArmToggle(), controllers.isClimberToggle());
         engage.engageShoot(controllers.getIntakeAxis());
 
+        drive.dashboard();
         recorder.record(controllers);
     }
 
