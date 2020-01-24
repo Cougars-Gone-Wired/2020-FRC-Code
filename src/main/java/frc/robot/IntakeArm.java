@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Solenoid;
+import frc.robot.Arm.ArmStates;
 
 public class IntakeArm {
 
@@ -24,19 +25,31 @@ public class IntakeArm {
 
     public void intakeArm(boolean intakePosToggle) {
         switch(currentIntakeArmState) {
-            case UP:
-                if (intakePosToggle) {
-                    intakeArmSolenoid.set(true);
-                    currentIntakeArmState = IntakeArmStates.DOWN;
+            case DOWN:
+                if (!intakePosToggle && (Robot.arm.getCurrentArmState() != ArmStates.CLIMBING_POSITION)) {
+                    setUpPosition();
                 }
                 break;
 
-            case DOWN:
-                if (!intakePosToggle) {
-                    intakeArmSolenoid.set(false);
-                    currentIntakeArmState = IntakeArmStates.UP;
+            case UP:
+                if (intakePosToggle) {
+                    setDownPosition();
                 }
                 break;
         }
+    }
+
+    public IntakeArmStates getCurrentIntakeArmState() {
+        return currentIntakeArmState;
+    }
+
+    public void setUpPosition() {
+        intakeArmSolenoid.set(false);
+        currentIntakeArmState = IntakeArmStates.UP;
+    }
+
+    public void setDownPosition() {
+        intakeArmSolenoid.set(true);
+        currentIntakeArmState = IntakeArmStates.DOWN;    
     }
 }
