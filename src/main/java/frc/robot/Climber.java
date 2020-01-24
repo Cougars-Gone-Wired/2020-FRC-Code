@@ -16,8 +16,7 @@ public class Climber {
     }
 
     public void initalize() {
-        climbMotor.set(0);
-        currentClimbState = ClimbStates.NOT_MOVING;
+        setNotMoving();
     }
 
     private enum ClimbStates {
@@ -33,28 +32,43 @@ public class Climber {
         switch (currentClimbState) {
             case NOT_MOVING:
                 if (climberUpTriggerBool && !climberDownTriggerBool) {
-                    climbMotor.set(LIFT_SPEED);
-                    currentClimbState = ClimbStates.MOVING_UP;
+                    setMovingUp();
                 }
                 if (climberDownTriggerBool && !climberUpTriggerBool) {
-                    climbMotor.set(-LIFT_SPEED);
-                    currentClimbState = ClimbStates.MOVING_DOWN;
+                    setMovingDown();   
                 }
                 break;
 
             case MOVING_UP:
                 if (!climberUpTriggerBool || climberDownTriggerBool) {
-                    climbMotor.set(0);
-                    currentClimbState = ClimbStates.NOT_MOVING;
+                    setNotMoving();
                 }
                 break;
         
             case MOVING_DOWN:
                 if (!climberDownTriggerBool || climberUpTriggerBool) {
-                    climbMotor.set(0);
-                    currentClimbState = ClimbStates.NOT_MOVING;
+                    setNotMoving();
                 }
                 break;
         }
+    }
+
+    public ClimbStates getCurrentClimbState() {
+        return currentClimbState;
+    }
+
+    public void setNotMoving() {
+        climbMotor.set(0);
+        currentClimbState = ClimbStates.NOT_MOVING;
+    }
+
+    public void setMovingUp() {
+        climbMotor.set(LIFT_SPEED);
+        currentClimbState = ClimbStates.MOVING_UP;
+    }
+
+    public void setMovingDown() {
+        climbMotor.set(-LIFT_SPEED);
+        currentClimbState = ClimbStates.MOVING_DOWN;
     }
 }

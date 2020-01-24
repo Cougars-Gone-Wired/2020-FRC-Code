@@ -3,7 +3,7 @@ package frc.robot;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 public class Feeder {
-    private static final double FEEDER_SPEED = 1;
+    private static final double FEEDER_SPEED = 0.6;
 
     private WPI_TalonSRX feederMotor;
 
@@ -13,8 +13,7 @@ public class Feeder {
     }
 
     public void initialize() {
-        feederMotor.set(0);
-        currentFeederState = FeederStates.NOT_MOVING;
+        setNotMoving();
     }
 
     public enum FeederStates {
@@ -27,28 +26,43 @@ public class Feeder {
         switch(currentFeederState) {
             case NOT_MOVING:
                 if (feederAxis >= Constants.DEADZONE) {
-                    feederMotor.set(FEEDER_SPEED);
-                    currentFeederState = FeederStates.FEEDING;
+                    setFeeding(FEEDER_SPEED);
                 }
                 if (feederAxis <= -Constants.DEADZONE) {
-                    feederMotor.set(-FEEDER_SPEED);
-                    currentFeederState = FeederStates.OUTTAKING;
+                    setOuttaking(-FEEDER_SPEED);
                 }
                 break;
 
             case FEEDING:
                 if (feederAxis < Constants.DEADZONE) {
-                    feederMotor.set(0);
-                    currentFeederState = FeederStates.NOT_MOVING;
+                    setNotMoving();
                 }
                 break;
 
             case OUTTAKING:
                 if (feederAxis > -Constants.DEADZONE) {
-                    feederMotor.set(0);
-                    currentFeederState = FeederStates.NOT_MOVING;
+                    setNotMoving();
                 }
                 break;
         }
+    }
+
+    public FeederStates getCurrentFeederState() {
+        return currentFeederState;
+    }
+
+    public void setNotMoving() {
+        feederMotor.set(0);
+        currentFeederState = FeederStates.NOT_MOVING;
+    }
+
+    public void setFeeding(double feederSpeed) {
+        feederMotor.set(feederSpeed);
+        currentFeederState = FeederStates.FEEDING;
+    }
+
+    public void setOuttaking(double outtakeSpeed) {
+        feederMotor.set(outtakeSpeed);
+        currentFeederState = FeederStates.OUTTAKING;
     }
 }

@@ -1,59 +1,72 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Solenoid;
+import frc.robot.IntakeArm.IntakeArmStates;
 
 public class Arm {
 
-    private Solenoid solenoid1;
-    private Solenoid solenoid2;
-    
+    private Solenoid smallSolenoid;
+    private Solenoid bigSolenoid;
+
     public Arm() {
-        solenoid1 = new Solenoid(Constants.ARM_SOLENOID_1_PORT);
-        solenoid2 = new Solenoid(Constants.ARM_SOLENOID_2_PORT);
+        smallSolenoid = new Solenoid(Constants.ARM_SMALL_SOLENOID_PORT);
+        bigSolenoid = new Solenoid(Constants.ARM_BIG_SOLENOID_PORT);
         initialize();
     }
 
     public void initialize() {
-        solenoid1.set(false);
-        solenoid2.set(true);
-        currentPistonState = PistonStates.STARTING_POSITION;
+        setStartingPosition();
     }
 
-    private enum PistonStates {
-        STARTING_POSITION, SHOOTING_POSITION, CLIMBING_POSITION 
+    public enum ArmStates {
+        STARTING_POSITION, SHOOTING_POSITION, CLIMBING_POSITION
     }
 
-    private PistonStates currentPistonState;
+    private ArmStates currentArmState;
 
     public void pistonArm(boolean upButton, boolean downButton) {
-        switch (currentPistonState) {
-            case STARTING_POSITION:
-                if (downButton && !upButton) {
-                    solenoid1.set(false);
-                    solenoid2.set(false);
-                    currentPistonState = PistonStates.SHOOTING_POSITION;
-                } else if (!downButton && upButton) {
-                    solenoid1.set(true);
-                    solenoid2.set(true);
-                    currentPistonState = PistonStates.CLIMBING_POSITION;
-                }
-                break;
+        switch (currentArmState) {
+        case STARTING_POSITION:
+            if (downButton && !upButton) {
+                setShootingPostion();
+            } else if (!downButton && upButton && (Robot.intakeArm.getCurrentIntakeArmState() != IntakeArmStates.UP)) {
+                setClimbingPostion();
+            }
+            break;
 
-            case SHOOTING_POSITION:
-                if (!downButton && upButton) {
-                    solenoid1.set(false);
-                    solenoid2.set(true);
-                    currentPistonState = PistonStates.STARTING_POSITION;
-                }
-                break;
+        case SHOOTING_POSITION:
+            if (!downButton && upButton) {
+                setStartingPosition();
+            }
+            break;
 
-            case CLIMBING_POSITION:
-                if (downButton && !upButton) {
-                    solenoid1.set(false);
-                    solenoid2.set(true);
-                    currentPistonState = PistonStates.STARTING_POSITION;
-                }
-                break;
+        case CLIMBING_POSITION:
+            if (downButton && !upButton) {
+                setStartingPosition();
+            }
+            break;
         }
+    }
+
+    public ArmStates getCurrentArmState() {
+        return currentArmState;
+    }
+
+    public void setStartingPosition() {
+        smallSolenoid.set(false);
+        bigSolenoid.set(true);
+        currentArmState = ArmStates.STARTING_POSITION;
+    }
+
+    public void setShootingPostion() {
+        smallSolenoid.set(false);
+        bigSolenoid.set(false);
+        currentArmState = ArmStates.SHOOTING_POSITION;
+    }
+
+    public void setClimbingPostion() {
+        smallSolenoid.set(true);
+        bigSolenoid.set(true);
+        currentArmState = ArmStates.CLIMBING_POSITION;
     }
 }

@@ -3,7 +3,7 @@ package frc.robot;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 public class Shooter {
-    private static final double SHOOTER_SPEED = 1;
+    private static final double SHOOTER_SPEED = .45;
 
     private WPI_TalonFX shooterMotor;
 
@@ -15,8 +15,7 @@ public class Shooter {
     }
 
     public void initialize() {
-        shooterMotor.set(0);
-        currentShooterState = ShooterStates.NOT_MOVING;
+        setNotMoving();
     }
 
     public enum ShooterStates {
@@ -31,16 +30,28 @@ public class Shooter {
         switch (currentShooterState) {
         case NOT_MOVING:
             if (shooterTriggerBool) {
-                shooterMotor.set(SHOOTER_SPEED);
-                currentShooterState = ShooterStates.SPINNING;
+                setSpinning();
             }
             break;
         case SPINNING:
             if (!shooterTriggerBool) {
-                shooterMotor.set(0);
-                currentShooterState = ShooterStates.NOT_MOVING;
+                setNotMoving();
             }
             break;
         }
+    }
+
+    public ShooterStates getCurrentShooterState() {
+        return currentShooterState;
+    }
+
+    public void setNotMoving() {
+        shooterMotor.set(0);
+        currentShooterState = ShooterStates.NOT_MOVING;
+    }
+
+    public void setSpinning() {
+        shooterMotor.set(SHOOTER_SPEED);
+        currentShooterState = ShooterStates.SPINNING;
     }
 }

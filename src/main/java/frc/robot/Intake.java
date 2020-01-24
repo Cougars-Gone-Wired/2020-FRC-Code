@@ -2,25 +2,25 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.DigitalInput;
+import frc.robot.Arm.ArmStates;
 
 public class Intake {
-    private static final double INTAKE_SPEED = 1;
+    private static final double INTAKE_SPEED = 0.8;
+    private static final double FEEDER_SPEED = 0.8;
     
     private WPI_TalonSRX intakeMotor;
-    private Solenoid intakeArmSolenoid;
+
+    private DigitalInput feederLineBreak;
 
     public Intake() {
         intakeMotor = new WPI_TalonSRX(Constants.INTAKE_MOTOR_ID);
-        intakeArmSolenoid = new Solenoid(Constants.INTAKE_SOLENOID_PORT);
+        feederLineBreak = new DigitalInput(Constants.FEEDER_LINEBREAK_PORT);
         initialize();
     }
 
     public void initialize() {
-        intakeMotor.set(0);
-        intakeArmSolenoid.set(false);
-        currentIntakeState = IntakeStates.NOT_MOVING;
-        currentIntakeArmState = IntakeArmStates.UP;
+        setNotMoving();
     }
 
     public enum IntakeStates {
@@ -32,53 +32,52 @@ public class Intake {
     public void intake(double intakeAxis) {
         switch(currentIntakeState) {
             case NOT_MOVING:
-                if (intakeAxis >= Constants.DEADZONE) {
-                    intakeMotor.set(INTAKE_SPEED);
-                    currentIntakeState = IntakeStates.INTAKING;
+                if (intakeAxis >= Constants.DEADZONE && Robot.arm.getCurrentArmState() == ArmStates.SHOOTING_POSITION) {
+                    Robot.feeder.setFeeding(FEEDER_SPEED);
+                    setIntaking();
                 }
                 else if (intakeAxis <= -Constants.DEADZONE) {
-                    intakeMotor.set(-INTAKE_SPEED);
-                    currentIntakeState = IntakeStates.OUTTAKING;
+                    Robot.feeder.setOuttaking(FEEDER_SPEED);
+                    setOuttaking();
                 }
                 break;
 
             case INTAKING:
+                if(feederLineBreak.get()) {
+                    Robot.feeder.setNotMoving();
+                }
+
                 if (intakeAxis < Constants.DEADZONE) {
-                    intakeMotor.set(0);
-                    currentIntakeState = IntakeStates.NOT_MOVING;
+                    Robot.feeder.setNotMoving();
+                    setNotMoving();
                 }
                 break;
 
             case OUTTAKING:
                 if (intakeAxis > -Constants.DEADZONE) {
-                    intakeMotor.set(0);
-                    currentIntakeState = IntakeStates.NOT_MOVING;
+                    Robot.feeder.setNotMoving();
+                    setNotMoving();
                 }
                 break;
         }
     }
 
-    public enum IntakeArmStates {
-        UP, DOWN
+    public IntakeStates getCurrentIntakeState() {
+        return currentIntakeState;
     }
 
-    private IntakeArmStates currentIntakeArmState;
+    public void setNotMoving() {
+        intakeMotor.set(0);
+        currentIntakeState = IntakeStates.NOT_MOVING;
+    }
 
-    public void intakeArm(boolean intakePosToggle) {
-        switch(currentIntakeArmState) {
-            case UP:
-                if (intakePosToggle) {
-                    intakeArmSolenoid.set(true);
-                    currentIntakeArmState = IntakeArmStates.DOWN;
-                }
-                break;
+    public void setIntaking() {
+        intakeMotor.set(INTAKE_SPEED);
+        currentIntakeState = IntakeStates.INTAKING;
+    }
 
-            case DOWN:
-                if (!intakePosToggle) {
-                    intakeArmSolenoid.set(false);
-                    currentIntakeArmState = IntakeArmStates.UP;
-                }
-                break;
-        }
+    public void setOuttaking() {
+        intakeMotor.set(-INTAKE_SPEED);
+        currentIntakeState = IntakeStates.OUTTAKING;
     }
 }
