@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 
 public class Intake {
     private static final double INTAKE_SPEED = 0.8;
+    private static final double FEEDER_SPEED = 0.8;
     
     private WPI_TalonSRX intakeMotor;
 
@@ -35,10 +36,12 @@ public class Intake {
                 if (intakeAxis >= Constants.DEADZONE) {
                     intakeMotor.set(INTAKE_SPEED);
                     currentIntakeState = IntakeStates.INTAKING;
+                    Robot.feeder.setFeeding(FEEDER_SPEED);
                 }
                 else if (intakeAxis <= -Constants.DEADZONE) {
                     intakeMotor.set(-INTAKE_SPEED);
                     currentIntakeState = IntakeStates.OUTTAKING;
+                    Robot.feeder.setOuttaking(FEEDER_SPEED);
                 }
                 break;
 
