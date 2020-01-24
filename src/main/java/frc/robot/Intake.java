@@ -35,13 +35,13 @@ public class Intake {
             case NOT_MOVING:
                 if (intakeAxis >= Constants.DEADZONE) {
                     intakeMotor.set(INTAKE_SPEED);
-                    currentIntakeState = IntakeStates.INTAKING;
                     Robot.feeder.setFeeding(FEEDER_SPEED);
+                    currentIntakeState = IntakeStates.INTAKING;
                 }
                 else if (intakeAxis <= -Constants.DEADZONE) {
                     intakeMotor.set(-INTAKE_SPEED);
-                    currentIntakeState = IntakeStates.OUTTAKING;
                     Robot.feeder.setOuttaking(FEEDER_SPEED);
+                    currentIntakeState = IntakeStates.OUTTAKING;
                 }
                 break;
 
@@ -52,6 +52,7 @@ public class Intake {
 
                 if (intakeAxis < Constants.DEADZONE) {
                     intakeMotor.set(0);
+                    Robot.feeder.setNotMoving();
                     currentIntakeState = IntakeStates.NOT_MOVING;
                 }
                 break;
@@ -59,6 +60,7 @@ public class Intake {
             case OUTTAKING:
                 if (intakeAxis > -Constants.DEADZONE) {
                     intakeMotor.set(0);
+                    Robot.feeder.setNotMoving();
                     currentIntakeState = IntakeStates.NOT_MOVING;
                 }
                 break;
