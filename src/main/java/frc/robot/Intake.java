@@ -3,6 +3,7 @@ package frc.robot;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import frc.robot.Arm.ArmStates;
 
 public class Intake {
     private static final double INTAKE_SPEED = 0.8;
@@ -33,7 +34,7 @@ public class Intake {
     public void intake(double intakeAxis) {
         switch(currentIntakeState) {
             case NOT_MOVING:
-                if (intakeAxis >= Constants.DEADZONE) {
+                if (intakeAxis >= Constants.DEADZONE && Robot.arm.getCurrentArmState() == ArmStates.SHOOTING_POSITION) {
                     intakeMotor.set(INTAKE_SPEED);
                     Robot.feeder.setFeeding(FEEDER_SPEED);
                     currentIntakeState = IntakeStates.INTAKING;
