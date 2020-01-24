@@ -15,14 +15,12 @@ public class Intake {
 
     public Intake() {
         intakeMotor = new WPI_TalonSRX(Constants.INTAKE_MOTOR_ID);
-
         feederLineBreak = new DigitalInput(Constants.FEEDER_LINEBREAK_PORT);
         initialize();
     }
 
     public void initialize() {
-        intakeMotor.set(0);
-        currentIntakeState = IntakeStates.NOT_MOVING;
+        setNotMoving();
     }
 
     public enum IntakeStates {
@@ -35,14 +33,12 @@ public class Intake {
         switch(currentIntakeState) {
             case NOT_MOVING:
                 if (intakeAxis >= Constants.DEADZONE && Robot.arm.getCurrentArmState() == ArmStates.SHOOTING_POSITION) {
-                    intakeMotor.set(INTAKE_SPEED);
                     Robot.feeder.setFeeding(FEEDER_SPEED);
-                    currentIntakeState = IntakeStates.INTAKING;
+                    setIntaking();
                 }
                 else if (intakeAxis <= -Constants.DEADZONE) {
-                    intakeMotor.set(-INTAKE_SPEED);
                     Robot.feeder.setOuttaking(FEEDER_SPEED);
-                    currentIntakeState = IntakeStates.OUTTAKING;
+                    setOuttaking();
                 }
                 break;
 
@@ -52,19 +48,36 @@ public class Intake {
                 }
 
                 if (intakeAxis < Constants.DEADZONE) {
-                    intakeMotor.set(0);
                     Robot.feeder.setNotMoving();
-                    currentIntakeState = IntakeStates.NOT_MOVING;
+                    setNotMoving();
                 }
                 break;
 
             case OUTTAKING:
                 if (intakeAxis > -Constants.DEADZONE) {
-                    intakeMotor.set(0);
                     Robot.feeder.setNotMoving();
-                    currentIntakeState = IntakeStates.NOT_MOVING;
+                    setNotMoving();
                 }
                 break;
         }
+    }
+
+    public IntakeStates getCurrentIntakeState() {
+        return currentIntakeState;
+    }
+
+    public void setNotMoving() {
+        intakeMotor.set(0);
+        currentIntakeState = IntakeStates.NOT_MOVING;
+    }
+
+    public void setIntaking() {
+        intakeMotor.set(INTAKE_SPEED);
+        currentIntakeState = IntakeStates.INTAKING;
+    }
+
+    public void setOuttaking() {
+        intakeMotor.set(-INTAKE_SPEED);
+        currentIntakeState = IntakeStates.OUTTAKING;
     }
 }

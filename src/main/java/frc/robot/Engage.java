@@ -14,9 +14,7 @@ public class Engage {
     }
 
     public void initialize() {
-        engageSolenoid.set(false);
-        hardStopSolenoid.set(false);
-        currentEngageState = EngageStates.ENGAGED;
+        setEngaged();
     }
 
     public enum EngageStates {
@@ -26,25 +24,36 @@ public class Engage {
     private EngageStates currentEngageState;
 
     public void engageShoot(double enageAxis) {
-
         engageBool = (enageAxis >= Constants.DEADZONE);
 
         switch(currentEngageState) {
             case DISENGAGED:
                 if (!engageBool) {
-                    engageSolenoid.set(true);
-                    hardStopSolenoid.set(false);
-                    currentEngageState = EngageStates.ENGAGED;
+                    setEngaged();
                 }
                 break;
 
             case ENGAGED:
                 if (engageBool) {
-                    engageSolenoid.set(false);
-                    hardStopSolenoid.set(true);
-                    currentEngageState = EngageStates.DISENGAGED;
+                    setDisengaged();
                 }
                 break;
         }
+    }
+
+    public EngageStates getCurrentEngageState() {
+        return currentEngageState;
+    }
+
+    public void setEngaged() {
+        engageSolenoid.set(true);
+        hardStopSolenoid.set(false);
+        currentEngageState = EngageStates.ENGAGED;
+    }
+
+    public void setDisengaged() {
+        engageSolenoid.set(false);
+        hardStopSolenoid.set(true);
+        currentEngageState = EngageStates.DISENGAGED;
     }
 }

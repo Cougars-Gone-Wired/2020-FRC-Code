@@ -3,6 +3,7 @@ package frc.robot;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 public class Feeder {
+    private static final double FEEDER_SPEED = 0.6;
 
     private WPI_TalonSRX feederMotor;
 
@@ -12,8 +13,7 @@ public class Feeder {
     }
 
     public void initialize() {
-        feederMotor.set(0);
-        currentFeederState = FeederStates.NOT_MOVING;
+        setNotMoving();
     }
 
     public enum FeederStates {
@@ -26,10 +26,10 @@ public class Feeder {
         switch(currentFeederState) {
             case NOT_MOVING:
                 if (feederAxis >= Constants.DEADZONE) {
-                    setFeeding(feederAxis);
+                    setFeeding(FEEDER_SPEED);
                 }
                 if (feederAxis <= -Constants.DEADZONE) {
-                    setOuttaking(feederAxis);
+                    setOuttaking(-FEEDER_SPEED);
                 }
                 break;
 
@@ -45,6 +45,10 @@ public class Feeder {
                 }
                 break;
         }
+    }
+
+    public FeederStates getCurrentFeederState() {
+        return currentFeederState;
     }
 
     public void setNotMoving() {

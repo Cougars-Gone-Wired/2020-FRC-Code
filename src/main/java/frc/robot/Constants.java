@@ -15,9 +15,9 @@ public class Constants {
     static final int SHOOTER_TRIGGER = 3;
     static final int INTAKE_AXIS = 1;
     static final int FEEDER_AXIS = 5;
-    static final int ARM_POSITION_BUTTON = 6;
-    static final int CLIMBING_POSITION_BUTTON = 2;
-    static final int INTAKE_ARM_BUTTON = 5;
+    static final int ARM_UP_BUTTON = 6;
+    static final int ARM_DOWN_BUTTON = 5;
+    static final int INTAKE_ARM_BUTTON = 2;
 
     // Mobility Ids
     static final int FRONT_LEFT_MOTOR_ID = 0;
@@ -32,8 +32,8 @@ public class Constants {
     static final int SHOOTER_MOTOR_ID = 7;
     static final int INTAKE_MOTOR_ID = 8;
     static final int FEEDER_MOTOR_ID = 9;
-    static final int ARM_SOLENOID_1_PORT = 0;
-    static final int ARM_SOLENOID_2_PORT = 1;
+    static final int ARM_SMALL_SOLENOID_PORT = 0;
+    static final int ARM_BIG_SOLENOID_PORT = 1;
     static final int INTAKE_SOLENOID_PORT = 2;
     static final int ENGAGE_SOLENOID_PORT = 3;
     static final int HARD_STOP_SOLENOID_PORT = 4;

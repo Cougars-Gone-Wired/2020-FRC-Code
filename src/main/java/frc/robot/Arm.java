@@ -5,12 +5,12 @@ import frc.robot.IntakeArm.IntakeArmStates;
 
 public class Arm {
 
-    private Solenoid smallPiston;
-    private Solenoid bigPiston;
+    private Solenoid smallSolenoid;
+    private Solenoid bigSolenoid;
 
     public Arm() {
-        smallPiston = new Solenoid(Constants.ARM_SOLENOID_1_PORT);
-        bigPiston = new Solenoid(Constants.ARM_SOLENOID_2_PORT);
+        smallSolenoid = new Solenoid(Constants.ARM_SMALL_SOLENOID_PORT);
+        bigSolenoid = new Solenoid(Constants.ARM_BIG_SOLENOID_PORT);
         initialize();
     }
 
@@ -53,20 +53,20 @@ public class Arm {
     }
 
     public void setStartingPosition() {
-        smallPiston.set(false);
-        bigPiston.set(true);
+        smallSolenoid.set(false);
+        bigSolenoid.set(true);
         currentArmState = ArmStates.STARTING_POSITION;
     }
 
     public void setShootingPostion() {
-        smallPiston.set(false);
-        bigPiston.set(false);
+        smallSolenoid.set(false);
+        bigSolenoid.set(false);
         currentArmState = ArmStates.SHOOTING_POSITION;
     }
 
     public void setClimbingPostion() {
-        smallPiston.set(true);
-        bigPiston.set(true);
+        smallSolenoid.set(true);
+        bigSolenoid.set(true);
         currentArmState = ArmStates.CLIMBING_POSITION;
     }
 }
