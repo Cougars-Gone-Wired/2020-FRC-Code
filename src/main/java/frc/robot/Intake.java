@@ -3,10 +3,9 @@ package frc.robot;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Solenoid;
 
 public class Intake {
-    private static final double INTAKE_SPEED = 1;
+    private static final double INTAKE_SPEED = 0.8;
     
     private WPI_TalonSRX intakeMotor;
 

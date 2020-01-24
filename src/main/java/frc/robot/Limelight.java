@@ -5,7 +5,6 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
 public class Limelight {
-    private Drive drive; //Drive is in here so the limelight can drive
 
     private NetworkTable table;
 
@@ -36,22 +35,16 @@ public class Limelight {
     }
     private LimelightStates limelightState;
 
-    public Limelight(Robot robot) {
-        //drive = robot.getDrive(); needs to be incorporated into Drive later
+    public Limelight() {
         table = NetworkTableInstance.getDefault().getTable("limelight"); 
         limelightState = LimelightStates.DO_NOTHING;
     }
 
-    public void limelight(boolean aimButton) {
+    public void limelightDrive(boolean aimButton) {
         tv = table.getEntry("tv").getDouble(0);
         tx = table.getEntry("tx").getDouble(0);
         ty = table.getEntry("ty").getDouble(0);
         ta = table.getEntry("ta").getDouble(0);
-
-        limelightDrive(aimButton);
-    }
-
-    public void limelightDrive(boolean aimButton) {
 
         switch(limelightState) {
             case DO_NOTHING:
@@ -129,7 +122,7 @@ public class Limelight {
             break;
         }
 
-        drive.robotDrive(drive_adjust, aim_adjust);
+        Robot.drive.robotDrive(drive_adjust, aim_adjust);
     }
 
     //Calculates Distance
