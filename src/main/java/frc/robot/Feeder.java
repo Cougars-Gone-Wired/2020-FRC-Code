@@ -27,28 +27,39 @@ public class Feeder {
         switch(currentFeederState) {
             case NOT_MOVING:
                 if (feederAxis >= Constants.DEADZONE) {
-                    feederMotor.set(FEEDER_SPEED);
-                    currentFeederState = FeederStates.FEEDING;
+                    feeding();
                 }
                 if (feederAxis <= -Constants.DEADZONE) {
-                    feederMotor.set(-FEEDER_SPEED);
-                    currentFeederState = FeederStates.OUTTAKING;
+                    outtaking();
                 }
                 break;
 
             case FEEDING:
                 if (feederAxis < Constants.DEADZONE) {
-                    feederMotor.set(0);
-                    currentFeederState = FeederStates.NOT_MOVING;
+                    notMoving();
                 }
                 break;
 
             case OUTTAKING:
                 if (feederAxis > -Constants.DEADZONE) {
-                    feederMotor.set(0);
-                    currentFeederState = FeederStates.NOT_MOVING;
+                    notMoving();
                 }
                 break;
         }
+    }
+
+    public void notMoving() {
+        feederMotor.set(0);
+        currentFeederState = FeederStates.NOT_MOVING;
+    }
+
+    public void feeding() {
+        feederMotor.set(FEEDER_SPEED);
+        currentFeederState = FeederStates.FEEDING;
+    }
+
+    public void outtaking() {
+        feederMotor.set(-FEEDER_SPEED);
+        currentFeederState = FeederStates.OUTTAKING;
     }
 }
