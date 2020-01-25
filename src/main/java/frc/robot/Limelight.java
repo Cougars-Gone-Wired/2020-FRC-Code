@@ -15,20 +15,21 @@ public class Limelight {
     private double ta; //Target Area (0% of image to 100% of image)
 
     //Values for calculating distance
-    private double h1; //Distance from the center of the limelight to the ground
-    private double h2; //Distance from the center of the target to the target (106.25in approx)
-    private double a1; //Angle between the limelight and the ground
+    private double h1 = 9.375; //Distance from the center of the limelight to the ground
+    private double h2 = 90.75; //Distance from the center of the target to the target (106.25in approx)
+    private double a1 = 19.1; //Angle between the limelight and the ground
                        //Angle between limelight and target calculated by limelight (ty) so another variable is not required
     private double distance; //Calculated from the above values
 
     //kp = 0.1 min = 0.3 degree = 2.0
-    private double min = 0.29; //Minumum value to move motors
-    private double aimKp = 0.04; //Aim multiplier
-    private double driveKp = 0.05; //Drive multiplier
+    private double min = 0.4; //Minumum value to move motors
+    private double aimKp = 0.07; //Aim multiplier
+    private double driveKp = 0.00; //Drive multiplier
     private double aim_adjust = 0.00; //0 By Default so robot doesn't move initially
     private double drive_adjust = 0.00; // ↑ ↑ ↑ 
-    private double desired_angle = 1.00; //Needs to be set later, 1 degree right now
-    private double desired_distance = 0.00; //Needs to be set later
+    private double desired_angle = 0.30; //Needs to be set later, 1 degree right now
+    private double distance_error = 5.00; //Distance error
+    private double desired_distance = 260.00; //Needs to be set later
 
     private enum LimelightStates {
         DO_NOTHING, AIM, AIM_AND_DRIVE, SEEK_AIM_AND_DRIVE 
@@ -45,6 +46,7 @@ public class Limelight {
         tx = table.getEntry("tx").getDouble(0);
         ty = table.getEntry("ty").getDouble(0);
         ta = table.getEntry("ta").getDouble(0);
+        getDashboard();
 
         switch(limelightState) {
             case DO_NOTHING:
@@ -91,12 +93,11 @@ public class Limelight {
 
                     //Won't drive until centered, will stop driving and center again if not centered
                     //drive_adjust = driveKp*(ty/24.85); //used if limelight looks directly at center when at correct distance
-                    drive_adjust = driveKp * (currentDistance() - desired_distance);
-                    if (currentDistance() - desired_distance  > 5) {
-                        drive_adjust += min; //If too far away, move closer
+                    if (currentDistance() - desired_distance  > distance_error) {
+                        drive_adjust = -driveKp * (currentDistance() - desired_distance) - min; //If too far away, move closer
                     }
-                    else if (currentDistance() - desired_distance < -5) {
-                        drive_adjust -= min; //If too close, move away
+                    else if (currentDistance() - desired_distance < -distance_error) {
+                        drive_adjust = driveKp * (currentDistance() - desired_distance) + min; //If too close, move away
                     } else {
                         drive_adjust = 0;
                     }
@@ -134,9 +135,15 @@ public class Limelight {
     //Should not be used in actual code, just for testing
     //For dashboard values that need to be put on the dashboard once
     public void dashboardInitialize() {
-        SmartDashboard.putNumber("h1", 0);
-        SmartDashboard.putNumber("h2", 0);
-        SmartDashboard.putNumber("a1", 0);
+        SmartDashboard.putNumber("h1", h1);
+        SmartDashboard.putNumber("h2", h2);
+        SmartDashboard.putNumber("a1", a1);
+        SmartDashboard.putNumber("min", min);
+        SmartDashboard.putNumber("aimKp", aimKp);
+        SmartDashboard.putNumber("driveKp", driveKp);
+        SmartDashboard.putNumber("desired_angle", desired_angle);
+        SmartDashboard.putNumber("distance_error", distance_error);
+        SmartDashboard.putNumber("desired_distance", desired_distance);
     }
 
     //Should not be used in actual code, just for testing
@@ -154,5 +161,13 @@ public class Limelight {
         h1 = SmartDashboard.getNumber("h1", 0);
         h2 = SmartDashboard.getNumber("h2", 0);
         a1 = SmartDashboard.getNumber("a1", 0);
+        min = SmartDashboard.getNumber("min", 0);
+        aimKp = SmartDashboard.getNumber("aimKp", 0);
+        driveKp = SmartDashboard.getNumber("driveKp", 0);
+        aim_adjust = SmartDashboard.getNumber("aim_adjust", 0);
+        drive_adjust = SmartDashboard.getNumber("drive_adjust", 0);
+        desired_angle = SmartDashboard.getNumber("desired_angle", 0);
+        distance_error = SmartDashboard.getNumber("distance_error", 0);
+        desired_distance = SmartDashboard.getNumber("desired_distance", 0);
     }
 }
