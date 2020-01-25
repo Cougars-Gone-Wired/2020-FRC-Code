@@ -52,6 +52,7 @@ public class Limelight {
             case DO_NOTHING:
                 //why doesn't this do anything
                 if (aimButton) {
+                    Robot.drive.setShooterSide();
                     limelightState = LimelightStates.AIM_AND_DRIVE; //What the limelight should do when the button is pressed
                 }
             break;
@@ -79,6 +80,7 @@ public class Limelight {
                     limelightState = LimelightStates.DO_NOTHING;
                     aim_adjust = 0; 
                     drive_adjust = 0;
+                    Robot.drive.robotDrive(0, 0);
                 }
 
                 aim_adjust = aimKp * (tx / 29.8);
@@ -92,6 +94,7 @@ public class Limelight {
                     aim_adjust = 0;
 
                 }
+
 
                 //drive_adjust = driveKp*(ty/24.85); //used if limelight looks directly at center when at correct distance
                 drive_adjust = -driveKp * ( (currentDistance() - desired_distance) / desired_distance);
@@ -103,6 +106,7 @@ public class Limelight {
                 } else {
                     drive_adjust = 0;
                 }
+                Robot.drive.robotDrive(drive_adjust, aim_adjust);
                 break;
 
             case AIM:
@@ -110,6 +114,7 @@ public class Limelight {
                     limelightState = LimelightStates.DO_NOTHING;
                     aim_adjust = 0; 
                     drive_adjust = 0;
+                    Robot.drive.robotDrive(0, 0);
                 }
 
                 aim_adjust = aimKp * (tx / 29.8);
@@ -120,10 +125,9 @@ public class Limelight {
                 } else {
                     aim_adjust = 0;
                 }
+                Robot.drive.robotDrive(drive_adjust, aim_adjust);
             break;
         }
-
-        Robot.drive.robotDrive(drive_adjust, aim_adjust);
     }
 
     //Calculates Distance
