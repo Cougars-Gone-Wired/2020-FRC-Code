@@ -69,17 +69,17 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
         drive.initalize();
-        // climber.initalize();
+        climber.initalize();
 
-        // shooter.initialize();
-        // intake.initialize();
-        // intakeArm.initialize();
-        // feeder.initialize();
-        // arm.initialize();
-        // engage.initialize();
+        shooter.initialize();
+        intake.initialize();
+        intakeArm.initialize();
+        feeder.initialize();
+        arm.initialize();
+        engage.initialize();
 
-        // recorder.initialize();
-        // runner.counterInitialize();
+        recorder.initialize();
+        runner.counterInitialize();
     }
 
     @Override
@@ -88,42 +88,42 @@ public class Robot extends TimedRobot {
 
         drive.robotDrive(controllers.getDriveSpeedAxis(), controllers.getDriveTurnAxis());
         drive.setSide(controllers.getDriveSideToggleButtonPressed());
-        // climber.climb(controllers.getClimberUpTrigger(), controllers.getClimberDownTrigger());
+        climber.climb(controllers.getClimberUpTrigger(), controllers.getClimberDownTrigger());
         limelight.getDashboard();
         limelight.limelightDrive(controllers.getLimelightButton());
-        // shooter.shoot(controllers.getShooterTrigger());
-        // intake.intake(controllers.getIntakeAxis());
-        // intakeArm.intakeArm(controllers.isIntakeArmToggle());
-        // feeder.feed(controllers.getFeederAxis());
-        // arm.pistonArm(controllers.isArmUpButton(), controllers.isArmDownButton());
-        // engage.engageShoot(controllers.getIntakeAxis());
+        shooter.shoot(controllers.getShooterTrigger());
+        intake.intake(controllers.getIntakeAxis());
+        intakeArm.intakeArm(controllers.getIntakeArmToggleButtonPressed());
+        feeder.feed(controllers.getFeederAxis());
+        arm.pistonArm(controllers.isArmUpButton(), controllers.isArmDownButton());
+        engage.engageShoot(controllers.getIntakeAxis());
 
-        // drive.dashboard();
-        // recorder.record(controllers);
+        drive.dashboard();
+        recorder.record(controllers);
     }
 
     @Override
     public void disabledInit() {
-        // if (GsonSmartDash.shouldRecord) {
-        //     List<State> states = recorder.getStates();
-        //     try {
-        //         StatesWriter.writeStates(states, GsonSmartDash.gsonFileName);
-        //     } catch (Exception e) {
-        //         e.printStackTrace();
-        //     }
-        // }
+        if (GsonSmartDash.shouldRecord) {
+            List<State> states = recorder.getStates();
+            try {
+                StatesWriter.writeStates(states, GsonSmartDash.gsonFileName);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
-        // StateLister.getStateNames();
-        // SmartDashboard.putBoolean("Should Record", false);
+        StateLister.getStateNames();
+        SmartDashboard.putBoolean("Should Record", false);
     }
 
     @Override
     public void disabledPeriodic() {
-        // GsonSmartDash.set();
+        GsonSmartDash.set();
 
-        // if (!GsonSmartDash.shouldRecord) {
-        //     SmartDashboard.putString("Gson File Name", "");
-        // }
+        if (!GsonSmartDash.shouldRecord) {
+            SmartDashboard.putString("Gson File Name", "");
+        }
     }
 
     @Override
