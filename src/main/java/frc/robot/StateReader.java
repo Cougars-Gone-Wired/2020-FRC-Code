@@ -9,17 +9,17 @@ import com.google.gson.reflect.TypeToken;
 
 public class StateReader {
 
-	public static List<State> read(String fileName) throws Exception {
-		System.out.println(fileName);
+    public static List<State> read(String fileName) throws Exception {
+        System.out.println(fileName);
 
-		Type type = new TypeToken<List<State>>() {
-		}.getType();
+        Type type = new TypeToken<List<State>>() {
+        }.getType();
 
-		FileReader fileReader = new FileReader(fileName);
-		Gson gson = new Gson();
+        FileReader fileReader = new FileReader(fileName);
+        Gson gson = new Gson();
 
-		List<State> states = gson.fromJson(fileReader, type);
+        List<State> states = gson.fromJson(fileReader, type);
 
-		return states;
-	}
+        return states;
+    }
 }

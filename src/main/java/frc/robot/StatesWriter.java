@@ -10,18 +10,18 @@ import com.google.gson.reflect.TypeToken;
 
 public class StatesWriter {
 
-	public static void writeStates(List<State> states, String fileName) throws Exception {
-		Type type = new TypeToken<List<State>>() {
-		}.getType();
+    public static void writeStates(List<State> states, String fileName) throws Exception {
+        Type type = new TypeToken<List<State>>() {
+        }.getType();
 
-		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-		String gsonString = gson.toJson(states, type);
+        String gsonString = gson.toJson(states, type);
 
-		PrintWriter pw = new PrintWriter("/home/lvuser/gsonFiles/" + fileName + ".json");
+        PrintWriter pw = new PrintWriter("/home/lvuser/gsonFiles/" + fileName + ".json");
 
-		pw.print(gsonString);
+        pw.print(gsonString);
 
-		pw.close();
-	}
+        pw.close();
+    }
 }

@@ -4,31 +4,31 @@ import java.util.List;
 
 public class StateRunner {
 
-	private Drive drive;
+    private Drive drive;
 
-	List<State> states;
+    List<State> states;
 
-	int counter = 0;
+    int counter = 0;
 
-	public StateRunner(Robot robot) {
-		this.drive = robot.getDrive();
-	}
+    public StateRunner(Robot robot) {
+        this.drive = robot.getDrive();
+    }
 
-	public void counterInitialize() {
-		counter = 0;
-	}
+    public void counterInitialize() {
+        counter = 0;
+    }
 
-	public void setStates(List<State> states) {
-		this.states = states;
-	}
+    public void setStates(List<State> states) {
+        this.states = states;
+    }
 
-	public void run() {
-		if (counter < states.size()) {
-			State s = states.get(counter);
+    public void run() {
+        if (counter < states.size()) {
+            State s = states.get(counter);
 
-			drive.robotDrive(s.getDriveSpeedAxisState(), s.getDriveTurnAxisState());
+            drive.robotDrive(s.getDriveSpeedAxisState(), s.getDriveTurnAxisState());
 
-			counter++;
-		}
-	}
+            counter++;
+        }
+    }
 }
