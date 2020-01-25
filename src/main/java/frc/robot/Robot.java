@@ -93,9 +93,10 @@ public class Robot extends TimedRobot {
         intake.intake(controllers.getIntakeAxis());
         intakeArm.intakeArm(controllers.isIntakeArmToggle());
         feeder.feed(controllers.getFeederAxis());
-        arm.pistonArm(controllers.isArmToggle(), controllers.isClimberToggle());
+        arm.pistonArm(controllers.isArmUpButton(), controllers.isArmDownButton());
         engage.engageShoot(controllers.getIntakeAxis());
 
+        drive.dashboard();
         recorder.record(controllers);
     }
 

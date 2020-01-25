@@ -18,8 +18,8 @@ public class Controllers {
     private double shooterTrigger;
     private double intakeAxis;
     private double feederAxis;
-    private ToggleButton armToggle;
-    private ToggleButton climberToggle;
+    private boolean armUpButton;
+    private boolean armDownButton;
     private ToggleButton intakeArmToggle;
     private boolean limelightButton;
 
@@ -28,8 +28,6 @@ public class Controllers {
         manipulatorController = new Joystick(Constants.MANIPULATOR_CONTROLLER_ID);
 
         driveSideToggle = new ToggleButton(mobilityController, Constants.SWITCH_SIDE_BUTTON);
-        armToggle = new ToggleButton(manipulatorController, Constants.ARM_POSITION_BUTTON);
-        climberToggle = new ToggleButton(manipulatorController, Constants.CLIMBING_POSITION_BUTTON);
         intakeArmToggle = new ToggleButton(manipulatorController, Constants.INTAKE_ARM_BUTTON);
     }
 
@@ -46,8 +44,8 @@ public class Controllers {
         shooterTrigger = manipulatorController.getRawAxis(Constants.SHOOTER_TRIGGER);
         intakeAxis = manipulatorController.getRawAxis(Constants.INTAKE_AXIS);
         feederAxis = manipulatorController.getRawAxis(Constants.FEEDER_AXIS);
-        armToggle.toggle();
-        climberToggle.toggle();
+        armUpButton = manipulatorController.getRawButtonPressed(Constants.ARM_UP_BUTTON);
+        armDownButton = manipulatorController.getRawButtonPressed(Constants.ARM_DOWN_BUTTON);
         intakeArmToggle.toggle();
     }
 
@@ -89,12 +87,12 @@ public class Controllers {
         return feederAxis;
     }
 
-    public boolean isArmToggle() {
-        return armToggle.getValue();
+    public boolean isArmUpButton() {
+        return armUpButton;
     }
 
-    public boolean isClimberToggle() {
-        return climberToggle.getValue();
+    public boolean isArmDownButton() {
+        return armDownButton;
     }
 
     public boolean isIntakeArmToggle() {

@@ -13,8 +13,7 @@ public class IntakeArm {
     }
 
     public void initialize() {
-        intakeArmSolenoid.set(false);
-        currentIntakeArmState = IntakeArmStates.UP;
+        setUpPosition();
     }
 
     public enum IntakeArmStates {
