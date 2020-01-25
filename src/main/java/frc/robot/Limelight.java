@@ -93,11 +93,12 @@ public class Limelight {
 
                     //Won't drive until centered, will stop driving and center again if not centered
                     //drive_adjust = driveKp*(ty/24.85); //used if limelight looks directly at center when at correct distance
+                    drive_adjust = driveKp * ( (currentDistance() - desired_distance) / desired_distance);
                     if (currentDistance() - desired_distance  > distance_error) {
-                        drive_adjust = -driveKp * (currentDistance() - desired_distance) - min; //If too far away, move closer
+                        drive_adjust += min;
                     }
                     else if (currentDistance() - desired_distance < -distance_error) {
-                        drive_adjust = driveKp * (currentDistance() - desired_distance) + min; //If too close, move away
+                        drive_adjust -= min;
                     } else {
                         drive_adjust = 0;
                     }
