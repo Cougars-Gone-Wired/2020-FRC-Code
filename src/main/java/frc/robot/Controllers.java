@@ -21,6 +21,7 @@ public class Controllers {
     private ToggleButton armToggle;
     private ToggleButton climberToggle;
     private ToggleButton intakeArmToggle;
+    private boolean limelightButton;
 
     public Controllers() {
         mobilityController = new Joystick(Constants.MOBILITY_CONTROLLER_ID);
@@ -39,6 +40,7 @@ public class Controllers {
         driveSideToggle.toggle();
         climberUpTrigger = mobilityController.getRawAxis(Constants.CLIMBER_UP_TRIGGER);
         climberDownTrigger = mobilityController.getRawAxis(Constants.CLIMBER_DOWN_TRIGGER);
+        limelightButton = mobilityController.getRawButton(Constants.LIMELIGHT_BUTTON);
 
         // Manipulator
         shooterTrigger = manipulatorController.getRawAxis(Constants.SHOOTER_TRIGGER);
@@ -68,6 +70,10 @@ public class Controllers {
 
     public double getClimberDownTrigger() {
         return climberDownTrigger;
+    }
+
+    public boolean getLimelightButton() {
+        return limelightButton;
     }
 
     // Manipulator
