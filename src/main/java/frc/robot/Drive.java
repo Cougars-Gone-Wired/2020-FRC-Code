@@ -125,11 +125,13 @@ public class Drive {
         }
     }
 
-    public void setSide(boolean isShooterSide) {
-        if (isShooterSide) {
-            setShooterSide();
-        } else {
-            setIntakeSide();
+    public void setSide(boolean toggle) {
+        if (toggle) {
+            if(driveState == DriveStates.SHOOTER_SIDE) {
+                setIntakeSide();
+            } else {
+                setShooterSide();
+            }
         }
     }
 

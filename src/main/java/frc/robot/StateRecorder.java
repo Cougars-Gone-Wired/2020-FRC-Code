@@ -16,7 +16,7 @@ public class StateRecorder {
 
         s.setDriveSpeedAxisState(controllers.getDriveSpeedAxis());
         s.setDriveTurnAxisState(controllers.getDriveTurnAxis());
-        s.setSwitchSideState(controllers.isDriveSideToggle());
+        s.setSwitchSideState(controllers.getDriveSideToggleButtonPressed());
         s.setLimelightState(controllers.getLimelightButton());
 
         states.add(s);

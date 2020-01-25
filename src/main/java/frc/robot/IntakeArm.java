@@ -25,7 +25,7 @@ public class IntakeArm {
     public void intakeArm(boolean intakePosToggle) {
         switch(currentIntakeArmState) {
             case DOWN:
-                if (!intakePosToggle && (Robot.arm.getCurrentArmState() != ArmStates.CLIMBING_POSITION)) {
+                if (intakePosToggle && (Robot.arm.getCurrentArmState() != ArmStates.CLIMBING_POSITION)) {
                     setUpPosition();
                 }
                 break;
