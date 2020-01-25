@@ -52,7 +52,7 @@ public class Limelight {
             case DO_NOTHING:
                 //why doesn't this do anything
                 if (aimButton) {
-                    limelightState = LimelightStates.SEEK_AIM_AND_DRIVE; //What the limelight should do when the button is pressed
+                    limelightState = LimelightStates.AIM_AND_DRIVE; //What the limelight should do when the button is pressed
                 }
             break;
 
@@ -91,19 +91,18 @@ public class Limelight {
                 } else {
                     aim_adjust = 0;
 
-                    //Won't drive until centered, will stop driving and center again if not centered
-                    //drive_adjust = driveKp*(ty/24.85); //used if limelight looks directly at center when at correct distance
-                    drive_adjust = driveKp * ( (currentDistance() - desired_distance) / desired_distance);
-                    if (currentDistance() - desired_distance  > distance_error) {
-                        drive_adjust += min;
-                    }
-                    else if (currentDistance() - desired_distance < -distance_error) {
-                        drive_adjust -= min;
-                    } else {
-                        drive_adjust = 0;
-                    }
                 }
 
+                //drive_adjust = driveKp*(ty/24.85); //used if limelight looks directly at center when at correct distance
+                drive_adjust = -driveKp * ( (currentDistance() - desired_distance) / desired_distance);
+                if (currentDistance() - desired_distance  > distance_error) {
+                    drive_adjust -= min;
+                }
+                else if (currentDistance() - desired_distance < -distance_error) {
+                    drive_adjust += min;
+                } else {
+                    drive_adjust = 0;
+                }
                 break;
 
             case AIM:
