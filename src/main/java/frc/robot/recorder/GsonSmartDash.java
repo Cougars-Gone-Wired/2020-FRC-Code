@@ -1,11 +1,11 @@
-package frc.robot;
+package frc.robot.recorder;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class GsonSmartDash {
 
-    static boolean shouldRecord;
-    static String gsonFileName;
+    public static boolean shouldRecord;
+    public static String gsonFileName;
 
     public static void put() {
         SmartDashboard.putBoolean("Should Record", false);

@@ -5,6 +5,7 @@ import java.util.List;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.recorder.*;
 
 public class Robot extends TimedRobot {
 
@@ -86,12 +87,7 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
         controllers.updateControllerValues();
 
-<<<<<<< HEAD
-        drive.robotDrive(controllers.getDriveSpeedAxis(), controllers.getDriveTurnAxis(), controllers.getDriveSideToggleButtonPressed());
-=======
-        drive.robotDrive(controllers.getDriveSpeedAxis(), controllers.getDriveTurnAxis());
-        drive.setSide(controllers.getDriveSideToggle());
->>>>>>> 598a645940f9e200d5c137011f9a5e91d73f26ec
+        drive.robotDrive(controllers.getDriveSpeedAxis(), controllers.getDriveTurnAxis(), controllers.getDriveSideToggle());
         climber.climb(controllers.getClimberUpTrigger(), controllers.getClimberDownTrigger());
         limelight.getDashboard();
         limelight.limelightDrive(controllers.getLimelightButton());

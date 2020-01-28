@@ -1,6 +1,8 @@
-package frc.robot;
+package frc.robot.recorder;
 
 import java.util.List;
+import frc.robot.Robot;
+import frc.robot.Drive;
 
 public class StateRunner {
 
@@ -26,7 +28,7 @@ public class StateRunner {
         if (counter < states.size()) {
             State s = states.get(counter);
 
-            drive.robotDrive(s.getDriveSpeedAxisState(), s.getDriveTurnAxisState());
+            drive.robotDrive(s.getDriveSpeedAxisState(), s.getDriveTurnAxisState(), s.getSwitchSideState());
 
             counter++;
         }

@@ -1,7 +1,9 @@
-package frc.robot;
+package frc.robot.recorder;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import frc.robot.Controllers;
 
 public class StateRecorder {
 
@@ -16,7 +18,7 @@ public class StateRecorder {
 
         s.setDriveSpeedAxisState(controllers.getDriveSpeedAxis());
         s.setDriveTurnAxisState(controllers.getDriveTurnAxis());
-        s.setSwitchSideState(controllers.getDriveSideToggleButtonPressed());
+        s.setSwitchSideState(controllers.getDriveSideToggle());
         s.setLimelightState(controllers.getLimelightButton());
 
         states.add(s);

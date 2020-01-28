@@ -1,4 +1,4 @@
-package frc.robot;
+package frc.robot.recorder;
 
 import java.io.File;
 import java.util.List;
@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class StateLister {
 
-    static SendableChooser<String> gsonChooser = new SendableChooser<>();
+    public static SendableChooser<String> gsonChooser = new SendableChooser<>();
 
     public static List<String> getStateNames() {
 

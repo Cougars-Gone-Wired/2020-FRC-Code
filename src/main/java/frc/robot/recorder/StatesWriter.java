@@ -1,4 +1,4 @@
-package frc.robot;
+package frc.robot.recorder;
 
 import java.io.PrintWriter;
 import java.lang.reflect.Type;
