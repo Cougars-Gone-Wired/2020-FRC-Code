@@ -86,8 +86,7 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
         controllers.updateControllerValues();
 
-        drive.robotDrive(controllers.getDriveSpeedAxis(), controllers.getDriveTurnAxis());
-        drive.setSide(controllers.getDriveSideToggleButtonPressed());
+        drive.robotDrive(controllers.getDriveSpeedAxis(), controllers.getDriveTurnAxis(), controllers.getDriveSideToggleButtonPressed());
         climber.climb(controllers.getClimberUpTrigger(), controllers.getClimberDownTrigger());
         limelight.getDashboard();
         limelight.limelightDrive(controllers.getLimelightButton());

@@ -110,30 +110,27 @@ public class Drive {
 
     private DriveStates driveState;
 
-    public void robotDrive(double driveSpeedAxis, double driveTurnAxis) {
+    public void robotDrive(double driveSpeedAxis, double driveTurnAxis, boolean toggle) {
         driveSpeedAxis = driveSpeedAxis * DRIVE_SPEED;
         driveTurnAxis = driveTurnAxis * TURN_SPEED;
 
         switch (driveState) {
             case SHOOTER_SIDE:
                 robotDrive.arcadeDrive(driveSpeedAxis, -driveTurnAxis);
+                if (toggle) {
+                    setIntakeSide();
+                }
                 break;
 
             case INTAKE_SIDE:
                 robotDrive.arcadeDrive(-driveSpeedAxis, -driveTurnAxis);
+                if (toggle) {
+                    setShooterSide();
+                }
                 break;
         }
     }
 
-    public void setSide(boolean toggle) {
-        if (toggle) {
-            if(driveState == DriveStates.SHOOTER_SIDE) {
-                setIntakeSide();
-            } else {
-                setShooterSide();
-            }
-        }
-    }
 
     public void setShooterSide() {
         driveState = DriveStates.SHOOTER_SIDE;
@@ -141,6 +138,9 @@ public class Drive {
 
     public void setIntakeSide() {
         driveState = DriveStates.INTAKE_SIDE;
+    }
+    public void setNotMoving() {
+        driveState = DriveStates.NOT_MOVING;
     }
 
     public void dashboard() {
@@ -163,6 +163,6 @@ public class Drive {
     }
 
     public static double ticksToInches(double ticks) {
-        return (9*Math.PI*ticks)/16384;
+        return (9 * Math.PI * ticks) / 16384;
     }
 }
