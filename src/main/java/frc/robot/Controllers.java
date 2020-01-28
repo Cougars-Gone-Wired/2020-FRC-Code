@@ -8,7 +8,7 @@ public class Controllers {
     private Joystick mobilityController;
     private double driveSpeedAxis;
     private double driveTurnAxis;
-    private boolean driveSideToggleButtonPressed;
+    private boolean driveSideToggle;
     private boolean limelightButton;
     private double climberUpTrigger;
     private double climberDownTrigger;
@@ -21,7 +21,6 @@ public class Controllers {
     private boolean armUpButton;
     private boolean armDownButton;
     private boolean intakeArmToggle;
-    private boolean intakeArmToggleButtonPressed;
 
     public Controllers() {
         mobilityController = new Joystick(Constants.MOBILITY_CONTROLLER_ID);
@@ -32,7 +31,7 @@ public class Controllers {
         // Mobility
         driveSpeedAxis = mobilityController.getRawAxis(Constants.DRIVE_SPEED_AXIS);
         driveTurnAxis = mobilityController.getRawAxis(Constants.DRIVE_TURN_AXIS);
-        driveSideToggleButtonPressed = mobilityController.getRawButtonPressed(Constants.SWITCH_SIDE_BUTTON);
+        driveSideToggle= mobilityController.getRawButtonPressed(Constants.SWITCH_SIDE_BUTTON);
         climberUpTrigger = mobilityController.getRawAxis(Constants.CLIMBER_UP_TRIGGER);
         climberDownTrigger = mobilityController.getRawAxis(Constants.CLIMBER_DOWN_TRIGGER);
         limelightButton = mobilityController.getRawButton(Constants.LIMELIGHT_BUTTON);
@@ -43,7 +42,7 @@ public class Controllers {
         feederAxis = manipulatorController.getRawAxis(Constants.FEEDER_AXIS);
         armUpButton = manipulatorController.getRawButtonPressed(Constants.ARM_UP_BUTTON);
         armDownButton = manipulatorController.getRawButtonPressed(Constants.ARM_DOWN_BUTTON);
-        intakeArmToggleButtonPressed = manipulatorController.getRawButtonPressed(Constants.INTAKE_ARM_BUTTON);
+        intakeArmToggle = manipulatorController.getRawButtonPressed(Constants.INTAKE_ARM_BUTTON);
     }
 
     // Mobilty
@@ -55,8 +54,8 @@ public class Controllers {
         return driveTurnAxis;
     }
 
-    public boolean getDriveSideToggleButtonPressed() {
-        return driveSideToggleButtonPressed;
+    public boolean getDriveSideToggle() {
+        return driveSideToggle;
     }
 
     public boolean getLimelightButton() {
@@ -92,7 +91,7 @@ public class Controllers {
         return armDownButton;
     }
 
-    public boolean getIntakeArmToggleButtonPressed() {
-        return intakeArmToggleButtonPressed;
+    public boolean getIntakeArmToggle() {
+        return intakeArmToggle;
     }
 }

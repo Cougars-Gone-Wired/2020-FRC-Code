@@ -29,19 +29,19 @@ public class Robot extends TimedRobot {
         controllers = new Controllers();
 
         drive = new Drive();
-        // climber = new Climber();
+        climber = new Climber();
         limelight = new Limelight();
 
-        // shooter = new Shooter();
-        // intake = new Intake();
-        // intakeArm = new IntakeArm();
-        // feeder = new Feeder();
-        // arm = new Arm();
-        // engage = new Engage();
+        shooter = new Shooter();
+        intake = new Intake();
+        intakeArm = new IntakeArm();
+        feeder = new Feeder();
+        arm = new Arm();
+        engage = new Engage();
 
-        // recorder = new StateRecorder();
-        // runner = new StateRunner(this);
-        // GsonSmartDash.put();
+        recorder = new StateRecorder();
+        runner = new StateRunner(this);
+        GsonSmartDash.put();
         limelight.dashboardInitialize();
     }
 
@@ -86,13 +86,18 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
         controllers.updateControllerValues();
 
+<<<<<<< HEAD
         drive.robotDrive(controllers.getDriveSpeedAxis(), controllers.getDriveTurnAxis(), controllers.getDriveSideToggleButtonPressed());
+=======
+        drive.robotDrive(controllers.getDriveSpeedAxis(), controllers.getDriveTurnAxis());
+        drive.setSide(controllers.getDriveSideToggle());
+>>>>>>> 598a645940f9e200d5c137011f9a5e91d73f26ec
         climber.climb(controllers.getClimberUpTrigger(), controllers.getClimberDownTrigger());
         limelight.getDashboard();
         limelight.limelightDrive(controllers.getLimelightButton());
         shooter.shoot(controllers.getShooterTrigger());
         intake.intake(controllers.getIntakeAxis());
-        intakeArm.intakeArm(controllers.getIntakeArmToggleButtonPressed());
+        intakeArm.intakeArm(controllers.getIntakeArmToggle());
         feeder.feed(controllers.getFeederAxis());
         arm.pistonArm(controllers.isArmUpButton(), controllers.isArmDownButton());
         engage.engageShoot(controllers.getIntakeAxis());

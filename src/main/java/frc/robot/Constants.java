@@ -36,7 +36,7 @@ public class Constants {
     static final int ARM_SMALL_SOLENOID_PORT = 0;
     static final int ARM_BIG_SOLENOID_PORT = 1;
     static final int INTAKE_SOLENOID_PORT = 2;
-    static final int ENGAGE_SOLENOID_PORT = 3;
+    static final int CHOMPER_SOLENOID_PORT = 3;
     static final int HARD_STOP_SOLENOID_PORT = 4;
     static final int FEEDER_LINEBREAK_PORT = 1;
 
