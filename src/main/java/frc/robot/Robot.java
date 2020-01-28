@@ -29,19 +29,19 @@ public class Robot extends TimedRobot {
         controllers = new Controllers();
 
         drive = new Drive();
-        // climber = new Climber();
+        climber = new Climber();
         limelight = new Limelight();
 
-        // shooter = new Shooter();
-        // intake = new Intake();
-        // intakeArm = new IntakeArm();
-        // feeder = new Feeder();
-        // arm = new Arm();
-        // engage = new Engage();
+        shooter = new Shooter();
+        intake = new Intake();
+        intakeArm = new IntakeArm();
+        feeder = new Feeder();
+        arm = new Arm();
+        engage = new Engage();
 
-        // recorder = new StateRecorder();
-        // runner = new StateRunner(this);
-        // GsonSmartDash.put();
+        recorder = new StateRecorder();
+        runner = new StateRunner(this);
+        GsonSmartDash.put();
         limelight.dashboardInitialize();
     }
 
@@ -87,13 +87,13 @@ public class Robot extends TimedRobot {
         controllers.updateControllerValues();
 
         drive.robotDrive(controllers.getDriveSpeedAxis(), controllers.getDriveTurnAxis());
-        drive.setSide(controllers.getDriveSideToggleButtonPressed());
+        drive.setSide(controllers.getDriveSideToggle());
         climber.climb(controllers.getClimberUpTrigger(), controllers.getClimberDownTrigger());
         limelight.getDashboard();
         limelight.limelightDrive(controllers.getLimelightButton());
         shooter.shoot(controllers.getShooterTrigger());
         intake.intake(controllers.getIntakeAxis());
-        intakeArm.intakeArm(controllers.getIntakeArmToggleButtonPressed());
+        intakeArm.intakeArm(controllers.getIntakeArmToggle());
         feeder.feed(controllers.getFeederAxis());
         arm.pistonArm(controllers.isArmUpButton(), controllers.isArmDownButton());
         engage.engageShoot(controllers.getIntakeAxis());

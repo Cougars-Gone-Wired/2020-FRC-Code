@@ -27,7 +27,7 @@ public class Limelight {
     private double driveKp = 0.00; //Drive multiplier
     private double aim_adjust = 0.00; //0 By Default so robot doesn't move initially
     private double drive_adjust = 0.00; // ↑ ↑ ↑ 
-    private double desired_angle = 0.30; //Needs to be set later, 1 degree right now
+    private double angle_error = 0.30; //Needs to be set later, 1 degree right now
     private double distance_error = 5.00; //Distance error
     private double desired_distance = 260.00; //Needs to be set later
 
@@ -72,6 +72,7 @@ public class Limelight {
                     aim_adjust = min;
                     drive_adjust = 0;
                 }
+                Robot.drive.robotDrive(drive_adjust, aim_adjust, false);
             break;
 
             case AIM_AND_DRIVE:
@@ -80,21 +81,17 @@ public class Limelight {
                     limelightState = LimelightStates.DO_NOTHING;
                     aim_adjust = 0; 
                     drive_adjust = 0;
-                    Robot.drive.robotDrive(0, 0);
+                    Robot.drive.robotDrive(0, 0, false);
                 }
 
                 aim_adjust = aimKp * (tx / 29.8);
-                if (tx > desired_angle) {
+                if (tx > angle_error) {
                     aim_adjust += min;
-                    drive_adjust = 0;
-                } else if (tx < -desired_angle) {
+                } else if (tx < -angle_error) {
                     aim_adjust -= min;
-                    drive_adjust = 0;
                 } else {
                     aim_adjust = 0;
-
                 }
-
 
                 //drive_adjust = driveKp*(ty/24.85); //used if limelight looks directly at center when at correct distance
                 drive_adjust = -driveKp * ( (currentDistance() - desired_distance) / desired_distance);
@@ -106,7 +103,7 @@ public class Limelight {
                 } else {
                     drive_adjust = 0;
                 }
-                Robot.drive.robotDrive(drive_adjust, aim_adjust);
+                Robot.drive.robotDrive(drive_adjust, aim_adjust, false);
                 break;
 
             case AIM:
@@ -114,18 +111,18 @@ public class Limelight {
                     limelightState = LimelightStates.DO_NOTHING;
                     aim_adjust = 0; 
                     drive_adjust = 0;
-                    Robot.drive.robotDrive(0, 0);
+                    Robot.drive.robotDrive(0, 0, false);
                 }
 
                 aim_adjust = aimKp * (tx / 29.8);
-                if (tx > desired_angle) {
+                if (tx > angle_error) {
                     aim_adjust += min;
-                } else if (tx < -desired_angle) {
+                } else if (tx < -angle_error) {
                     aim_adjust -= min;
                 } else {
                     aim_adjust = 0;
                 }
-                Robot.drive.robotDrive(drive_adjust, aim_adjust);
+                Robot.drive.robotDrive(drive_adjust, aim_adjust, false);
             break;
         }
     }
@@ -145,7 +142,7 @@ public class Limelight {
         SmartDashboard.putNumber("min", min);
         SmartDashboard.putNumber("aimKp", aimKp);
         SmartDashboard.putNumber("driveKp", driveKp);
-        SmartDashboard.putNumber("desired_angle", desired_angle);
+        SmartDashboard.putNumber("angle_error", angle_error);
         SmartDashboard.putNumber("distance_error", distance_error);
         SmartDashboard.putNumber("desired_distance", desired_distance);
     }
@@ -170,7 +167,7 @@ public class Limelight {
         driveKp = SmartDashboard.getNumber("driveKp", 0);
         aim_adjust = SmartDashboard.getNumber("aim_adjust", 0);
         drive_adjust = SmartDashboard.getNumber("drive_adjust", 0);
-        desired_angle = SmartDashboard.getNumber("desired_angle", 0);
+        angle_error = SmartDashboard.getNumber("angle_error", 0);
         distance_error = SmartDashboard.getNumber("distance_error", 0);
         desired_distance = SmartDashboard.getNumber("desired_distance", 0);
     }
