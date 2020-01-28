@@ -28,7 +28,7 @@ public class Feeder {
                 if (feederAxis >= Constants.DEADZONE) {
                     setFeeding(FEEDER_SPEED);
                 }
-                if (feederAxis <= -Constants.DEADZONE) {
+                else if (feederAxis <= -Constants.DEADZONE) {
                     setOuttaking(-FEEDER_SPEED);
                 }
                 break;
