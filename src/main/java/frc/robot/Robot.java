@@ -20,7 +20,7 @@ public class Robot extends TimedRobot {
     static IntakeArm intakeArm;
     static Feeder feeder;
     static Arm arm;
-    static Engage engage;
+    static Chomper chomp;
 
     static StateRecorder recorder;
     static StateRunner runner;
@@ -38,7 +38,7 @@ public class Robot extends TimedRobot {
         intakeArm = new IntakeArm();
         feeder = new Feeder();
         arm = new Arm();
-        engage = new Engage();
+        chomp = new Chomper();
 
         recorder = new StateRecorder();
         runner = new StateRunner(this);
@@ -77,7 +77,7 @@ public class Robot extends TimedRobot {
         intakeArm.initialize();
         feeder.initialize();
         arm.initialize();
-        engage.initialize();
+        chomp.initialize();
 
         recorder.initialize();
         runner.counterInitialize();
@@ -96,7 +96,7 @@ public class Robot extends TimedRobot {
         intakeArm.intakeArm(controllers.getIntakeArmToggle());
         feeder.feed(controllers.getFeederAxis());
         arm.pistonArm(controllers.isArmUpButton(), controllers.isArmDownButton());
-        engage.engageShoot(controllers.getIntakeAxis());
+        chomp.engageShoot(controllers.getIntakeAxis());
 
         drive.dashboard();
         recorder.record(controllers);

@@ -14,7 +14,7 @@ public class Chomper {
     }
 
     public void initialize() {
-        setEngaged();
+        setChomp();
     }
 
     public enum ChompStates {
@@ -29,29 +29,29 @@ public class Chomper {
         switch(currentChompState) {
             case NOT_CHOMPING:
                 if (!chomperBool) {
-                    setEngaged();
+                    setChomp();
                 }
                 break;
 
             case CHOMPING:
                 if (chomperBool) {
-                    setDisengaged();
+                    setNotChomping();
                 }
                 break;
         }
     }
 
-    public ChompStates getCurrentEngageState() {
+    public ChompStates getCurrentChompState() {
         return currentChompState;
     }
 
-    public void setEngaged() {
+    public void setChomp() {
         chompSolenoid.set(true);
         hardStopSolenoid.set(false);
         currentChompState = ChompStates.CHOMPING;
     }
 
-    public void setDisengaged() {
+    public void setNotChomping() {
         chompSolenoid.set(false);
         hardStopSolenoid.set(true);
         currentChompState = ChompStates.NOT_CHOMPING;
