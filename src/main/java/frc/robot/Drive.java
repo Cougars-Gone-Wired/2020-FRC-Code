@@ -139,8 +139,9 @@ public class Drive {
     public void setIntakeSide() {
         driveState = DriveStates.INTAKE_SIDE;
     }
-    public void setNotMoving() {
-        driveState = DriveStates.NOT_MOVING;
+
+    public DifferentialDrive getDifferentialDrive() {
+        return robotDrive;
     }
 
     public void dashboard() {
