@@ -1,6 +1,7 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import frc.robot.Arms.ShooterArmStates;
 
 public class Shooter {
     private static final double SHOOTER_SPEED = .45;
@@ -29,14 +30,14 @@ public class Shooter {
 
         switch (currentShooterState) {
         case NOT_MOVING:
-            if (shooterTriggerBool) {
+            if (shooterTriggerBool && Robot.arms.getCurrentShooterArmState() != ShooterArmStates.CLIMBING_POSITION) {
                 setSpinning();
             }
             break;
         case SPINNING:
-            if (!shooterTriggerBool) {
+            if (!shooterTriggerBool || Robot.arms.getCurrentShooterArmState() == ShooterArmStates.CLIMBING_POSITION) {
                 setNotMoving();
-            }
+            } 
             break;
         }
     }

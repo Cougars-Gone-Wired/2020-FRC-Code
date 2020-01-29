@@ -11,16 +11,15 @@ public class Robot extends TimedRobot {
 
     private Controllers controllers;
 
-    static Drive drive;
-    static Climber climber;
-    static Limelight limelight;
-
-    static Shooter shooter;
+    static Arms arms;
     static Intake intake;
-    static IntakeArm intakeArm;
+    static Shooter shooter;
     static Feeder feeder;
-    static Arm arm;
-    static Chomper chomp;
+    static Chomper chomper;
+
+    static Climber climber;
+    static Drive drive;
+    static Limelight limelight;
 
     static StateRecorder recorder;
     static StateRunner runner;
@@ -29,16 +28,15 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         controllers = new Controllers();
 
-        drive = new Drive();
-        climber = new Climber();
-        limelight = new Limelight();
-
-        shooter = new Shooter();
+        arms = new Arms();
         intake = new Intake();
-        intakeArm = new IntakeArm();
+        shooter = new Shooter();
         feeder = new Feeder();
-        arm = new Arm();
-        chomp = new Chomper();
+        chomper = new Chomper();
+
+        climber = new Climber();
+        drive = new Drive();
+        limelight = new Limelight();
 
         recorder = new StateRecorder();
         runner = new StateRunner(this);
@@ -69,15 +67,14 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
-        drive.initalize();
-        climber.initalize();
-
-        shooter.initialize();
+        arms.initialize();
         intake.initialize();
-        intakeArm.initialize();
+        shooter.initialize();
         feeder.initialize();
-        arm.initialize();
-        chomp.initialize();
+        chomper.initialize();
+
+        climber.initalize();
+        drive.initalize();
 
         recorder.initialize();
         runner.counterInitialize();
@@ -87,16 +84,17 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
         controllers.updateControllerValues();
 
-        drive.robotDrive(controllers.getDriveSpeedAxis(), controllers.getDriveTurnAxis(), controllers.getDriveSideToggle());
+        arms.shooterArm(controllers.isArmUpButton(), controllers.isArmDownButton());
+        arms.intakeArm(controllers.getIntakeArmToggle());
+        intake.intake(controllers.getIntakeAxis());
+        shooter.shoot(controllers.getShooterTrigger());
+        feeder.feed();
+        chomper.controlChomp();
+
         climber.climb(controllers.getClimberUpTrigger(), controllers.getClimberDownTrigger());
+        drive.robotDrive(controllers.getDriveSpeedAxis(), controllers.getDriveTurnAxis(), controllers.getDriveSideToggle());
         limelight.getDashboard();
         limelight.limelightDrive(controllers.getLimelightButton());
-        shooter.shoot(controllers.getShooterTrigger());
-        intake.intake(controllers.getIntakeAxis());
-        intakeArm.intakeArm(controllers.getIntakeArmToggle());
-        feeder.feed(controllers.getFeederAxis());
-        arm.pistonArm(controllers.isArmUpButton(), controllers.isArmDownButton());
-        chomp.engageShoot(controllers.getIntakeAxis());
 
         drive.dashboard();
         recorder.record(controllers);

@@ -2,20 +2,17 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import edu.wpi.first.wpilibj.DigitalInput;
-import frc.robot.Arm.ArmStates;
+import frc.robot.Arms.IntakeArmStates;
+import frc.robot.Arms.ShooterArmStates;
 
 public class Intake {
     private static final double INTAKE_SPEED = 0.8;
-    private static final double FEEDER_SPEED = 0.8;
     
     private WPI_TalonSRX intakeMotor;
 
-    private DigitalInput feederLineBreak;
 
     public Intake() {
         intakeMotor = new WPI_TalonSRX(Constants.INTAKE_MOTOR_ID);
-        feederLineBreak = new DigitalInput(Constants.FEEDER_LINEBREAK_PORT);
         initialize();
     }
 
@@ -32,30 +29,28 @@ public class Intake {
     public void intake(double intakeAxis) {
         switch(currentIntakeState) {
             case NOT_MOVING:
-                if (intakeAxis >= Constants.DEADZONE && Robot.arm.getCurrentArmState() == ArmStates.SHOOTING_POSITION) {
-                    Robot.feeder.setFeeding(FEEDER_SPEED);
+                if (intakeAxis >= Constants.DEADZONE
+                    && Robot.arms.getCurrentIntakeArmState() != IntakeArmStates.UP 
+                    && Robot.arms.getCurrentShooterArmState() == ShooterArmStates.SHOOTING_POSITION) {
                     setIntaking();
                 }
                 else if (intakeAxis <= -Constants.DEADZONE) {
-                    Robot.feeder.setOuttaking(FEEDER_SPEED);
                     setOuttaking();
                 }
                 break;
 
             case INTAKING:
-                if(feederLineBreak.get()) {
-                    Robot.feeder.setNotMoving();
-                }
-
-                if (intakeAxis < Constants.DEADZONE) {
-                    Robot.feeder.setNotMoving();
+                if (intakeAxis < Constants.DEADZONE
+                || Robot.arms.getCurrentIntakeArmState() == IntakeArmStates.UP
+                || Robot.arms.getCurrentShooterArmState() != ShooterArmStates.SHOOTING_POSITION) {
                     setNotMoving();
                 }
                 break;
 
             case OUTTAKING:
-                if (intakeAxis > -Constants.DEADZONE) {
-                    Robot.feeder.setNotMoving();
+                if (intakeAxis > -Constants.DEADZONE 
+                || Robot.arms.getCurrentIntakeArmState() == IntakeArmStates.UP
+                || Robot.arms.getCurrentShooterArmState() != ShooterArmStates.SHOOTING_POSITION) {
                     setNotMoving();
                 }
                 break;
