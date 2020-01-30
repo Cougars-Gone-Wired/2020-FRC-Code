@@ -18,10 +18,17 @@ public class StatesWriter {
 
         String gsonString = gson.toJson(states, type);
 
-        PrintWriter pw = new PrintWriter("/home/lvuser/gsonFiles/" + fileName + ".json");
+        PrintWriter pw;
 
-        pw.print(gsonString);
+        try {
+            pw = new PrintWriter("/home/lvuser/gsonFiles/" + fileName + ".json");
+        
+            pw.print(gsonString);
 
-        pw.close();
+            pw.close();
+        } catch (Exception e) {
+            
+        }
+        
     }
 }

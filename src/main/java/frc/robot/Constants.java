@@ -18,7 +18,7 @@ public class Constants {
     static final int FEEDER_AXIS = 5;
     static final int ARM_UP_BUTTON = 6;
     static final int ARM_DOWN_BUTTON = 5;
-    static final int INTAKE_ARM_BUTTON = 2;
+    static final int INTAKE_ARM_AXIS = 2;
 
     // Mobility Ids
     static final int FRONT_LEFT_MOTOR_ID = 0;

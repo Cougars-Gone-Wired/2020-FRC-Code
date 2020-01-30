@@ -20,7 +20,7 @@ public class Controllers {
     private double feederAxis;
     private boolean armUpButton;
     private boolean armDownButton;
-    private boolean intakeArmToggle;
+    private double intakeArmAxis;
 
     public Controllers() {
         mobilityController = new Joystick(Constants.MOBILITY_CONTROLLER_ID);
@@ -42,7 +42,7 @@ public class Controllers {
         feederAxis = manipulatorController.getRawAxis(Constants.FEEDER_AXIS);
         armUpButton = manipulatorController.getRawButtonPressed(Constants.ARM_UP_BUTTON);
         armDownButton = manipulatorController.getRawButtonPressed(Constants.ARM_DOWN_BUTTON);
-        intakeArmToggle = manipulatorController.getRawButtonPressed(Constants.INTAKE_ARM_BUTTON);
+        intakeArmAxis = manipulatorController.getRawAxis(Constants.INTAKE_ARM_AXIS);
     }
 
     // Mobilty
@@ -91,7 +91,7 @@ public class Controllers {
         return armDownButton;
     }
 
-    public boolean getIntakeArmToggle() {
-        return intakeArmToggle;
+    public double getIntakeArmAxis() {
+        return intakeArmAxis;
     }
 }

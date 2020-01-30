@@ -8,16 +8,18 @@ public class Arms {
     private Solenoid bigSolenoid;
     private Solenoid intakeArmSolenoid;
 
-    public void initialize() {
-        setUpPosition();
-        setStartingPosition();
-    }
+    private boolean triggerDown = false;
 
     public Arms() {
         smallSolenoid = new Solenoid(Constants.ARM_SMALL_SOLENOID_PORT);
         bigSolenoid = new Solenoid(Constants.ARM_BIG_SOLENOID_PORT);
-        initialize();
         intakeArmSolenoid = new Solenoid(Constants.INTAKE_SOLENOID_PORT);
+        initialize();
+    }
+
+    public void initialize() {
+        setStartingPosition();
+        setUpPosition();
     }
 
     public enum ShooterArmStates {
@@ -28,25 +30,25 @@ public class Arms {
 
     public void shooterArm(boolean upButton, boolean downButton) {
         switch (currentShooterArmState) {
-        case STARTING_POSITION:
-            if (downButton && !upButton) {
-                setShootingPostion();
-            } else if (!downButton && upButton && (currentIntakeArmState != IntakeArmStates.UP)) {
-                setClimbingPostion();
-            }
-            break;
+            case STARTING_POSITION:
+                if (downButton && !upButton) {
+                    setShootingPostion();
+                } else if (!downButton && upButton && (currentIntakeArmState != IntakeArmStates.UP)) {
+                    setClimbingPostion();
+                }
+                break;
 
-        case SHOOTING_POSITION:
-            if (!downButton && upButton) {
-                setStartingPosition();
-            }
-            break;
+            case SHOOTING_POSITION:
+                if (!downButton && upButton) {
+                    setStartingPosition();
+                }
+                break;
 
-        case CLIMBING_POSITION:
-            if (downButton && !upButton) {
-                setStartingPosition();
-            }
-            break;
+            case CLIMBING_POSITION:
+                if (downButton && !upButton) {
+                    setStartingPosition();
+                }
+                break;
         }
     }
 
@@ -78,16 +80,16 @@ public class Arms {
 
     private IntakeArmStates currentIntakeArmState;
 
-    public void intakeArm(boolean intakePosToggle) {
+    public void intakeArm(double intakeArmAxis) {
         switch(currentIntakeArmState) {
             case DOWN:
-                if (intakePosToggle && (currentShooterArmState != ShooterArmStates.CLIMBING_POSITION)) {
+                if (toggle(intakeArmAxis) && (currentShooterArmState != ShooterArmStates.CLIMBING_POSITION)) {
                     setUpPosition();
                 }
                 break;
 
             case UP:
-                if (intakePosToggle) {
+                if (toggle(intakeArmAxis)) {
                     setDownPosition();
                 }
                 break;
@@ -106,5 +108,17 @@ public class Arms {
     public void setDownPosition() {
         intakeArmSolenoid.set(true);
         currentIntakeArmState = IntakeArmStates.DOWN;    
+    }
+
+    public boolean toggle(double intakeArmAxis) {
+        if(intakeArmAxis > Constants.DEADZONE) {
+            if(!triggerDown) {
+                triggerDown = true;
+                return true;
+            }
+        } else {
+            triggerDown = false;
+        }
+        return false;
     }
 }

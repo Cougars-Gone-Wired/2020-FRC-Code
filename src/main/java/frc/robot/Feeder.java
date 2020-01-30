@@ -8,7 +8,7 @@ import frc.robot.Shooter.ShooterStates;
 
 public class Feeder {
     private static final double FEED_SHOOTER_SPEED = 0.6;
-    private static final double FEEDER_SPEED = 0.8;
+    private static final double FEED_INTAKE_SPEED = 0.8;
 
     private WPI_TalonSRX feederMotor;
 
@@ -33,29 +33,36 @@ public class Feeder {
     public void feed() {
         switch(currentFeederState) {
             case NOT_MOVING:
-                if (Robot.intake.getCurrentIntakeState() == IntakeStates.INTAKING) {
-                    setIntaking(FEEDER_SPEED);
-                } else if (Robot.intake.getCurrentIntakeState() == IntakeStates.OUTTAKING) {
-                    setOuttaking(-FEEDER_SPEED);
+                if (Robot.intake.getCurrentIntakeState() == IntakeStates.INTAKING 
+                && !feederLineBreak.get()
+                && Robot.shooter.getCurrentShooterState() != ShooterStates.SPINNING) {
+                    setIntaking();
+                } else if (Robot.intake.getCurrentIntakeState() == IntakeStates.OUTTAKING
+                && Robot.shooter.getCurrentShooterState() != ShooterStates.SPINNING) {
+                    setOuttaking();
                 } else if (Robot.shooter.getCurrentShooterState() == ShooterStates.SPINNING){
-                    setFeedingShooter(FEED_SHOOTER_SPEED);
+                    setFeedingShooter();
                 }
                 break;
 
             case INTAKING:
-                if(feederLineBreak.get() || Robot.intake.getCurrentIntakeState() != IntakeStates.INTAKING) {
+                if(Robot.intake.getCurrentIntakeState() != IntakeStates.INTAKING
+                || Robot.shooter.getCurrentShooterState() != ShooterStates.SPINNING
+                || feederLineBreak.get() ) {
                     setNotMoving();
                 }
                 break;
 
             case OUTTAKING:
-                if (Robot.intake.getCurrentIntakeState() != IntakeStates.OUTTAKING) {
+                if(Robot.intake.getCurrentIntakeState() != IntakeStates.INTAKING
+                || Robot.shooter.getCurrentShooterState() != ShooterStates.SPINNING) {
                     setNotMoving();
                 }
                 break;
-
+                
             case FEEDING_SHOOTER:
-                if (Robot.shooter.getCurrentShooterState() != ShooterStates.SPINNING) {
+                if (Robot.intake.getCurrentIntakeState() != IntakeStates.NOT_MOVING
+                || Robot.shooter.getCurrentShooterState() != ShooterStates.SPINNING) {
                     setNotMoving();
                 }
                 break;
@@ -72,18 +79,18 @@ public class Feeder {
         currentFeederState = FeederStates.NOT_MOVING;
     }
 
-    public void setIntaking(double intakeSpeed) {
-        feederMotor.set(intakeSpeed);
+    public void setIntaking() {
+        feederMotor.set(FEED_INTAKE_SPEED);
         currentFeederState = FeederStates.INTAKING;
     }
 
-    public void setOuttaking(double outtakeSpeed) {
-        feederMotor.set(outtakeSpeed);
+    public void setOuttaking() {
+        feederMotor.set(-FEED_INTAKE_SPEED);
         currentFeederState = FeederStates.OUTTAKING;
     }
 
-    public void setFeedingShooter(double feedingShooterSpeed) {
-        feederMotor.set(feedingShooterSpeed);
+    public void setFeedingShooter() {
+        feederMotor.set(FEED_SHOOTER_SPEED);
         currentFeederState = FeederStates.FEEDING_SHOOTER;
     }
 }
