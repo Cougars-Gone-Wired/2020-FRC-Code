@@ -31,8 +31,10 @@ public class Limelight {
     private double distance_error = 5.00; //Distance error
     private double desired_distance = 260.00; //Needs to be set later
 
+    private boolean wasIntakeSide;
+
     private enum LimelightStates {
-        DO_NOTHING, AIM, AIM_AND_DRIVE, SEEK_AIM_AND_DRIVE 
+        DO_NOTHING, EXIT, AIM, AIM_AND_DRIVE, SEEK_AIM_AND_DRIVE, 
     }
     private LimelightStates limelightState;
 
@@ -52,15 +54,25 @@ public class Limelight {
             case DO_NOTHING:
                 //why doesn't this do anything
                 if (aimButton) {
+                    if(Robot.drive.isIntakeSide()) {
+                        wasIntakeSide = true;
+                    }
                     Robot.drive.setShooterSide();
                     limelightState = LimelightStates.AIM_AND_DRIVE; //What the limelight should do when the button is pressed
                 }
             break;
 
+            case EXIT:
+                if(wasIntakeSide) {
+                    Robot.drive.setIntakeSide();
+                }
+                limelightState = LimelightStates.DO_NOTHING;
+            break;
+
             case SEEK_AIM_AND_DRIVE:
             //Stays in seek until button stops being pressed or it finds a valid target
                 if (!aimButton) {
-                    limelightState = LimelightStates.DO_NOTHING;
+                    limelightState = LimelightStates.EXIT;
                     aim_adjust = 0; 
                     drive_adjust = 0;
                 }
@@ -78,7 +90,7 @@ public class Limelight {
             case AIM_AND_DRIVE:
                 //A lot of copy and paste here that could be changed later but it's not necessary 
                 if (!aimButton) {
-                    limelightState = LimelightStates.DO_NOTHING;
+                    limelightState = LimelightStates.EXIT;
                     aim_adjust = 0; 
                     drive_adjust = 0;
                     Robot.drive.robotDrive(0, 0, false);
@@ -108,7 +120,7 @@ public class Limelight {
 
             case AIM:
                 if (!aimButton) {
-                    limelightState = LimelightStates.DO_NOTHING;
+                    limelightState = LimelightStates.EXIT;
                     aim_adjust = 0; 
                     drive_adjust = 0;
                     Robot.drive.robotDrive(0, 0, false);
