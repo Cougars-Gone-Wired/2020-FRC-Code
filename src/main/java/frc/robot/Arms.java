@@ -52,8 +52,8 @@ public class Arms {
         }
     }
 
-    public ShooterArmStates getCurrentShooterArmState() {
-        return currentShooterArmState;
+    public boolean isShooterStartingPosition() {
+        return currentShooterArmState == ShooterArmStates.STARTING_POSITION;
     }
 
     public void setStartingPosition() {
@@ -62,10 +62,18 @@ public class Arms {
         currentShooterArmState = ShooterArmStates.STARTING_POSITION;
     }
 
+    public boolean isShooterShootingPosition() {
+        return currentShooterArmState == ShooterArmStates.SHOOTING_POSITION;
+    }
+
     public void setShootingPostion() {
         smallSolenoid.set(false);
         bigSolenoid.set(false);
         currentShooterArmState = ShooterArmStates.SHOOTING_POSITION;
+    }
+
+    public boolean isShooterClimbingPosition() {
+        return currentShooterArmState == ShooterArmStates.CLIMBING_POSITION;
     }
 
     public void setClimbingPostion() {
@@ -73,6 +81,7 @@ public class Arms {
         bigSolenoid.set(true);
         currentShooterArmState = ShooterArmStates.CLIMBING_POSITION;
     }
+    
 
     public enum IntakeArmStates {
         UP, DOWN
@@ -96,13 +105,17 @@ public class Arms {
         }
     }
 
-    public IntakeArmStates getCurrentIntakeArmState() {
-        return currentIntakeArmState;
+    public boolean isIntakeUpPositon() {
+        return currentIntakeArmState == IntakeArmStates.UP;
     }
 
     public void setUpPosition() {
         intakeArmSolenoid.set(false);
         currentIntakeArmState = IntakeArmStates.UP;
+    }
+
+    public boolean isIntakeDownPositon() {
+        return currentIntakeArmState == IntakeArmStates.DOWN;
     }
 
     public void setDownPosition() {

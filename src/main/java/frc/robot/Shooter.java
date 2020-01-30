@@ -1,7 +1,6 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import frc.robot.Arms.ShooterArmStates;
 
 public class Shooter {
     private static final double SHOOTER_SPEED = .45;
@@ -20,7 +19,7 @@ public class Shooter {
     }
 
     public enum ShooterStates {
-        NOT_MOVING, SPINNING
+        NOT_MOVING, SHOOTING
     }
 
     private ShooterStates currentShooterState;
@@ -30,20 +29,20 @@ public class Shooter {
 
         switch (currentShooterState) {
         case NOT_MOVING:
-            if (shooterTriggerBool && Robot.arms.getCurrentShooterArmState() != ShooterArmStates.CLIMBING_POSITION) {
-                setSpinning();
+            if (shooterTriggerBool && !Robot.arms.isShooterClimbingPosition()) {
+                setShooting();
             }
             break;
-        case SPINNING:
-            if (!shooterTriggerBool || Robot.arms.getCurrentShooterArmState() == ShooterArmStates.CLIMBING_POSITION) {
+        case SHOOTING:
+            if (!shooterTriggerBool || Robot.arms.isShooterClimbingPosition()) {
                 setNotMoving();
             } 
             break;
         }
     }
 
-    public ShooterStates getCurrentShooterState() {
-        return currentShooterState;
+    public boolean isNotMoving() {
+        return currentShooterState == ShooterStates.NOT_MOVING;
     }
 
     public void setNotMoving() {
@@ -51,8 +50,12 @@ public class Shooter {
         currentShooterState = ShooterStates.NOT_MOVING;
     }
 
-    public void setSpinning() {
+    public boolean isShooting() {
+        return currentShooterState == ShooterStates.NOT_MOVING;
+    }
+
+    public void setShooting() {
         shooterMotor.set(SHOOTER_SPEED);
-        currentShooterState = ShooterStates.SPINNING;
+        currentShooterState = ShooterStates.SHOOTING;
     }
 }

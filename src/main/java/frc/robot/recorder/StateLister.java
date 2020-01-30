@@ -1,7 +1,6 @@
 package frc.robot.recorder;
 
 import java.io.File;
-import java.util.List;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;

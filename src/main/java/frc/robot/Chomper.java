@@ -1,7 +1,6 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Solenoid;
-import frc.robot.Feeder.FeederStates;
 
 public class Chomper {
     private Solenoid chompSolenoid;
@@ -14,11 +13,11 @@ public class Chomper {
     }
 
     public void initialize() {
-        setIdleConfig();
+        setIdle();
     }
 
     public enum ChompStates {
-        INTAKE_CONFIG, IDLE_CONFIG, SHOOTER_CONFIG
+        IDLE, INTAKE_READY, SHOOTER_READY
     }
 
     private ChompStates currentChompState;
@@ -26,47 +25,55 @@ public class Chomper {
     public void controlChomp() {
 
         switch(currentChompState) {
-            case INTAKE_CONFIG:
-                if (Robot.feeder.getCurrentFeederState() == FeederStates.NOT_MOVING) {
-                    setIdleConfig();
+            case IDLE:
+                if (Robot.feeder.isIntaking()) {
+                    setIntakeReady();
+                } else if (Robot.feeder.isFeedingShooter()) {
+                    setShooterReady();
                 }
                 break;
 
-            case IDLE_CONFIG:
-                if (Robot.feeder.getCurrentFeederState() == FeederStates.INTAKING) {
-                    setIntakeConfig();
-                } else if (Robot.feeder.getCurrentFeederState() == FeederStates.FEEDING_SHOOTER) {
-                    setShooterConfig();
+            case INTAKE_READY:
+                if (Robot.feeder.isNotMoving()) {
+                    setIdle();
                 }
                 break;
 
-            case SHOOTER_CONFIG:
-                if (Robot.feeder.getCurrentFeederState() == FeederStates.NOT_MOVING) {
-                    setIdleConfig();
+            case SHOOTER_READY:
+                if (Robot.feeder.isNotMoving()) {
+                    setIdle();
                 }
             break;
         }
     }
 
-    public ChompStates getCurrentChompState() {
-        return currentChompState;
+    public boolean isIdle() {
+        return currentChompState == ChompStates.IDLE;
     }
 
-    public void setIntakeConfig() {
+    public void setIdle() {
+        chompSolenoid.set(false);
+        hardStopSolenoid.set(true);
+        currentChompState = ChompStates.IDLE;
+    }
+
+    public boolean isIntakeReady() {
+        return currentChompState == ChompStates.INTAKE_READY;
+    }
+
+    public void setIntakeReady() {
         chompSolenoid.set(true);
         hardStopSolenoid.set(true);
-        currentChompState = ChompStates.INTAKE_CONFIG;
+        currentChompState = ChompStates.INTAKE_READY;
     }
 
-    public void setIdleConfig() {
-        chompSolenoid.set(false);
-        hardStopSolenoid.set(true);
-        currentChompState = ChompStates.IDLE_CONFIG;
+    public boolean isShooterReady() {
+        return currentChompState == ChompStates.SHOOTER_READY;
     }
 
-    public void setShooterConfig() {
+    public void setShooterReady() {
         chompSolenoid.set(false);
         hardStopSolenoid.set(false);
-        currentChompState = ChompStates.SHOOTER_CONFIG;
+        currentChompState = ChompStates.SHOOTER_READY;
     }
 }

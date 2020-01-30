@@ -2,8 +2,6 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import frc.robot.Arms.IntakeArmStates;
-import frc.robot.Arms.ShooterArmStates;
 
 public class Intake {
     private static final double INTAKE_SPEED = 0.8;
@@ -29,9 +27,7 @@ public class Intake {
     public void intake(double intakeAxis) {
         switch(currentIntakeState) {
             case NOT_MOVING:
-                if (intakeAxis >= Constants.DEADZONE
-                    && Robot.arms.getCurrentIntakeArmState() != IntakeArmStates.UP 
-                    && Robot.arms.getCurrentShooterArmState() == ShooterArmStates.SHOOTING_POSITION) {
+                if (intakeAxis >= Constants.DEADZONE && !Robot.arms.isIntakeUpPositon() && Robot.arms.isShooterShootingPosition()) {
                     setIntaking();
                 }
                 else if (intakeAxis <= -Constants.DEADZONE) {
@@ -40,25 +36,21 @@ public class Intake {
                 break;
 
             case INTAKING:
-                if (intakeAxis < Constants.DEADZONE
-                || Robot.arms.getCurrentIntakeArmState() == IntakeArmStates.UP
-                || Robot.arms.getCurrentShooterArmState() != ShooterArmStates.SHOOTING_POSITION) {
+                if (intakeAxis < Constants.DEADZONE || Robot.arms.isIntakeUpPositon() || !Robot.arms.isShooterShootingPosition()) {
                     setNotMoving();
                 }
                 break;
 
             case OUTTAKING:
-                if (intakeAxis > -Constants.DEADZONE 
-                || Robot.arms.getCurrentIntakeArmState() == IntakeArmStates.UP
-                || Robot.arms.getCurrentShooterArmState() != ShooterArmStates.SHOOTING_POSITION) {
+                if (intakeAxis > -Constants.DEADZONE || Robot.arms.isIntakeUpPositon() || !Robot.arms.isShooterShootingPosition()) {
                     setNotMoving();
                 }
                 break;
         }
     }
 
-    public IntakeStates getCurrentIntakeState() {
-        return currentIntakeState;
+    public boolean isNotMoving() {
+        return currentIntakeState == IntakeStates.NOT_MOVING;
     }
 
     public void setNotMoving() {
@@ -66,9 +58,17 @@ public class Intake {
         currentIntakeState = IntakeStates.NOT_MOVING;
     }
 
+    public boolean isIntaking() {
+        return currentIntakeState == IntakeStates.INTAKING;
+    }
+
     public void setIntaking() {
         intakeMotor.set(INTAKE_SPEED);
         currentIntakeState = IntakeStates.INTAKING;
+    }
+
+    public boolean isOuttaking() {
+        return currentIntakeState == IntakeStates.OUTTAKING;
     }
 
     public void setOuttaking() {
