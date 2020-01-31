@@ -1,19 +1,15 @@
 package frc.robot.recorder;
 
 import java.util.List;
-import frc.robot.Robot;
-import frc.robot.Drive;
+import frc.robot.Robot; 
 
 public class StateRunner {
-
-    private Drive drive;
 
     List<State> states;
 
     int counter = 0;
 
-    public StateRunner(Robot robot) {
-        this.drive = robot.getDrive();
+    public StateRunner() {
     }
 
     public void counterInitialize() {
@@ -28,7 +24,7 @@ public class StateRunner {
         if (counter < states.size()) {
             State s = states.get(counter);
 
-            drive.robotDrive(s.getDriveSpeedAxisState(), s.getDriveTurnAxisState(), s.getSwitchSideState());
+            Robot.drive.robotDrive(s.getDriveSpeedAxisState(), s.getDriveTurnAxisState(), s.getSwitchSideState());
 
             counter++;
         }

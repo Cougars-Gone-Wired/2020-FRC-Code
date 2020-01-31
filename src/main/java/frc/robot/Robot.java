@@ -5,24 +5,27 @@ import java.util.List;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.AutoPrograms.Programs;
 import frc.robot.recorder.*;
 
 public class Robot extends TimedRobot {
 
-    private Controllers controllers;
+    private AutoPrograms autoPrograms;
 
-    static Arms arms;
-    static Intake intake;
-    static Shooter shooter;
-    static Feeder feeder;
-    static Chomper chomper;
+    public static Controllers controllers;
 
-    static Climber climber;
-    static Drive drive;
-    static Limelight limelight;
+    public static Arms arms;
+    public static Intake intake;
+    public static Shooter shooter;
+    public static Feeder feeder;
+    public static Chomper chomper;
 
-    static StateRecorder recorder;
-    static StateRunner runner;
+    public static Climber climber;
+    public static Drive drive;
+    public static Limelight limelight;
+
+    public static StateRecorder recorder;
+    public static StateRunner runner;
 
     @Override
     public void robotInit() {
@@ -37,32 +40,30 @@ public class Robot extends TimedRobot {
         climber = new Climber();
         drive = new Drive();
         limelight = new Limelight();
+        autoPrograms = new AutoPrograms();
+
 
         recorder = new StateRecorder();
-        runner = new StateRunner(this);
+        runner = new StateRunner();
         GsonSmartDash.put();
         limelight.dashboardInitialize();
+        autoPrograms.initalizeChooser();
     }
 
     @Override
     public void robotPeriodic() {
+        drive.dashboard();
         limelight.dashboard();
     }
 
     @Override
     public void autonomousInit() {
-        runner.counterInitialize();
-        try {
-            List<State> states = StateReader.read(StateLister.gsonChooser.getSelected());
-            runner.setStates(states);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        autoPrograms.initAuto();
     }
 
     @Override
     public void autonomousPeriodic() {
-        runner.run();
+        autoPrograms.runAuto();
     }
 
     @Override
@@ -96,8 +97,7 @@ public class Robot extends TimedRobot {
         limelight.getDashboard();
         limelight.limelightDrive(controllers.getLimelightButton());
 
-        drive.dashboard();
-        recorder.record(controllers);
+        recorder.record();
     }
 
     @Override
@@ -129,7 +129,4 @@ public class Robot extends TimedRobot {
         limelight.dashboardInitialize();
     }
 
-    public Drive getDrive() {
-        return drive;
-    }
 }

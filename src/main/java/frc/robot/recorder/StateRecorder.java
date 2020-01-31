@@ -3,7 +3,7 @@ package frc.robot.recorder;
 import java.util.ArrayList;
 import java.util.List;
 
-import frc.robot.Controllers;
+import frc.robot.Robot;
 
 public class StateRecorder {
 
@@ -13,13 +13,13 @@ public class StateRecorder {
         states = new ArrayList<>();
     }
 
-    public void record(Controllers controllers) {
+    public void record() {
         State s = new State();
 
-        s.setDriveSpeedAxisState(controllers.getDriveSpeedAxis());
-        s.setDriveTurnAxisState(controllers.getDriveTurnAxis());
-        s.setSwitchSideState(controllers.getDriveSideToggle());
-        s.setLimelightState(controllers.getLimelightButton());
+        s.setDriveSpeedAxisState(Robot.controllers.getDriveSpeedAxis());
+        s.setDriveTurnAxisState(Robot.controllers.getDriveTurnAxis());
+        s.setSwitchSideState(Robot.controllers.getDriveSideToggle());
+        s.setLimelightState(Robot.controllers.getLimelightButton());
 
         states.add(s);
     }
