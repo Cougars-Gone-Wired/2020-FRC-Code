@@ -133,7 +133,7 @@ public class Drive {
     }
 
     public boolean isShooterSide() {
-        return driveState == DriveStates.SHOOTER_SIDE;
+        return currentDriveState == DriveStates.SHOOTER_SIDE;
     }
 
     public void setShooterSide() {
@@ -141,7 +141,7 @@ public class Drive {
     }
 
     public boolean isIntakeSide() {
-        return driveState == DriveStates.INTAKE_SIDE;
+        return currentDriveState == DriveStates.INTAKE_SIDE;
     }
 
     public void setIntakeSide() {
