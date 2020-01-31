@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.recorder.*;
 
 public class AutoPrograms {
+    public static double AUTO_SPEED = 0.3;
 
     private SendableChooser<Programs> autoChooser = new SendableChooser<>(); // sendable chooser to hold dead reckoning
                                                                              // auto
@@ -57,12 +58,18 @@ public class AutoPrograms {
 
     public void runAuto() {
         switch (selectedAuto) {
+            case DO_NOTHING:
+            Robot.drive.robotDrive(0, 0, false);
+                break;
+
             case DEAD_RECKONING:
                 moveOffLine();
                 break;
+
             case RECORDER:
                 Robot.runner.run();
                 break;
+
             case LIMELIGHT_AI:
                 break;
         
@@ -76,8 +83,11 @@ public class AutoPrograms {
     }
 
     public void moveOffLine() {
+        SmartDashboard.putNumber("sensor avgs", Robot.drive.ticksToInches(Robot.drive.getSensorAvg()));
         if (Robot.drive.ticksToInches(Robot.drive.getSensorAvg()) < 21) {
-            Robot.drive.driveStraight();
+            Robot.drive.driveStraight(AUTO_SPEED);
+        } else {
+            Robot.drive.driveStraight(0);
         }
     }
 }

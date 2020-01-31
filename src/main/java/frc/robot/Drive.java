@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Drive {
     public static double DRIVE_SPEED = 0.9;
     public static double TURN_SPEED = 0.9;
-    public static double AUTO_SPEED = 0.6;
 
     private WPI_TalonFX frontLeftMotor;
     private WPI_TalonFX midLeftMotor;
@@ -152,8 +151,8 @@ public class Drive {
         return robotDrive;
     }
 
-    public void driveStraight() {
-        robotDrive.curvatureDrive(AUTO_SPEED, 0, false);
+    public void driveStraight(double speed) {
+        robotDrive.curvatureDrive(speed, 0, false);
     }
 
     //NOTE: I kinda wanna move this to its own class, I think it doesn't belong in the drive class. - Judd
@@ -184,7 +183,7 @@ public class Drive {
     }
 
     public double getSensorAvg() {
-        return (getLeftSensors() + getRightSensors())/2;
+        return (Math.abs(getLeftSensors()) + Math.abs(getRightSensors()))/2;
     }
 
 
@@ -205,6 +204,7 @@ public class Drive {
 
         SmartDashboard.putNumber("Left Average", ticksToInches(getLeftSensors()));
         SmartDashboard.putNumber("Right Average", ticksToInches(getRightSensors()));
+        SmartDashboard.putNumber("All the sensors", ticksToInches(getSensorAvg()));
     }
 
     public double avgSensorGroup(double sensor1, double sensor2, double sensor3) {

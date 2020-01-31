@@ -47,10 +47,12 @@ public class Robot extends TimedRobot {
         runner = new StateRunner();
         GsonSmartDash.put();
         limelight.dashboardInitialize();
+        autoPrograms.initalizeChooser();
     }
 
     @Override
     public void robotPeriodic() {
+        drive.dashboard();
         limelight.dashboard();
     }
 
@@ -95,7 +97,6 @@ public class Robot extends TimedRobot {
         limelight.getDashboard();
         limelight.limelightDrive(controllers.getLimelightButton());
 
-        drive.dashboard();
         recorder.record();
     }
 
