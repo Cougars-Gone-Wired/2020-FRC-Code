@@ -2,8 +2,6 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import frc.robot.Arms.ShooterArmStates;
-
 public class Climber {
     private static double LIFT_SPEED = 0.3;
 
@@ -33,9 +31,7 @@ public class Climber {
         
         switch (currentClimbState) {
             case NOT_MOVING:
-                if (climberUpTriggerBool 
-                    && !climberDownTriggerBool 
-                    && Robot.arms.getCurrentShooterArmState() == ShooterArmStates.CLIMBING_POSITION) {
+                if (climberUpTriggerBool && !climberDownTriggerBool && Robot.arms.isShooterClimbingPosition()) {
                     setMovingUp();
                 }
                 if (climberDownTriggerBool && !climberUpTriggerBool) {
@@ -57,8 +53,8 @@ public class Climber {
         }
     }
 
-    public ClimbStates getCurrentClimbState() {
-        return currentClimbState;
+    public boolean isNotMoving() {
+        return currentClimbState == ClimbStates.NOT_MOVING;
     }
 
     public void setNotMoving() {
@@ -66,9 +62,17 @@ public class Climber {
         currentClimbState = ClimbStates.NOT_MOVING;
     }
 
+    public boolean isMovingUp() {
+        return currentClimbState == ClimbStates.MOVING_UP;
+    }
+
     public void setMovingUp() {
         climbMotor.set(LIFT_SPEED);
         currentClimbState = ClimbStates.MOVING_UP;
+    }
+
+    public boolean isMovingDown() {
+        return currentClimbState == ClimbStates.MOVING_DOWN;
     }
 
     public void setMovingDown() {
