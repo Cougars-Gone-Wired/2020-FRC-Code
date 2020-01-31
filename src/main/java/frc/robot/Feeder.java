@@ -37,13 +37,13 @@ public class Feeder {
                 } else if (Robot.intake.isOuttaking() && !Robot.shooter.isShooting()) {
                     setOuttaking();
 
-                } else if (!Robot.intake.isNotMoving() && Robot.shooter.isShooting()){
+                } else if (!Robot.intake.isNotMoving() && Robot.shooter.isShooting() && Robot.shooter.atDesiredVelocity()) {
                     setFeedingShooter();
                 }
                 break;
 
             case INTAKING:
-                if(!Robot.intake.isIntaking() || Robot.shooter.isShooting() || feederLineBreak.get() ) {
+                if(!Robot.intake.isIntaking() || Robot.shooter.isShooting() || feederLineBreak.get()) {
                     setNotMoving();
                 }
                 break;
@@ -59,7 +59,6 @@ public class Feeder {
                     setNotMoving();
                 }
                 break;
-
         }   
     }
 
