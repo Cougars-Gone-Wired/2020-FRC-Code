@@ -4,15 +4,19 @@ import edu.wpi.first.wpilibj.Solenoid;
 
 public class Arms {
 
-    private Solenoid smallSolenoid;
-    private Solenoid bigSolenoid;
+    // private Solenoid smallSolenoid;
+    // private Solenoid bigSolenoid;
+    private DoubleSolenoid smallSolenoid;
+    private DoubleSolenoid bigSolenoid;
     private Solenoid intakeArmSolenoid;
 
     private boolean triggerDown = false;
 
     public Arms() {
-        smallSolenoid = new Solenoid(Constants.ARM_SMALL_SOLENOID_PORT);
-        bigSolenoid = new Solenoid(Constants.ARM_BIG_SOLENOID_PORT);
+        // smallSolenoid = new Solenoid(Constants.ARM_SMALL_SOLENOID_PORT);
+        // bigSolenoid = new Solenoid(Constants.ARM_BIG_SOLENOID_PORT);
+        smallSolenoid = new Solenoid(Constants.ARM_SMALL_SOLENOID_PORT_1, Constants.ARM_SMALL_SOLENOID_PORT_2);
+        bigSolenoid = new Solenoid(Constants.ARM_BIG_SOLENOID_PORT_1, Constants.ARM_BIG_SOLENOID_PORT_2);
         intakeArmSolenoid = new Solenoid(Constants.INTAKE_SOLENOID_PORT);
         initialize();
     }
@@ -65,20 +69,26 @@ public class Arms {
     }
 
     public void setStartingPosition() {
-        smallSolenoid.set(false);
-        bigSolenoid.set(true);
+        // smallSolenoid.set(false);
+        // bigSolenoid.set(true);
+        smallSolenoid.set(DoubleSolenoid.Value.kReverse);
+        bigSolenoid.set(DoubleSolenoid.Value.kForward);
         currentShooterArmState = ShooterArmStates.STARTING_POSITION;
     }
 
     public void setShootingPostion() {
-        smallSolenoid.set(false);
-        bigSolenoid.set(false);
+        // smallSolenoid.set(false);
+        // bigSolenoid.set(false);
+        smallSolenoid.set(DoubleSolenoid.Value.kReverse);
+        bigSolenoid.set(DoubleSolenoid.Value.kReverse);
         currentShooterArmState = ShooterArmStates.SHOOTING_POSITION;
     }
 
     public void setClimbingPostion() {
-        smallSolenoid.set(true);
-        bigSolenoid.set(true);
+        // smallSolenoid.set(true);
+        // bigSolenoid.set(true);
+        smallSolenoid.set(DoubleSolenoid.Value.kForward);
+        bigSolenoid.set(DoubleSolenoid.Value.kForward);
         currentShooterArmState = ShooterArmStates.CLIMBING_POSITION;
     }
     
