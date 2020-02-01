@@ -44,4 +44,5 @@ public class Constants {
 
     static final double DEADZONE = 0.15;
 
+    static final int GYRO_ID = 99;
 }
