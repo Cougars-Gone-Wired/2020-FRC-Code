@@ -41,8 +41,12 @@ public class Limelight {
 
     public Limelight() {
         table = NetworkTableInstance.getDefault().getTable("limelight"); 
+    }
+
+    public void initialize() {
         limelightState = LimelightStates.DO_NOTHING;
-        turnlightsOff();
+        limelightAimState = LimelightAimStates.IDLE;
+        // turnlightsOff();
     }
 
     public void limelightDrive(boolean aimButton) {
@@ -58,7 +62,7 @@ public class Limelight {
                     if(Robot.drive.isIntakeSide()) {
                         wasIntakeSide = true;
                     }
-                    turnlightsOn();
+                    //turnlightsOn();
                      //What the limelight should do when the button is pressed
                      setAimAndDrive();
                 }
@@ -130,7 +134,7 @@ public class Limelight {
         if(wasIntakeSide) {
             Robot.drive.setIntakeSide();
         }
-        turnlightsOff();
+        //turnlightsOff();
         aim_adjust = 0; 
         drive_adjust = 0;
         Robot.drive.robotDrive(0, 0, false);
@@ -157,10 +161,17 @@ public class Limelight {
     private LimelightAimStates limelightAimState;
 
     public int limelightAimAndUnaim(boolean aimButton) {
+        tv = table.getEntry("tv").getDouble(0);
+        tx = table.getEntry("tx").getDouble(0);
+        ty = table.getEntry("ty").getDouble(0);
+        ta = table.getEntry("ta").getDouble(0);
+        getDashboard();
+
         switch(limelightAimState) {
             case IDLE:
                 if (aimButton) {
-                    turnlightsOn();
+                    // turnlightsOn();
+                    unaimAngle = tx;
                     setAiming();
                 }
             break;
@@ -183,11 +194,11 @@ public class Limelight {
             break;
 
             case UNAIMING:
-                aim_adjust = aimKp * (unaimAngle / 29.8);
-                if (unaimAngle > angle_error) {
-                    aim_adjust += min;
-                } else if (unaimAngle < -angle_error) {
+                aim_adjust = -aimKp * ((unaimAngle - tx) / 29.8);
+                if (unaimAngle - tx > angle_error) {
                     aim_adjust -= min;
+                } else if (unaimAngle - tx < -angle_error) {
+                    aim_adjust += min;
                 } else {
                     aim_adjust = 0;
                     setIdle();
@@ -200,7 +211,7 @@ public class Limelight {
     }
 
     public void setIdle() {
-        turnlightsOff();
+        // turnlightsOff();
         limelightAimState = LimelightAimStates.IDLE;
         aim_adjust = 0; 
         drive_adjust = 0;
@@ -209,16 +220,18 @@ public class Limelight {
 
     public void setAiming() {
         limelightAimState = LimelightAimStates.AIMING;
-        unaimAngle = table.getEntry("tv").getDouble(0);
     }
 
     public void setUnaim() {
+        aim_adjust = 0; 
+        drive_adjust = 0;
+        Robot.drive.robotDrive(0, 0, false);
         limelightAimState = LimelightAimStates.UNAIMING;
     }
 
-    public void turnlightsOn() {
-        table.getEntry("ledMode").setNumber(3);
-    }
+    // public void turnlightsOn() {
+    //     table.getEntry("ledMode").setNumber(3);
+    // }
 
     public void turnlightsOff() {
         table.getEntry("ledMode").setNumber(1);
