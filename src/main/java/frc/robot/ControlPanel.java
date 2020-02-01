@@ -139,6 +139,7 @@ public class ControlPanel {
           changedColor = false;
         }
         break;
+
       case "G":
         if (averagedColor == "B") {
           trueColor = "B";
@@ -150,6 +151,7 @@ public class ControlPanel {
           changedColor = false;
         }
         break;
+
       case "B":
         if (averagedColor == "Y") {
           trueColor = "Y";
@@ -161,6 +163,7 @@ public class ControlPanel {
           changedColor = false;
         }
         break;
+
       case "Y":
         if (averagedColor == "R") {
           trueColor = "R";
@@ -172,6 +175,7 @@ public class ControlPanel {
           changedColor = false;
         }
         break;
+
       default:
         if (averagedColor != "?") {
           trueColor = averagedColor;
@@ -217,12 +221,15 @@ public class ControlPanel {
       case "R":
         targetColor = "G";
         break;
+
       case "G":
         targetColor = "B";
         break;
+
       case "B":
         targetColor = "Y";
         break;
+        
       case "Y":
         targetColor = "R";
         break;
