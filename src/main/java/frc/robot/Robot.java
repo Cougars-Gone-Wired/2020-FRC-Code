@@ -95,7 +95,6 @@ public class Robot extends TimedRobot {
 
         climber.climb(controllers.getClimberUpTrigger(), controllers.getClimberDownTrigger());
         drive.robotDrive(controllers.getDriveSpeedAxis(), controllers.getDriveTurnAxis(), controllers.getDriveSideToggle());
-        limelight.limelightAimAndUnaim(controllers.getLimelightButton());
         limelight.limelightDrive(controllers.getLimelightButton());
 
         recorder.record();

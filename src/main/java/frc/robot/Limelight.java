@@ -34,20 +34,20 @@ public class Limelight {
     private double unaimAngle;
     private boolean wasIntakeSide;
 
-    private enum LimelightStates {
-        DO_NOTHING, AIM, AIM_AND_DRIVE, SEEK_AIM_AND_DRIVE, 
-    }
-    private LimelightStates limelightState;
-
     public Limelight() {
         table = NetworkTableInstance.getDefault().getTable("limelight"); 
     }
 
     public void initialize() {
-        limelightState = LimelightStates.DO_NOTHING;
-        limelightAimState = LimelightAimStates.IDLE;
+        limelightDriveState = LimelightDriveStates.DO_NOTHING;
+        limelightAutoState = LimelightAutoStates.IDLE;
         // turnlightsOff();
     }
+
+    private enum LimelightDriveStates {
+        DO_NOTHING, AIM, AIM_AND_DRIVE, SEEK_AIM_AND_DRIVE, 
+    }
+    private LimelightDriveStates limelightDriveState;
 
     public void limelightDrive(boolean aimButton) {
         tv = table.getEntry("tv").getDouble(0);
@@ -56,7 +56,7 @@ public class Limelight {
         ta = table.getEntry("ta").getDouble(0);
         getDashboard();
 
-        switch(limelightState) {
+        switch(limelightDriveState) {
             case DO_NOTHING:
                 if (aimButton) {
                     if(Robot.drive.isIntakeSide()) {
@@ -64,19 +64,19 @@ public class Limelight {
                     }
                     //turnlightsOn();
                      //What the limelight should do when the button is pressed
-                     setAimAndDrive();
+                     setDriveAimAndDrive();
                 }
             break;
 
             case SEEK_AIM_AND_DRIVE:
             //Stays in seek until button stops being pressed or it finds a valid target
                 if (!aimButton) {
-                    setDoNothing();
+                    setDriveDoNothing();
                 }
 
                 drive_adjust = 0;
                 if (tv == 1 && ta > 10) { 
-                    setAimAndDrive();
+                    setDriveAimAndDrive();
                     aim_adjust = 0;
                 } else {
                     aim_adjust = min;
@@ -87,7 +87,7 @@ public class Limelight {
             case AIM_AND_DRIVE:
                 //A lot of copy and paste here that could be changed later but it's not necessary 
                 if (!aimButton) {
-                    setDoNothing();
+                    setDriveDoNothing();
                 }
 
                 aim_adjust = aimKp * (tx / 29.8);
@@ -114,7 +114,7 @@ public class Limelight {
 
             case AIM:
                 if (!aimButton) {
-                    setDoNothing();
+                    setDriveDoNothing();
                 }
 
                 aim_adjust = aimKp * (tx / 29.8);
@@ -130,7 +130,7 @@ public class Limelight {
         }
     }
 
-    public void setDoNothing() {
+    public void setDriveDoNothing() {
         if(wasIntakeSide) {
             Robot.drive.setIntakeSide();
         }
@@ -138,47 +138,47 @@ public class Limelight {
         aim_adjust = 0; 
         drive_adjust = 0;
         Robot.drive.robotDrive(0, 0, false);
-        limelightState = LimelightStates.DO_NOTHING;
+        limelightDriveState = LimelightDriveStates.DO_NOTHING;
     }
 
-    public void setAim() {
-        limelightState = LimelightStates.AIM;
+    public void setDriveAim() {
+        limelightDriveState = LimelightDriveStates.AIM;
     }
 
-    public void setAimAndDrive() {
-        limelightState = LimelightStates.AIM_AND_DRIVE;
+    public void setDriveAimAndDrive() {
+        limelightDriveState = LimelightDriveStates.AIM_AND_DRIVE;
     }
 
-    public void setSeekAimAndDrive() {
-        limelightState = LimelightStates.SEEK_AIM_AND_DRIVE;
+    public void setDriveSeekAimAndDrive() {
+        limelightDriveState = LimelightDriveStates.SEEK_AIM_AND_DRIVE;
     }
 
     
-    private enum LimelightAimStates {
+    private enum LimelightAutoStates {
         IDLE, AIMING, UNAIMING
     }
 
-    private LimelightAimStates limelightAimState;
+    private LimelightAutoStates limelightAutoState;
 
-    public int limelightAimAndUnaim(boolean aimButton) {
+    public int limelightAuto(boolean aimButton) {
         tv = table.getEntry("tv").getDouble(0);
         tx = table.getEntry("tx").getDouble(0);
         ty = table.getEntry("ty").getDouble(0);
         ta = table.getEntry("ta").getDouble(0);
         getDashboard();
 
-        switch(limelightAimState) {
+        switch(limelightAutoState) {
             case IDLE:
                 if (aimButton) {
                     // turnlightsOn();
                     unaimAngle = tx;
-                    setAiming();
+                    setAutoAiming();
                 }
             break;
             
             case AIMING:
                 if (!aimButton) {
-                setUnaim();
+                setAutoUnaiming();
                 }
 
                 aim_adjust = aimKp * (tx / 29.8);
@@ -194,14 +194,14 @@ public class Limelight {
             break;
 
             case UNAIMING:
-                aim_adjust = -aimKp * ((unaimAngle - tx) / 29.8);
-                if (unaimAngle - tx > angle_error) {
-                    aim_adjust -= min;
-                } else if (unaimAngle - tx < -angle_error) {
+                aim_adjust = aimKp * ((tx - unaimAngle) / 29.8);
+                if (tx - unaimAngle > angle_error) {
                     aim_adjust += min;
+                } else if (tx - unaimAngle < -angle_error) {
+                    aim_adjust -= min;
                 } else {
                     aim_adjust = 0;
-                    setIdle();
+                    setAutoIdle();
                     return 2;
                 }
                 Robot.drive.robotDrive(drive_adjust, aim_adjust, false);
@@ -210,28 +210,39 @@ public class Limelight {
         return 0;
     }
 
-    public void setIdle() {
-        // turnlightsOff();
-        limelightAimState = LimelightAimStates.IDLE;
+    public boolean isAutoIdle() {
+        return limelightAutoState == LimelightAutoStates.IDLE;
+    }
+
+    public boolean isAutoAiming() {
+        return limelightAutoState == LimelightAutoStates.AIMING;
+    }
+
+    public boolean isAutoUnaiming() {
+        return limelightAutoState == LimelightAutoStates.UNAIMING;
+    }
+
+    public void setAutoIdle() {
+        limelightAutoState = LimelightAutoStates.IDLE;
         aim_adjust = 0; 
         drive_adjust = 0;
         Robot.drive.robotDrive(0, 0, false);
     }
 
-    public void setAiming() {
-        limelightAimState = LimelightAimStates.AIMING;
+    public void setAutoAiming() {
+        limelightAutoState = LimelightAutoStates.AIMING;
     }
 
-    public void setUnaim() {
+    public void setAutoUnaiming() {
         aim_adjust = 0; 
         drive_adjust = 0;
         Robot.drive.robotDrive(0, 0, false);
-        limelightAimState = LimelightAimStates.UNAIMING;
+        limelightAutoState = LimelightAutoStates.UNAIMING;
     }
 
-    // public void turnlightsOn() {
-    //     table.getEntry("ledMode").setNumber(3);
-    // }
+    public void turnlightsOn() {
+        table.getEntry("ledMode").setNumber(3);
+    }
 
     public void turnlightsOff() {
         table.getEntry("ledMode").setNumber(1);
