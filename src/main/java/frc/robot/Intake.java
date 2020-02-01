@@ -53,22 +53,22 @@ public class Intake {
         return currentIntakeState == IntakeStates.NOT_MOVING;
     }
 
+    public boolean isIntaking() {
+        return currentIntakeState == IntakeStates.INTAKING;
+    }
+
+    public boolean isOuttaking() {
+        return currentIntakeState == IntakeStates.OUTTAKING;
+    }
+
     public void setNotMoving() {
         intakeMotor.set(0);
         currentIntakeState = IntakeStates.NOT_MOVING;
     }
 
-    public boolean isIntaking() {
-        return currentIntakeState == IntakeStates.INTAKING;
-    }
-
     public void setIntaking() {
         intakeMotor.set(INTAKE_SPEED);
         currentIntakeState = IntakeStates.INTAKING;
-    }
-
-    public boolean isOuttaking() {
-        return currentIntakeState == IntakeStates.OUTTAKING;
     }
 
     public void setOuttaking() {

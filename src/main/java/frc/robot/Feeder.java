@@ -66,13 +66,21 @@ public class Feeder {
         return currentFeederState == FeederStates.NOT_MOVING;
     }
 
+    public boolean isIntaking() {
+        return currentFeederState == FeederStates.INTAKING;
+    }
+
+    public boolean isOuttaking() {
+        return currentFeederState == FeederStates.OUTTAKING;
+    }
+
+    public boolean isFeedingShooter() {
+        return currentFeederState == FeederStates.FEEDING_SHOOTER;
+    }
+
     public void setNotMoving() {
         feederMotor.set(0);
         currentFeederState = FeederStates.NOT_MOVING;
-    }
-
-    public boolean isIntaking() {
-        return currentFeederState == FeederStates.INTAKING;
     }
 
     public void setIntaking() {
@@ -80,17 +88,9 @@ public class Feeder {
         currentFeederState = FeederStates.INTAKING;
     }
 
-    public boolean isOuttaking() {
-        return currentFeederState == FeederStates.OUTTAKING;
-    }
-
     public void setOuttaking() {
         feederMotor.set(-FEED_INTAKE_SPEED);
         currentFeederState = FeederStates.OUTTAKING;
-    }
-
-    public boolean isFeedingShooter() {
-        return currentFeederState == FeederStates.FEEDING_SHOOTER;
     }
 
     public void setFeedingShooter() {

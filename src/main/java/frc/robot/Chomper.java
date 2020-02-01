@@ -51,24 +51,24 @@ public class Chomper {
         return currentChompState == ChompStates.IDLE;
     }
 
+    public boolean isIntakeReady() {
+        return currentChompState == ChompStates.INTAKE_READY;
+    }
+
+    public boolean isShooterReady() {
+        return currentChompState == ChompStates.SHOOTER_READY;
+    }
+
     public void setIdle() {
         chompSolenoid.set(false);
         hardStopSolenoid.set(true);
         currentChompState = ChompStates.IDLE;
     }
 
-    public boolean isIntakeReady() {
-        return currentChompState == ChompStates.INTAKE_READY;
-    }
-
     public void setIntakeReady() {
         chompSolenoid.set(true);
         hardStopSolenoid.set(true);
         currentChompState = ChompStates.INTAKE_READY;
-    }
-
-    public boolean isShooterReady() {
-        return currentChompState == ChompStates.SHOOTER_READY;
     }
 
     public void setShooterReady() {

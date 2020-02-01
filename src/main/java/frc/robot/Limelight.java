@@ -42,6 +42,7 @@ public class Limelight {
     public Limelight() {
         table = NetworkTableInstance.getDefault().getTable("limelight"); 
         limelightState = LimelightStates.DO_NOTHING;
+        turnlightsOff();
     }
 
     public void limelightDrive(boolean aimButton) {
@@ -57,8 +58,9 @@ public class Limelight {
                     if(Robot.drive.isIntakeSide()) {
                         wasIntakeSide = true;
                     }
-                    Robot.drive.setShooterSide();
-                    limelightState = LimelightStates.AIM_AND_DRIVE; //What the limelight should do when the button is pressed
+                    turnlightsOn();
+                     //What the limelight should do when the button is pressed
+                     setAimAndDrive();
                 }
             break;
 
@@ -70,7 +72,7 @@ public class Limelight {
 
                 drive_adjust = 0;
                 if (tv == 1 && ta > 10) { 
-                    limelightState = LimelightStates.AIM_AND_DRIVE;
+                    setAimAndDrive();
                     aim_adjust = 0;
                 } else {
                     aim_adjust = min;
@@ -128,10 +130,23 @@ public class Limelight {
         if(wasIntakeSide) {
             Robot.drive.setIntakeSide();
         }
-        limelightState = LimelightStates.DO_NOTHING;
+        turnlightsOff();
         aim_adjust = 0; 
         drive_adjust = 0;
         Robot.drive.robotDrive(0, 0, false);
+        limelightState = LimelightStates.DO_NOTHING;
+    }
+
+    public void setAim() {
+        limelightState = LimelightStates.AIM;
+    }
+
+    public void setAimAndDrive() {
+        limelightState = LimelightStates.AIM_AND_DRIVE;
+    }
+
+    public void setSeekAimAndDrive() {
+        limelightState = LimelightStates.SEEK_AIM_AND_DRIVE;
     }
 
     
@@ -145,6 +160,7 @@ public class Limelight {
         switch(limelightAimState) {
             case IDLE:
                 if (aimButton) {
+                    turnlightsOn();
                     setAiming();
                 }
             break;
@@ -184,6 +200,7 @@ public class Limelight {
     }
 
     public void setIdle() {
+        turnlightsOff();
         limelightAimState = LimelightAimStates.IDLE;
         aim_adjust = 0; 
         drive_adjust = 0;
@@ -197,6 +214,14 @@ public class Limelight {
 
     public void setUnaim() {
         limelightAimState = LimelightAimStates.UNAIMING;
+    }
+
+    public void turnlightsOn() {
+        table.getEntry("ledMode").setNumber(3);
+    }
+
+    public void turnlightsOff() {
+        table.getEntry("ledMode").setNumber(1);
     }
 
     //Calculates Distance
