@@ -1,191 +1,288 @@
 package frc.robot;
 
-// import edu.wpi.first.wpilibj.TimedRobot;
+import java.util.ArrayList;
+
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.I2C;
-// import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 
-// import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 
-import com.revrobotics.ColorSensorV3;
-import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorMatch;
-public class ControlPanel {  
+import com.revrobotics.ColorMatchResult;
+import com.revrobotics.ColorSensorV3;
 
-    //BIG NOTE                                                  |   OTHER REFERENCE DATA
-    // Blue = Red                                               |   Wheels ratio: ??:??
-    // Red = Blue                                               |   hi
-    // Green = Yellow                                           |
-    // Yellow = Green                                           |
-    // Yes, we live in the Phantom Tollbooth. Get used to it.   |
+public class ControlPanel {
+  private static final double MANUAL_PANEL_MOTOR_SPEED = .4;
+  private static final double AUTOMATIC_PANEL_MOTOR_SPEED = 1.0;
+  private static final int COLOR_LOG_LENGTH = 6;
 
-    private static final double COLORWHEEL_SPEED = .4;
-    private static final double COLORWHEEL_SPEED_MULTIPLIER = 1;
-    private WPI_TalonSRX wheelMotor;
-    private States currentState;
-    private String gameData;
-    // private Boolean gameDataError;
-    private String colorString;
+  private WPI_TalonSRX panelMotor;
 
-    private Color kBlueTarget;
-    private Color kGreenTarget;
-    private Color kRedTarget;
-    private Color kYellowTarget;
-    private ColorMatch m_colorMatcher;
-    private ColorSensorV3 m_colorSensor;
-    private Color colorRead;
-    private Color detectedColor;
-    ColorMatchResult match;
+  private ColorSensorV3 m_colorSensor;
+  private ColorMatch m_colorMatcher;
+  private ArrayList<String> colorLog;
 
-    public ControlPanel() { // Constructor 
-        wheelMotor = new WPI_TalonSRX(0);
-        currentState = States.NOT_MOVING;
-        // gameData = DriverStation.getInstance().getGameSpecificMessage();
+  public ControlPanel() {
+    panelMotor = new WPI_TalonSRX(Constants.CONTROL_PANEL_MOTOR_ID);
+    m_colorSensor = new ColorSensorV3(i2cPort);
+    m_colorMatcher = new ColorMatch();
+    colorLog = new ArrayList<String>(COLOR_LOG_LENGTH);
 
-        final I2C.Port i2cPort = I2C.Port.kOnboard;
-        ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
-        // ColorMatch m_colorMatcher = new ColorMatch();
+    m_colorMatcher.addColorMatch(kBlueTarget);
+    m_colorMatcher.addColorMatch(kGreenTarget);
+    m_colorMatcher.addColorMatch(kRedTarget);
+    m_colorMatcher.addColorMatch(kYellowTarget);
+  }
 
-        // Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429); // #246d6d
-        // Color kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240); // #328f3d
-        // Color kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114); // #8f3b1d
-        // Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113); // #5c861d
-    }
+  public void initialize() {
+    panelMotor.setInverted(false);
+    panelMotor.setNeutralMode(NeutralMode.Brake);
+    panelMotor.configOpenloopRamp(0.0);
+    setNotMoving();
+  }
 
-    public void initialize() {
-        wheelMotor.set(0);
-        currentState = States.NOT_MOVING;
-        gameData = DriverStation.getInstance().getGameSpecificMessage();
+  private enum PanelStates {
+    NOT_MOVING, MANUALLY_SPINNING, ROTATING, POSITIONING
+  }
 
-        m_colorMatcher.addColorMatch(kBlueTarget);
-        m_colorMatcher.addColorMatch(kGreenTarget);
-        m_colorMatcher.addColorMatch(kRedTarget);
-        m_colorMatcher.addColorMatch(kYellowTarget);
+  private PanelStates panelState;
 
-        colorRead = m_colorSensor.getColor();
-    }
+  private String targetColor;
+  private int timesTargetSeen;
 
-    public enum States {
-        NOT_MOVING, SPINNING
-    }
-
-    public void color() {
-        colorRead = m_colorSensor.getColor();
-        
-        // ColorMatchResult match = m_colorMatcher.matchClosestColor(detectedColor);
-        
-        // if (match.color == kBlueTarget) {
-        //   colorString = "Blue";
-        // } else if (match.color == kRedTarget) {
-        //   colorString = "Red";
-        // } else if (match.color == kGreenTarget) {
-        //   colorString = "Green";
-        // } else if (match.color == kYellowTarget) {
-        //   colorString = "Yellow";
-        // } else {
-        //   colorString = "Unknown";
-        // }
-        switch (gameData.charAt(0))
-        {
-            case 'B' :
-              //Blue case code
-                if ( colorString != "Red" ) {
-                  wheelMotor.set(COLORWHEEL_SPEED*COLORWHEEL_SPEED_MULTIPLIER);
-                }
-              break;
-            case 'G' :
-              //Green case code
-              if ( colorString != "Yellow" ) {
-
-              }
-              break;
-            case 'R' :
-              //Red case code
-              if ( colorString != "Blue" ) {
-
-              }
-              break;
-            case 'Y' :
-              //Yellow case code
-              if ( colorString != "Green" ) {
-
-              }
-              break;
-            // default :
-            //   //This is corrupt data
-            //   gameDataError = true;
-            //   SmartDashboard.putBoolean("Game Data Status", gameDataError);
-            //   break;
+  public void spin(boolean manualSpinButton, boolean rotateToggle, boolean positionToggle) {
+    switch (panelState) {
+      case NOT_MOVING:
+        if (manualSpinButton) {
+          setManuallySpinning();
+        } else if (rotateToggle) {
+          setRotating();
+        } else if (positionToggle) {
+          setPostitioning();
         }
+        break;
+
+      case MANUALLY_SPINNING:
+        if (!manualSpinButton) {
+          setNotMoving();
+        }
+        break;
+
+      case ROTATING:
+        trackColor();
+        if (changedColor && trueColor == targetColor) {
+          timesTargetSeen++;
+        }
+        if (timesTargetSeen >= 7 || !rotateToggle) {
+          setNotMoving();
+        }
+        break;
+
+      case POSITIONING:
+        trackColor();
+        if (changedColor && trueColor == targetColor || !positionToggle) {
+          panelMotor.setInverted(false);
+          setNotMoving();
+        }
+        break;
     }
+  }
+
+  public void colorTrackInit() {
+    colorLog.clear();
+    matchColor();
+    for (int i = 0; i <= COLOR_LOG_LENGTH; i++) {
+      colorLog.add(currentColor);
+    }
+    trueColor = currentColor;
+  }
+
+  private final I2C.Port i2cPort = I2C.Port.kOnboard;
+  
+  private ColorMatchResult match;
+  
+  private final Color kRedTarget = ColorMatch.makeColor(0.643, 0.310, 0.048);
+  private final Color kGreenTarget = ColorMatch.makeColor(0.271, 0.557, 0.173);
+  private final Color kBlueTarget = ColorMatch.makeColor(0.241, 0.482, 0.278);
+  private final Color kYellowTarget = ColorMatch.makeColor(0.439, 0.486, 0.075);
+
+  private Color rawColor;
+  private String currentColor;
+  private String averagedColor;
+  private String trueColor;
+  private boolean changedColor;
+
+  public void trackColor() {
+    matchColor();
+
+    colorLog.remove(0);
+    colorLog.add(currentColor);
+
+    if (colorLog.stream().distinct().count() <= 1) {
+      averagedColor = currentColor;
+    } else {
+      averagedColor = "?";
+    }
+
+    switch (trueColor) {
+      case "R":
+        if (averagedColor == "G") {
+          trueColor = "G";
+          changedColor = true;
+        } else if (averagedColor == "Y") {
+          trueColor = "Y";
+          changedColor = true;
+        } else {
+          changedColor = false;
+        }
+        break;
+      case "G":
+        if (averagedColor == "B") {
+          trueColor = "B";
+          changedColor = true;
+        } else if (averagedColor == "R") {
+          trueColor = "R";
+          changedColor = true;
+        } else {
+          changedColor = false;
+        }
+        break;
+      case "B":
+        if (averagedColor == "Y") {
+          trueColor = "Y";
+          changedColor = true;
+        } else if (averagedColor == "G") {
+          trueColor = "G";
+          changedColor = true;
+        } else {
+          changedColor = false;
+        }
+        break;
+      case "Y":
+        if (averagedColor == "R") {
+          trueColor = "R";
+          changedColor = true;
+        } else if (averagedColor == "B") {
+          trueColor = "B";
+          changedColor = true;
+        } else {
+          changedColor = false;
+        }
+        break;
+      default:
+        if (averagedColor != "?") {
+          trueColor = averagedColor;
+          changedColor = true;
+        } else {
+          changedColor = false;
+        }
+        break;
+    }
+  }
+
+  public void matchColor() {
+    rawColor = m_colorSensor.getColor();
+    match = m_colorMatcher.matchClosestColor(rawColor);
     
-    public void spinManual(boolean spinButton) {
-        switch(currentState) {
-            case NOT_MOVING:
-                if (spinButton) {
-                    wheelMotor.set(COLORWHEEL_SPEED);
-                    currentState = States.SPINNING;
-                }
-                break;
-                
-            case SPINNING:
-                if (!spinButton) {
-                    wheelMotor.set(0);
-                    currentState = States.NOT_MOVING;
-                }
-                break;
+    if (match.color == kRedTarget) {
+      currentColor = "R";
+    } else if (match.color == kGreenTarget) {
+      currentColor = "G";
+    } else if (match.color == kBlueTarget) {
+      currentColor = "B";
+    } else if (match.color == kYellowTarget) {
+      currentColor = "Y";
+    } else {
+      currentColor = "?";
+    }
+  }
+
+  public void setNotMoving() {
+    panelMotor.set(0.0);
+    panelState = PanelStates.NOT_MOVING;
+  }
+
+  public void setManuallySpinning() {
+    panelMotor.set(MANUAL_PANEL_MOTOR_SPEED);
+    panelState = PanelStates.MANUALLY_SPINNING;
+  }
+
+  public void setRotating() {
+    colorTrackInit();
+    timesTargetSeen = 0;
+    switch (trueColor) {
+      case "R":
+        targetColor = "G";
+        break;
+      case "G":
+        targetColor = "B";
+        break;
+      case "B":
+        targetColor = "Y";
+        break;
+      case "Y":
+        targetColor = "R";
+        break;
+    }
+    panelMotor.set(AUTOMATIC_PANEL_MOTOR_SPEED);
+    panelState = PanelStates.ROTATING;
+  }
+
+  private String gameData;
+
+  public void setPostitioning() {
+    colorTrackInit();
+    gameData = DriverStation.getInstance().getGameSpecificMessage();
+    switch (gameData.charAt(0)) {
+      case 'R':
+        targetColor = "B";
+        if (trueColor == "Y" || trueColor == "B") {
+          panelMotor.setInverted(true);
         }
+        break;
+        
+      case 'G':
+        targetColor = "Y";
+        if (trueColor == "R" || trueColor == "Y") {
+          panelMotor.setInverted(true);
+        }
+        break;
+
+      case 'B':
+        targetColor = "R";
+        if (trueColor == "G" || trueColor == "R") {
+          panelMotor.setInverted(true);
+        }
+        break;
+
+      case 'Y':
+        targetColor = "G";
+        if (trueColor == "B" || trueColor == "G") {
+          panelMotor.setInverted(true);
+        }
+        break;
+
+      default:
+        return;
     }
+    panelMotor.set(AUTOMATIC_PANEL_MOTOR_SPEED);
+    panelState = PanelStates.POSITIONING;
+  }
 
-    public void writeDash() {
-      SmartDashboard.putString("Game Data", gameData);
-      match = m_colorMatcher.matchClosestColor(detectedColor);
-      detectedColor = m_colorSensor.getColor();
+  public void writeDash() {
+    SmartDashboard.putString("Game Data", gameData);
 
-      SmartDashboard.putNumber("Proximity", m_colorSensor.getProximity());
-      SmartDashboard.putNumber("Red", m_colorSensor.getRed());
-      SmartDashboard.putNumber("Green", m_colorSensor.getGreen());
-      SmartDashboard.putNumber("Blue", m_colorSensor.getBlue());
-      SmartDashboard.putNumber("Confidence", match.confidence);
-      SmartDashboard.putString("Detected Color", colorString);
-    }
+    SmartDashboard.putNumber("Red", rawColor.red);
+    SmartDashboard.putNumber("Green", rawColor.green);
+    SmartDashboard.putNumber("Blue", rawColor.blue);
 
+    SmartDashboard.putString("Current Color", currentColor);
+    SmartDashboard.putString("Averaged Color", averagedColor);
+    SmartDashboard.putString("True Color", trueColor);
+
+    SmartDashboard.putString("State", panelState.toString());
+  }
 }
-
-// Code for Robot.java
-// gameData = DriverStation.getInstance().getGameSpecificMessage();
-// if(gameData.length() > 0) {
-//     <wheel>.color();
-// }
-
-// Template code for color get
-// import edu.wpi.first.wpilibj.DriverStation;
-
-// String gameData;
-// gameData = DriverStation.getInstance().getGameSpecificMessage();
-// if(gameData.length() > 0)
-// {
-//   switch (gameData.charAt(0))
-//   {
-//     case 'B' :
-//       //Blue case code
-//       break;
-//     case 'G' :
-//       //Green case code
-//       break;
-//     case 'R' :
-//       //Red case code
-//       break;
-//     case 'Y' :
-//       //Yellow case code
-//       break;
-//     default :
-//       //This is corrupt data
-//       break;
-//   }
-// } else {
-//   //Code for no data received yet
-// }
