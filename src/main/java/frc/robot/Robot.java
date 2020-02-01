@@ -102,6 +102,8 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledInit() {
+        drive.resetSensors();
+
         if (GsonSmartDash.shouldRecord) {
             List<State> states = recorder.getStates();
             try {
@@ -110,7 +112,6 @@ public class Robot extends TimedRobot {
                 e.printStackTrace();
             }
         }
-
         StateLister.getStateNames();
         SmartDashboard.putBoolean("Should Record", false);
     }

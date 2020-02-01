@@ -93,13 +93,7 @@ public class Drive {
         frontRightMotor.set(0);
         backRightMotor.set(0);
 
-        frontLeftSensors.setIntegratedSensorPosition(0, 10);
-        midLeftSensors.setIntegratedSensorPosition(0, 10);
-        backLeftSensors.setIntegratedSensorPosition(0, 10);
-
-        frontRightSensors.setIntegratedSensorPosition(0, 10);
-        midRightSensors.setIntegratedSensorPosition(0, 10);
-        backRightSensors.setIntegratedSensorPosition(0, 10);
+        resetSensors();
 
         currentDriveState = DriveStates.SHOOTER_SIDE;
     }
@@ -184,6 +178,15 @@ public class Drive {
 
     public double getSensorAvg() {
         return (Math.abs(getLeftSensors()) + Math.abs(getRightSensors()))/2;
+    }
+    public void resetSensors() {
+        frontLeftSensors.setIntegratedSensorPosition(0, 10);
+        midLeftSensors.setIntegratedSensorPosition(0, 10);
+        backLeftSensors.setIntegratedSensorPosition(0, 10);
+
+        frontRightSensors.setIntegratedSensorPosition(0, 10);
+        midRightSensors.setIntegratedSensorPosition(0, 10);
+        backRightSensors.setIntegratedSensorPosition(0, 10);
     }
 
 
