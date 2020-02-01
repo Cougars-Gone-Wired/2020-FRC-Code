@@ -57,22 +57,22 @@ public class Climber {
         return currentClimbState == ClimbStates.NOT_MOVING;
     }
 
+    public boolean isMovingUp() {
+        return currentClimbState == ClimbStates.MOVING_UP;
+    }
+    
+    public boolean isMovingDown() {
+        return currentClimbState == ClimbStates.MOVING_DOWN;
+    }
+
     public void setNotMoving() {
         climbMotor.set(0);
         currentClimbState = ClimbStates.NOT_MOVING;
     }
 
-    public boolean isMovingUp() {
-        return currentClimbState == ClimbStates.MOVING_UP;
-    }
-
     public void setMovingUp() {
         climbMotor.set(LIFT_SPEED);
         currentClimbState = ClimbStates.MOVING_UP;
-    }
-
-    public boolean isMovingDown() {
-        return currentClimbState == ClimbStates.MOVING_DOWN;
     }
 
     public void setMovingDown() {

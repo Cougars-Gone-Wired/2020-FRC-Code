@@ -76,6 +76,7 @@ public class Robot extends TimedRobot {
 
         climber.initalize();
         drive.initalize();
+        limelight.initialize();
 
         recorder.initialize();
         runner.counterInitialize();
@@ -94,7 +95,6 @@ public class Robot extends TimedRobot {
 
         climber.climb(controllers.getClimberUpTrigger(), controllers.getClimberDownTrigger());
         drive.robotDrive(controllers.getDriveSpeedAxis(), controllers.getDriveTurnAxis(), controllers.getDriveSideToggle());
-        limelight.getDashboard();
         limelight.limelightDrive(controllers.getLimelightButton());
 
         recorder.record();

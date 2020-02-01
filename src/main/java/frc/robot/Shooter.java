@@ -125,7 +125,7 @@ public class Shooter {
     }
 
     public boolean isShooting() {
-        return currentShooterState == ShooterStates.NOT_MOVING;
+        return currentShooterState == ShooterStates.SHOOTING;
     }
 
     public void setNotMoving() {

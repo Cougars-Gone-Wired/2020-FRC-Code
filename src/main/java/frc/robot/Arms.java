@@ -4,15 +4,19 @@ import edu.wpi.first.wpilibj.Solenoid;
 
 public class Arms {
 
-    private Solenoid smallSolenoid;
-    private Solenoid bigSolenoid;
+    // private Solenoid smallSolenoid;
+    // private Solenoid bigSolenoid;
+    private DoubleSolenoid smallSolenoid;
+    private DoubleSolenoid bigSolenoid;
     private Solenoid intakeArmSolenoid;
 
     private boolean triggerDown = false;
 
     public Arms() {
-        smallSolenoid = new Solenoid(Constants.ARM_SMALL_SOLENOID_PORT);
-        bigSolenoid = new Solenoid(Constants.ARM_BIG_SOLENOID_PORT);
+        // smallSolenoid = new Solenoid(Constants.ARM_SMALL_SOLENOID_PORT);
+        // bigSolenoid = new Solenoid(Constants.ARM_BIG_SOLENOID_PORT);
+        smallSolenoid = new Solenoid(Constants.ARM_SMALL_SOLENOID_PORT_1, Constants.ARM_SMALL_SOLENOID_PORT_2);
+        bigSolenoid = new Solenoid(Constants.ARM_BIG_SOLENOID_PORT_1, Constants.ARM_BIG_SOLENOID_PORT_2);
         intakeArmSolenoid = new Solenoid(Constants.INTAKE_SOLENOID_PORT);
         initialize();
     }
@@ -56,29 +60,35 @@ public class Arms {
         return currentShooterArmState == ShooterArmStates.STARTING_POSITION;
     }
 
-    public void setStartingPosition() {
-        smallSolenoid.set(false);
-        bigSolenoid.set(true);
-        currentShooterArmState = ShooterArmStates.STARTING_POSITION;
-    }
-
     public boolean isShooterShootingPosition() {
         return currentShooterArmState == ShooterArmStates.SHOOTING_POSITION;
-    }
-
-    public void setShootingPostion() {
-        smallSolenoid.set(false);
-        bigSolenoid.set(false);
-        currentShooterArmState = ShooterArmStates.SHOOTING_POSITION;
     }
 
     public boolean isShooterClimbingPosition() {
         return currentShooterArmState == ShooterArmStates.CLIMBING_POSITION;
     }
 
+    public void setStartingPosition() {
+        // smallSolenoid.set(false);
+        // bigSolenoid.set(true);
+        smallSolenoid.set(DoubleSolenoid.Value.kReverse);
+        bigSolenoid.set(DoubleSolenoid.Value.kForward);
+        currentShooterArmState = ShooterArmStates.STARTING_POSITION;
+    }
+
+    public void setShootingPostion() {
+        // smallSolenoid.set(false);
+        // bigSolenoid.set(false);
+        smallSolenoid.set(DoubleSolenoid.Value.kReverse);
+        bigSolenoid.set(DoubleSolenoid.Value.kReverse);
+        currentShooterArmState = ShooterArmStates.SHOOTING_POSITION;
+    }
+
     public void setClimbingPostion() {
-        smallSolenoid.set(true);
-        bigSolenoid.set(true);
+        // smallSolenoid.set(true);
+        // bigSolenoid.set(true);
+        smallSolenoid.set(DoubleSolenoid.Value.kForward);
+        bigSolenoid.set(DoubleSolenoid.Value.kForward);
         currentShooterArmState = ShooterArmStates.CLIMBING_POSITION;
     }
     
@@ -109,13 +119,13 @@ public class Arms {
         return currentIntakeArmState == IntakeArmStates.UP;
     }
 
+    public boolean isIntakeDownPositon() {
+        return currentIntakeArmState == IntakeArmStates.DOWN;
+    }
+
     public void setUpPosition() {
         intakeArmSolenoid.set(false);
         currentIntakeArmState = IntakeArmStates.UP;
-    }
-
-    public boolean isIntakeDownPositon() {
-        return currentIntakeArmState == IntakeArmStates.DOWN;
     }
 
     public void setDownPosition() {
