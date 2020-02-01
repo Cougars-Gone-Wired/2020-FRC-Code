@@ -25,7 +25,7 @@ public class AutoPrograms {
     }
 
     public enum Positions {
-        POWER_PORT, MIDDLE_FIELD, LOADING_BAY
+        LEFT, CENTER, RIGHT
     }
 
     public AutoPrograms() {
@@ -39,16 +39,16 @@ public class AutoPrograms {
         autoChooser.addOption("Limelight program", Programs.LIMELIGHT);
         SmartDashboard.putData("Auto choices", autoChooser);
 
-        position.addOption("Power Port", Positions.POWER_PORT);
-        position.addOption("Middle", Positions.MIDDLE_FIELD);
-        position.addOption("Loading Bay", Positions.LOADING_BAY);
+        position.addOption("Power Port", Positions.LEFT);
+        position.addOption("Middle", Positions.CENTER);
+        position.addOption("Loading Bay", Positions.RIGHT);
         SmartDashboard.putData("Position on field", position);
     }
 
     public void initAuto() {
         // selectedAuto = Programs.SOMETHING;
         selectedAuto = autoChooser.getSelected();
-        selectedPosition = Positions.POWER_PORT;
+        selectedPosition = Positions.LEFT;
         // selectedPosition = position.getSelected();
 
         switch (selectedAuto) {
@@ -79,7 +79,9 @@ public class AutoPrograms {
             break;
 
         case DEAD_RECKONING:
-            moveOffLine();
+            // moveOffLine();
+            shootMoveOffLine();
+
             break;
 
         case RECORDER:
@@ -98,33 +100,37 @@ public class AutoPrograms {
 
     public void runLimelightAuto() {
         switch (selectedPosition) {
-        case POWER_PORT:
+        case LEFT:
             Robot.limelight.limelightAuto(true);
             // shoot
 
             break;
-        case MIDDLE_FIELD:
+        case CENTER:
 
             break;
-        case LOADING_BAY:
+        case RIGHT:
             break;
         }
     }
 
     public void move(double distance, double speed) {
-
+        if (Robot.drive.ticksToInches(Robot.drive.getSensorAvg()) < distance) {
+            Robot.drive.driveStraight(speed);
+        } else {
+            Robot.drive.driveStraight(0);
+        }
     }
 
     public void turn(double angle) {
 
     }
 
-    public void moveOffLine() {
-        SmartDashboard.putNumber("sensor avgs", Robot.drive.ticksToInches(Robot.drive.getSensorAvg()));
-        if (Robot.drive.ticksToInches(Robot.drive.getSensorAvg()) < 21) {
-            Robot.drive.driveStraight(AUTO_SPEED);
-        } else {
-            Robot.drive.driveStraight(0);
-        }
+    public void shoot(int number) {
+        // bla
+    }
+
+    public void shootMoveOffLine() {
+        shoot(5);
+        move(21, AUTO_SPEED);
     }
 }
