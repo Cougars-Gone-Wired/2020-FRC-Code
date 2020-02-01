@@ -31,98 +31,98 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         controllers = new Controllers();
 
-        // arms = new Arms();
-        // intake = new Intake();
-        // shooter = new Shooter();
-        // feeder = new Feeder();
-        // chomper = new Chomper();
+        arms = new Arms();
+        intake = new Intake();
+        shooter = new Shooter();
+        feeder = new Feeder();
+        chomper = new Chomper();
 
-        // climber = new Climber();
+        climber = new Climber();
         drive = new Drive();
         limelight = new Limelight();
-        // autoPrograms = new AutoPrograms();
+        autoPrograms = new AutoPrograms();
 
 
-        // recorder = new StateRecorder();
-        // runner = new StateRunner();
-        // GsonSmartDash.put();
+        recorder = new StateRecorder();
+        runner = new StateRunner();
+        GsonSmartDash.put();
         limelight.dashboardInitialize();
-        // autoPrograms.initalizeChooser();
+        autoPrograms.initalizeChooser();
     }
 
     @Override
     public void robotPeriodic() {
-        // drive.dashboard();
+        drive.dashboard();
         limelight.dashboard();
     }
 
     @Override
     public void autonomousInit() {
-        // autoPrograms.initAuto();
+        autoPrograms.initAuto();
     }
 
     @Override
     public void autonomousPeriodic() {
-        // autoPrograms.runAuto();
+        autoPrograms.runAuto();
     }
 
     @Override
     public void teleopInit() {
-        // arms.initialize();
-        // intake.initialize();
-        // shooter.initialize();
-        // feeder.initialize();
-        // chomper.initialize();
+        arms.initialize();
+        intake.initialize();
+        shooter.initialize();
+        feeder.initialize();
+        chomper.initialize();
 
-        // climber.initalize();
+        climber.initalize();
         drive.initalize();
         limelight.initialize();
 
-        // recorder.initialize();
-        // runner.counterInitialize();
+        recorder.initialize();
+        runner.counterInitialize();
     }
 
     @Override
     public void teleopPeriodic() {
         controllers.updateControllerValues();
 
-        // arms.shooterArm(controllers.isArmUpButton(), controllers.isArmDownButton());
-        // arms.intakeArm(controllers.getIntakeArmAxis());
-        // intake.intake(controllers.getIntakeAxis());
-        // shooter.shoot(controllers.getShooterTrigger());
-        // feeder.feed();
-        // chomper.controlChomp();
+        arms.shooterArm(controllers.isArmUpButton(), controllers.isArmDownButton());
+        arms.intakeArm(controllers.getIntakeArmAxis());
+        intake.intake(controllers.getIntakeAxis());
+        shooter.shoot(controllers.getShooterTrigger());
+        feeder.feed();
+        chomper.controlChomp();
 
-        // climber.climb(controllers.getClimberUpTrigger(), controllers.getClimberDownTrigger());
+        climber.climb(controllers.getClimberUpTrigger(), controllers.getClimberDownTrigger());
         drive.robotDrive(controllers.getDriveSpeedAxis(), controllers.getDriveTurnAxis(), controllers.getDriveSideToggle());
         limelight.limelightAimAndUnaim(controllers.getLimelightButton());
-        // limelight.limelightDrive(controllers.getLimelightButton());
+        limelight.limelightDrive(controllers.getLimelightButton());
 
-        // recorder.record();
+        recorder.record();
     }
 
     @Override
     public void disabledInit() {
-        // if (GsonSmartDash.shouldRecord) {
-        //     List<State> states = recorder.getStates();
-        //     try {
-        //         StatesWriter.writeStates(states, GsonSmartDash.gsonFileName);
-        //     } catch (Exception e) {
-        //         e.printStackTrace();
-        //     }
-        // }
+        if (GsonSmartDash.shouldRecord) {
+            List<State> states = recorder.getStates();
+            try {
+                StatesWriter.writeStates(states, GsonSmartDash.gsonFileName);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
-        // StateLister.getStateNames();
-        // SmartDashboard.putBoolean("Should Record", false);
+        StateLister.getStateNames();
+        SmartDashboard.putBoolean("Should Record", false);
     }
 
     @Override
     public void disabledPeriodic() {
-        // GsonSmartDash.set();
+        GsonSmartDash.set();
 
-        // if (!GsonSmartDash.shouldRecord) {
-        //     SmartDashboard.putString("Gson File Name", "");
-        // }
+        if (!GsonSmartDash.shouldRecord) {
+            SmartDashboard.putString("Gson File Name", "");
+        }
     }
 
     @Override
