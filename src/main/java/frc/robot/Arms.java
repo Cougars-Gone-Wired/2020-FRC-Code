@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
 
 public class Arms {
@@ -15,8 +16,8 @@ public class Arms {
     public Arms() {
         // smallSolenoid = new Solenoid(Constants.ARM_SMALL_SOLENOID_PORT);
         // bigSolenoid = new Solenoid(Constants.ARM_BIG_SOLENOID_PORT);
-        smallSolenoid = new Solenoid(Constants.ARM_SMALL_SOLENOID_PORT_1, Constants.ARM_SMALL_SOLENOID_PORT_2);
-        bigSolenoid = new Solenoid(Constants.ARM_BIG_SOLENOID_PORT_1, Constants.ARM_BIG_SOLENOID_PORT_2);
+        smallSolenoid = new DoubleSolenoid(Constants.ARM_SMALL_SOLENOID_PORT_1, Constants.ARM_SMALL_SOLENOID_PORT_2);
+        bigSolenoid = new DoubleSolenoid(Constants.ARM_BIG_SOLENOID_PORT_1, Constants.ARM_BIG_SOLENOID_PORT_2);
         intakeArmSolenoid = new Solenoid(Constants.INTAKE_SOLENOID_PORT);
         initialize();
     }
