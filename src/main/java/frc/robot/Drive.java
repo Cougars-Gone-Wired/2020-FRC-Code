@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Drive {
     public static double DRIVE_SPEED = 0.9;
-    public static double TURN_SPEED = 0.9;
+    public static double TURN_SPEED = 0.7;
 
     private WPI_TalonFX frontLeftMotor;
     private WPI_TalonFX midLeftMotor;
@@ -105,8 +105,14 @@ public class Drive {
     private DriveStates currentDriveState;
 
     public void robotDrive(double driveSpeedAxis, double driveTurnAxis, boolean toggle) {
-        driveSpeedAxis = driveSpeedAxis * DRIVE_SPEED;
-        driveTurnAxis = driveTurnAxis * TURN_SPEED;
+        if(!
+        Robot.limelight.isDriveNotMoving()) {
+            driveSpeedAxis *= 0;
+            driveTurnAxis *= 0;
+        } else {
+            driveSpeedAxis = driveSpeedAxis * DRIVE_SPEED;
+            driveTurnAxis = driveTurnAxis * TURN_SPEED;
+        }
 
         switch (currentDriveState) {
             case SHOOTER_SIDE:
@@ -123,6 +129,10 @@ public class Drive {
                 }
                 break;
         }
+    }
+
+    public void limelightDrive(double driveSpeedAxis, double driveTurnAxis) {
+        robotDrive.arcadeDrive(driveSpeedAxis, -driveTurnAxis);
     }
 
     public boolean isShooterSide() {

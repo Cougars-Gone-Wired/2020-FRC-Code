@@ -64,7 +64,7 @@ public class Limelight {
                     }
                     //turnlightsOn();
                      //What the limelight should do when the button is pressed
-                     setDriveAimAndDrive();
+                     setDriveAim();
                 }
             break;
 
@@ -81,7 +81,7 @@ public class Limelight {
                 } else {
                     aim_adjust = min;
                 }
-                Robot.drive.robotDrive(drive_adjust, aim_adjust, false);
+                Robot.drive.limelightDrive(drive_adjust, aim_adjust);
             break;
 
             case AIM_AND_DRIVE:
@@ -109,7 +109,7 @@ public class Limelight {
                 } else {
                     drive_adjust = 0;
                 }
-                Robot.drive.robotDrive(drive_adjust, aim_adjust, false);
+                Robot.drive.limelightDrive(drive_adjust, aim_adjust);
                 break;
 
             case AIM:
@@ -125,9 +125,17 @@ public class Limelight {
                 } else {
                     aim_adjust = 0;
                 }
-                Robot.drive.robotDrive(drive_adjust, aim_adjust, false);
+                Robot.drive.limelightDrive(drive_adjust, aim_adjust);
             break;
         }
+    }
+
+    public boolean isDriveNotMoving() {
+        return limelightDriveState == limelightDriveState.DO_NOTHING;
+    }
+
+    public boolean isDriveAim() {
+        return limelightDriveState == limelightDriveState.AIM;
     }
 
     public void setDriveDoNothing() {
@@ -137,7 +145,7 @@ public class Limelight {
         //turnlightsOff();
         aim_adjust = 0; 
         drive_adjust = 0;
-        Robot.drive.robotDrive(0, 0, false);
+        Robot.drive.limelightDrive(drive_adjust, aim_adjust);
         limelightDriveState = LimelightDriveStates.DO_NOTHING;
     }
 
@@ -190,7 +198,7 @@ public class Limelight {
                     aim_adjust = 0;
                     return 1;
                 }
-                Robot.drive.robotDrive(drive_adjust, aim_adjust, false);
+                Robot.drive.limelightDrive(drive_adjust, aim_adjust);
             break;
 
             case UNAIMING:
@@ -204,7 +212,7 @@ public class Limelight {
                     setAutoIdle();
                     return 2;
                 }
-                Robot.drive.robotDrive(drive_adjust, aim_adjust, false);
+                Robot.drive.limelightDrive(drive_adjust, aim_adjust);
             break;
         }
         return 0;
@@ -226,7 +234,7 @@ public class Limelight {
         limelightAutoState = LimelightAutoStates.IDLE;
         aim_adjust = 0; 
         drive_adjust = 0;
-        Robot.drive.robotDrive(0, 0, false);
+        Robot.drive.limelightDrive(drive_adjust, aim_adjust);
     }
 
     public void setAutoAiming() {
@@ -236,7 +244,7 @@ public class Limelight {
     public void setAutoUnaiming() {
         aim_adjust = 0; 
         drive_adjust = 0;
-        Robot.drive.robotDrive(0, 0, false);
+        Robot.drive.limelightDrive(drive_adjust, aim_adjust);
         limelightAutoState = LimelightAutoStates.UNAIMING;
     }
 

@@ -45,6 +45,10 @@ public class AutoPrograms {
         SmartDashboard.putData("Position on field", position);
     }
 
+    public void autoDashboard() {
+        SmartDashboard.putNumber("Gyro angle", gyro.getAngle());
+    }
+
     public void initAuto() {
         // selectedAuto = Programs.SOMETHING;
         selectedAuto = autoChooser.getSelected();
