@@ -17,7 +17,7 @@ import com.revrobotics.ColorSensorV3;
 public class ControlPanel {
   private static final double MANUAL_PANEL_MOTOR_SPEED = .4;
   private static final double AUTOMATIC_PANEL_MOTOR_SPEED = 1.0;
-  private static final int COLOR_LOG_LENGTH = 6;
+  private static final int COLOR_LOG_LENGTH = 4;
 
   private WPI_TalonSRX panelMotor;
 
@@ -73,6 +73,13 @@ public class ControlPanel {
 
       case ROTATING:
         trackColor();
+        if (targetColor == "B" && falseStartDetected) {
+          targetColor = "R";
+          falseStartDetected = false;
+        } else if (targetColor == "R" && falseStartDetected) {
+          targetColor = "B";
+          falseStartDetected = false;
+        }
         if (changedColor && trueColor == targetColor) {
           timesTargetSeen++;
         }
@@ -114,6 +121,7 @@ public class ControlPanel {
   private String averagedColor;
   private String trueColor;
   private boolean changedColor;
+  private boolean falseStartDetected;
 
   public void trackColor() {
     matchColor();
@@ -129,10 +137,10 @@ public class ControlPanel {
 
     switch (trueColor) {
       case "R":
-        if (averagedColor == "G") {
+        if (averagedColor == "G" && !panelMotor.getInverted()) {
           trueColor = "G";
           changedColor = true;
-        } else if (averagedColor == "Y") {
+        } else if (averagedColor == "Y" && panelMotor.getInverted()) {
           trueColor = "Y";
           changedColor = true;
         } else {
@@ -144,19 +152,23 @@ public class ControlPanel {
         if (averagedColor == "B") {
           trueColor = "B";
           changedColor = true;
-        } else if (averagedColor == "R") {
+        } else if (averagedColor == "R" && panelMotor.getInverted()) {
           trueColor = "R";
           changedColor = true;
+        } else if (averagedColor == "Y" && !panelMotor.getInverted() && panelState == PanelStates.ROTATING && timesTargetSeen == 0) {
+          trueColor = "Y";
+          changedColor = true;
+          falseStartDetected = true;
         } else {
           changedColor = false;
         }
         break;
 
       case "B":
-        if (averagedColor == "Y") {
+        if (averagedColor == "Y" && !panelMotor.getInverted()) {
           trueColor = "Y";
           changedColor = true;
-        } else if (averagedColor == "G") {
+        } else if (averagedColor == "G" && panelMotor.getInverted()) {
           trueColor = "G";
           changedColor = true;
         } else {
@@ -168,9 +180,13 @@ public class ControlPanel {
         if (averagedColor == "R") {
           trueColor = "R";
           changedColor = true;
-        } else if (averagedColor == "B") {
+        } else if (averagedColor == "B" && panelMotor.getInverted()) {
           trueColor = "B";
           changedColor = true;
+        } else if (averagedColor == "G" && !panelMotor.getInverted() && panelState == PanelStates.ROTATING && timesTargetSeen == 0) {
+          trueColor = "G";
+          changedColor = true;
+          falseStartDetected = true;
         } else {
           changedColor = false;
         }
@@ -246,7 +262,7 @@ public class ControlPanel {
     switch (gameData.charAt(0)) {
       case 'R':
         targetColor = "B";
-        if (trueColor == "Y" || trueColor == "B") {
+        if (trueColor == "Y") {
           panelMotor.setInverted(true);
         }
         break;
@@ -260,7 +276,7 @@ public class ControlPanel {
 
       case 'B':
         targetColor = "R";
-        if (trueColor == "G" || trueColor == "R") {
+        if (trueColor == "G") {
           panelMotor.setInverted(true);
         }
         break;
