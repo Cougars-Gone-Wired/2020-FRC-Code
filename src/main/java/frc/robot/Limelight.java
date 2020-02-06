@@ -6,6 +6,8 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 
 public class Limelight {
 
+    private static double DEGREE_RANGE = 29.8;
+
     private NetworkTable table;
 
     //Limelight Values
@@ -26,12 +28,13 @@ public class Limelight {
     private double aimKp = 0.07; //Aim multiplier
     private double driveKp = 0.50; //Drive multiplier
     private double angle_error = 0.30; //Final value needs to be set later
+    private double desired_angle = 0.00;
     private double distance_error = 5.00; //Distance error
     private double desired_distance = 260.00; //Needs to be set later
 
+    private double unaimAngle;
     private double aim_adjust = 0.00; //0 By Default so robot doesn't move initially
     private double drive_adjust = 0.00; // ↑ ↑ ↑ 
-    private double unaimAngle;
 
     public Limelight() {
         table = NetworkTableInstance.getDefault().getTable("limelight"); 
@@ -86,10 +89,10 @@ public class Limelight {
                     setDriveDoNothing();
                 }
 
-                aim_adjust = aimKp * (tx / 29.8);
-                if (tx > angle_error) {
+                aim_adjust = aimKp * ((tx - desired_angle) / DEGREE_RANGE);
+                if (tx - desired_angle > angle_error) {
                     aim_adjust += min;
-                } else if (tx < -angle_error) {
+                } else if (tx - desired_angle < -angle_error) {
                     aim_adjust -= min;
                 } else {
                     aim_adjust = 0;
@@ -113,10 +116,10 @@ public class Limelight {
                     setDriveDoNothing();
                 }
 
-                aim_adjust = aimKp * (tx / 29.8);
-                if (tx > angle_error) {
+                aim_adjust = aimKp * ((tx - desired_angle) / DEGREE_RANGE);
+                if (tx - desired_angle > angle_error) {
                     aim_adjust += min;
-                } else if (tx < -angle_error) {
+                } else if (tx - desired_angle < -angle_error) {
                     aim_adjust -= min;
                 } else {
                     aim_adjust = 0;
@@ -172,7 +175,7 @@ public class Limelight {
             case IDLE:
                 if (aimButton) {
                     // turnlightsOn();
-                    unaimAngle = tx;
+                    unaimAngle = tx - desired_angle;
                     setAutoAiming();
                 }
             break;
@@ -182,10 +185,10 @@ public class Limelight {
                 setAutoUnaiming();
                 }
 
-                aim_adjust = aimKp * (tx / 29.8);
-                if (tx > angle_error) {
+                aim_adjust = aimKp * (tx / DEGREE_RANGE);
+                if (tx - desired_angle > angle_error) {
                     aim_adjust += min;
-                } else if (tx < -angle_error) {
+                } else if (tx - desired_angle < -angle_error) {
                     aim_adjust -= min;
                 } else {
                     aim_adjust = 0;
@@ -195,7 +198,7 @@ public class Limelight {
             break;
 
             case UNAIMING:
-                aim_adjust = aimKp * ((tx - unaimAngle) / 29.8);
+                aim_adjust = aimKp * ((tx - unaimAngle) / DEGREE_RANGE);
                 if (tx - unaimAngle > angle_error) {
                     aim_adjust += min;
                 } else if (tx - unaimAngle < -angle_error) {
@@ -265,6 +268,7 @@ public class Limelight {
         SmartDashboard.putNumber("aimKp", aimKp);
         SmartDashboard.putNumber("driveKp", driveKp);
         SmartDashboard.putNumber("angle_error", angle_error);
+        SmartDashboard.putNumber("desiredAngle", desired_angle);
         SmartDashboard.putNumber("distance_error", distance_error);
         SmartDashboard.putNumber("desired_distance", desired_distance);
     }
@@ -290,6 +294,7 @@ public class Limelight {
         aim_adjust = SmartDashboard.getNumber("aim_adjust", 0);
         drive_adjust = SmartDashboard.getNumber("drive_adjust", 0);
         angle_error = SmartDashboard.getNumber("angle_error", 0);
+        angle_error = SmartDashboard.getNumber("desired_angle", 0);
         distance_error = SmartDashboard.getNumber("distance_error", 0);
         desired_distance = SmartDashboard.getNumber("desired_distance", 0);
     }
