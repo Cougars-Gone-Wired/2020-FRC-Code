@@ -32,7 +32,6 @@ public class Limelight {
     private double aim_adjust = 0.00; //0 By Default so robot doesn't move initially
     private double drive_adjust = 0.00; // ↑ ↑ ↑ 
     private double unaimAngle;
-    private boolean wasIntakeSide;
 
     public Limelight() {
         table = NetworkTableInstance.getDefault().getTable("limelight"); 
@@ -59,9 +58,6 @@ public class Limelight {
         switch(limelightDriveState) {
             case DO_NOTHING:
                 if (aimButton) {
-                    if(Robot.drive.isIntakeSide()) {
-                        wasIntakeSide = true;
-                    }
                     //turnlightsOn();
                      //What the limelight should do when the button is pressed
                      setDriveAim();
@@ -131,17 +127,14 @@ public class Limelight {
     }
 
     public boolean isDriveNotMoving() {
-        return limelightDriveState == limelightDriveState.DO_NOTHING;
+        return limelightDriveState == LimelightDriveStates.DO_NOTHING;
     }
 
     public boolean isDriveAim() {
-        return limelightDriveState == limelightDriveState.AIM;
+        return limelightDriveState == LimelightDriveStates.AIM;
     }
 
     public void setDriveDoNothing() {
-        if(wasIntakeSide) {
-            Robot.drive.setIntakeSide();
-        }
         //turnlightsOff();
         aim_adjust = 0; 
         drive_adjust = 0;
