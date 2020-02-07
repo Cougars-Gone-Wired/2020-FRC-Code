@@ -1,5 +1,6 @@
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 
@@ -7,7 +8,6 @@ public class Intake {
     private static final double INTAKE_SPEED = 0.8;
     
     private WPI_TalonSRX intakeMotor;
-
 
     public Intake() {
         intakeMotor = new WPI_TalonSRX(Constants.INTAKE_MOTOR_ID);
@@ -74,5 +74,13 @@ public class Intake {
     public void setOuttaking() {
         intakeMotor.set(-INTAKE_SPEED);
         currentIntakeState = IntakeStates.OUTTAKING;
+    }
+
+    public void setMotorsBrake() {
+        intakeMotor.setNeutralMode(NeutralMode.Brake);
+    }
+
+    public void setMotorsCoast() {
+        intakeMotor.setNeutralMode(NeutralMode.Coast);
     }
 }

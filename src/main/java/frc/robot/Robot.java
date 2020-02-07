@@ -59,6 +59,8 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
+        setMotorsBrake();
+
         autoPrograms.initAuto();
     }
 
@@ -69,6 +71,8 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
+        setMotorsBrake();
+
         arms.initialize();
         intake.initialize();
         shooter.initialize();
@@ -103,6 +107,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledInit() {
+        setMotorsCoast();
         drive.resetSensors();
 
         if (GsonSmartDash.shouldRecord) {
@@ -131,4 +136,16 @@ public class Robot extends TimedRobot {
         limelight.dashboardInitialize();
     }
 
+    public void setMotorsBrake() {
+        climber.setMotorsBrake();
+        drive.setMotorsBrake();
+        feeder.setMotorsBrake();
+        intake.setMotorsBrake();
+    }
+    public void setMotorsCoast() {
+        climber.setMotorsCoast();
+        drive.setMotorsCoast();
+        feeder.setMotorsCoast();
+        intake.setMotorsCoast();
+    }
 }
