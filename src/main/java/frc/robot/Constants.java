@@ -9,6 +9,7 @@ public class Constants {
     static final int FEEDER_AXIS = 5;
     static final int ARM_UP_BUTTON = 6;
     static final int ARM_DOWN_BUTTON = 5;
+    static final int STOP_CAMERA_BUTTON = 8;
     static final int INTAKE_ARM_AXIS = 2;
 
     // Mobility Controller

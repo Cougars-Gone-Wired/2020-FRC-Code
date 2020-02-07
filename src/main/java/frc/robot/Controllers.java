@@ -8,6 +8,7 @@ public class Controllers {
     private Joystick manipulatorController;
     private boolean armUpButton;
     private boolean armDownButton;
+    private boolean stopCameraButton;
     private double intakeArmAxis;
     private double intakeAxis;
     private double shooterTrigger;
@@ -31,6 +32,7 @@ public class Controllers {
         // Manipulator
         armUpButton = manipulatorController.getRawButtonPressed(Constants.ARM_UP_BUTTON);
         armDownButton = manipulatorController.getRawButtonPressed(Constants.ARM_DOWN_BUTTON);
+        stopCameraButton = manipulatorController.getRawButtonPressed(Constants.STOP_CAMERA_BUTTON);
         intakeArmAxis = manipulatorController.getRawAxis(Constants.INTAKE_ARM_AXIS);
         intakeAxis = manipulatorController.getRawAxis(Constants.INTAKE_AXIS);
         shooterTrigger = manipulatorController.getRawAxis(Constants.SHOOTER_TRIGGER);
@@ -93,5 +95,9 @@ public class Controllers {
 
     public boolean getLimelightButton() {
         return limelightButton;
+    }
+
+    public boolean getStopCameraButton() {
+        return stopCameraButton;
     }
 }
