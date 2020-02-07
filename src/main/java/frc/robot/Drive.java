@@ -230,6 +230,13 @@ public class Drive {
         SmartDashboard.putNumber("Left Average", ticksToInches(getLeftSensors()));
         SmartDashboard.putNumber("Right Average", ticksToInches(getRightSensors()));
         SmartDashboard.putNumber("All the sensors", ticksToInches(getSensorAvg()));
+
+        SmartDashboard.putNumber("Front Left Temp", frontLeftMotor.getTemperature());
+        SmartDashboard.putNumber("Mid Left Temp", midLeftMotor.getTemperature());
+        SmartDashboard.putNumber("Back Left Temp", backLeftMotor.getTemperature());
+        SmartDashboard.putNumber("Front Right Temp", frontRightMotor.getTemperature());
+        SmartDashboard.putNumber("Mid Right Temp", midRightMotor.getTemperature());
+        SmartDashboard.putNumber("Back Right Temp", backRightMotor.getTemperature());
     }
 
     public double avgSensorGroup(double sensor1, double sensor2, double sensor3) {
