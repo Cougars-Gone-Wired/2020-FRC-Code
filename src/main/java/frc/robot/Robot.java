@@ -27,6 +27,8 @@ public class Robot extends TimedRobot {
     public static StateRecorder recorder;
     public static StateRunner runner;
 
+    public static Camera camera;
+
     @Override
     public void robotInit() {
         controllers = new Controllers();
@@ -48,6 +50,9 @@ public class Robot extends TimedRobot {
         GsonSmartDash.put();
         limelight.dashboardInitialize();
         // autoPrograms.initalizeChooser();
+
+        camera = new Camera();
+        new Thread(camera).start();
     }
 
     @Override
@@ -97,6 +102,8 @@ public class Robot extends TimedRobot {
         climber.climb(controllers.getClimberUpTrigger(), controllers.getClimberDownTrigger());
         drive.robotDrive(controllers.getDriveSpeedAxis(), controllers.getDriveTurnAxis(), controllers.getDriveSideToggle());
         limelight.limelightDrive(controllers.getLimelightButton());
+
+        camera.stop(controllers.getStopCameraButton());
 
         recorder.record();
     }
