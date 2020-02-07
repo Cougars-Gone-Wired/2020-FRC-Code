@@ -23,13 +23,13 @@ public class ControlPanel {
 
   private ColorSensorV3 m_colorSensor;
   private ColorMatch m_colorMatcher;
-  private ArrayList<String> colorLog;
+  private ArrayList<Character> colorLog;
 
   public ControlPanel() {
     panelMotor = new WPI_TalonSRX(Constants.CONTROL_PANEL_MOTOR_ID);
     m_colorSensor = new ColorSensorV3(i2cPort);
     m_colorMatcher = new ColorMatch();
-    colorLog = new ArrayList<String>(COLOR_LOG_LENGTH);
+    colorLog = new ArrayList<Character>(COLOR_LOG_LENGTH);
 
     m_colorMatcher.addColorMatch(kBlueTarget);
     m_colorMatcher.addColorMatch(kGreenTarget);
@@ -50,7 +50,7 @@ public class ControlPanel {
 
   private PanelStates panelState;
 
-  private String targetColor;
+  private char targetColor;
   private int timesTargetSeen;
 
   public void spin(boolean manualSpinButton, boolean rotateToggle, boolean positionToggle) {
@@ -73,11 +73,11 @@ public class ControlPanel {
 
       case ROTATING:
         trackColor();
-        if (targetColor == "B" && falseStartDetected) {
-          targetColor = "R";
+        if (targetColor == 'B' && falseStartDetected) {
+          targetColor = 'R';
           falseStartDetected = false;
-        } else if (targetColor == "R" && falseStartDetected) {
-          targetColor = "B";
+        } else if (targetColor == 'R' && falseStartDetected) {
+          targetColor = 'B';
           falseStartDetected = false;
         }
         if (changedColor && trueColor == targetColor) {
@@ -117,9 +117,9 @@ public class ControlPanel {
   private final Color kYellowTarget = ColorMatch.makeColor(0.439, 0.486, 0.075);
 
   private Color rawColor;
-  private String currentColor;
-  private String averagedColor;
-  private String trueColor;
+  private char currentColor;
+  private char averagedColor;
+  private char trueColor;
   private boolean changedColor;
   private boolean falseStartDetected;
 
@@ -132,31 +132,31 @@ public class ControlPanel {
     if (colorLog.stream().distinct().count() <= 1) {
       averagedColor = currentColor;
     } else {
-      averagedColor = "?";
+      averagedColor = '?';
     }
 
     switch (trueColor) {
-      case "R":
-        if (averagedColor == "G" && !panelMotor.getInverted()) {
-          trueColor = "G";
+      case 'R':
+        if (averagedColor == 'G' && !panelMotor.getInverted()) {
+          trueColor = 'G';
           changedColor = true;
-        } else if (averagedColor == "Y" && panelMotor.getInverted()) {
-          trueColor = "Y";
+        } else if (averagedColor == 'Y' && panelMotor.getInverted()) {
+          trueColor = 'Y';
           changedColor = true;
         } else {
           changedColor = false;
         }
         break;
 
-      case "G":
-        if (averagedColor == "B") {
-          trueColor = "B";
+      case 'G':
+        if (averagedColor == 'B') {
+          trueColor = 'B';
           changedColor = true;
-        } else if (averagedColor == "R" && panelMotor.getInverted()) {
-          trueColor = "R";
+        } else if (averagedColor == 'R' && panelMotor.getInverted()) {
+          trueColor = 'R';
           changedColor = true;
-        } else if (averagedColor == "Y" && !panelMotor.getInverted() && panelState == PanelStates.ROTATING && timesTargetSeen == 0) {
-          trueColor = "Y";
+        } else if (averagedColor == 'Y' && !panelMotor.getInverted() && panelState == PanelStates.ROTATING && timesTargetSeen == 0) {
+          trueColor = 'Y';
           changedColor = true;
           falseStartDetected = true;
         } else {
@@ -164,27 +164,27 @@ public class ControlPanel {
         }
         break;
 
-      case "B":
-        if (averagedColor == "Y" && !panelMotor.getInverted()) {
-          trueColor = "Y";
+      case 'B':
+        if (averagedColor == 'Y' && !panelMotor.getInverted()) {
+          trueColor = 'Y';
           changedColor = true;
-        } else if (averagedColor == "G" && panelMotor.getInverted()) {
-          trueColor = "G";
+        } else if (averagedColor == 'G' && panelMotor.getInverted()) {
+          trueColor = 'G';
           changedColor = true;
         } else {
           changedColor = false;
         }
         break;
 
-      case "Y":
-        if (averagedColor == "R") {
-          trueColor = "R";
+      case 'Y':
+        if (averagedColor == 'R') {
+          trueColor = 'R';
           changedColor = true;
-        } else if (averagedColor == "B" && panelMotor.getInverted()) {
-          trueColor = "B";
+        } else if (averagedColor == 'B' && panelMotor.getInverted()) {
+          trueColor = 'B';
           changedColor = true;
-        } else if (averagedColor == "G" && !panelMotor.getInverted() && panelState == PanelStates.ROTATING && timesTargetSeen == 0) {
-          trueColor = "G";
+        } else if (averagedColor == 'G' && !panelMotor.getInverted() && panelState == PanelStates.ROTATING && timesTargetSeen == 0) {
+          trueColor = 'G';
           changedColor = true;
           falseStartDetected = true;
         } else {
@@ -193,7 +193,7 @@ public class ControlPanel {
         break;
 
       default:
-        if (averagedColor != "?") {
+        if (averagedColor != '?') {
           trueColor = averagedColor;
           changedColor = true;
         } else {
@@ -208,15 +208,15 @@ public class ControlPanel {
     match = m_colorMatcher.matchClosestColor(rawColor);
     
     if (match.color == kRedTarget) {
-      currentColor = "R";
+      currentColor = 'R';
     } else if (match.color == kGreenTarget) {
-      currentColor = "G";
+      currentColor = 'G';
     } else if (match.color == kBlueTarget) {
-      currentColor = "B";
+      currentColor = 'B';
     } else if (match.color == kYellowTarget) {
-      currentColor = "Y";
+      currentColor = 'Y';
     } else {
-      currentColor = "?";
+      currentColor = '?';
     }
   }
 
@@ -234,20 +234,20 @@ public class ControlPanel {
     colorTrackInit();
     timesTargetSeen = 0;
     switch (trueColor) {
-      case "R":
-        targetColor = "G";
+      case 'R':
+        targetColor = 'G';
         break;
 
-      case "G":
-        targetColor = "B";
+      case 'G':
+        targetColor = 'B';
         break;
 
-      case "B":
-        targetColor = "Y";
+      case 'B':
+        targetColor = 'Y';
         break;
         
-      case "Y":
-        targetColor = "R";
+      case 'Y':
+        targetColor = 'R';
         break;
     }
     panelMotor.set(AUTOMATIC_PANEL_MOTOR_SPEED);
@@ -261,29 +261,29 @@ public class ControlPanel {
     gameData = DriverStation.getInstance().getGameSpecificMessage();
     switch (gameData.charAt(0)) {
       case 'R':
-        targetColor = "B";
-        if (trueColor == "Y") {
+        targetColor = 'B';
+        if (trueColor == 'Y') {
           panelMotor.setInverted(true);
         }
         break;
         
       case 'G':
-        targetColor = "Y";
-        if (trueColor == "R" || trueColor == "Y") {
+        targetColor = 'Y';
+        if (trueColor == 'R' || trueColor == 'Y') {
           panelMotor.setInverted(true);
         }
         break;
 
       case 'B':
-        targetColor = "R";
-        if (trueColor == "G") {
+        targetColor = 'R';
+        if (trueColor == 'G') {
           panelMotor.setInverted(true);
         }
         break;
 
       case 'Y':
-        targetColor = "G";
-        if (trueColor == "B" || trueColor == "G") {
+        targetColor = 'G';
+        if (trueColor == 'B' || trueColor == 'G') {
           panelMotor.setInverted(true);
         }
         break;
@@ -302,9 +302,9 @@ public class ControlPanel {
     SmartDashboard.putNumber("Green", rawColor.green);
     SmartDashboard.putNumber("Blue", rawColor.blue);
 
-    SmartDashboard.putString("Current Color", currentColor);
-    SmartDashboard.putString("Averaged Color", averagedColor);
-    SmartDashboard.putString("True Color", trueColor);
+    SmartDashboard.putString("Current Color", Character.toString(currentColor));
+    SmartDashboard.putString("Averaged Color", Character.toString(averagedColor));
+    SmartDashboard.putString("True Color", Character.toString(trueColor));
 
     SmartDashboard.putString("State", panelState.toString());
   }
