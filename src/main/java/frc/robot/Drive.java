@@ -69,18 +69,12 @@ public class Drive {
     }
 
     public void initMotors() {
-        frontLeftMotor.setNeutralMode(NeutralMode.Brake);
         frontLeftMotor.configOpenloopRamp(0);
-        midLeftMotor.setNeutralMode(NeutralMode.Brake);
         midLeftMotor.configOpenloopRamp(0);
-        backLeftMotor.setNeutralMode(NeutralMode.Brake);
         backLeftMotor.configOpenloopRamp(0);
 
-        frontRightMotor.setNeutralMode(NeutralMode.Brake);
         frontRightMotor.configOpenloopRamp(0);
-        midRightMotor.setNeutralMode(NeutralMode.Brake);
         midRightMotor.configOpenloopRamp(0);
-        backRightMotor.setNeutralMode(NeutralMode.Brake);
         backRightMotor.configOpenloopRamp(0);
     }
 
@@ -149,6 +143,24 @@ public class Drive {
 
     public void setIntakeSide() {
         currentDriveState = DriveStates.INTAKE_SIDE;
+    }
+
+    public void setMotorsBrake() {
+        frontLeftMotor.setNeutralMode(NeutralMode.Brake);
+        midLeftMotor.setNeutralMode(NeutralMode.Brake);
+        backLeftMotor.setNeutralMode(NeutralMode.Brake);
+        frontRightMotor.setNeutralMode(NeutralMode.Brake);
+        midRightMotor.setNeutralMode(NeutralMode.Brake);
+        backRightMotor.setNeutralMode(NeutralMode.Brake);
+    }
+
+    public void setMotorsCoast() {
+        frontLeftMotor.setNeutralMode(NeutralMode.Coast);
+        midLeftMotor.setNeutralMode(NeutralMode.Coast);
+        backLeftMotor.setNeutralMode(NeutralMode.Coast);
+        frontRightMotor.setNeutralMode(NeutralMode.Coast);
+        midRightMotor.setNeutralMode(NeutralMode.Coast);
+        backRightMotor.setNeutralMode(NeutralMode.Coast);
     }
 
     public DifferentialDrive getDifferentialDrive() {
