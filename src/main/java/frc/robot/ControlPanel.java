@@ -111,10 +111,10 @@ public class ControlPanel {
   
   private ColorMatchResult match;
   
-  private final Color kRedTarget = ColorMatch.makeColor(0.643, 0.310, 0.048);
-  private final Color kGreenTarget = ColorMatch.makeColor(0.271, 0.557, 0.173);
-  private final Color kBlueTarget = ColorMatch.makeColor(0.241, 0.482, 0.278);
-  private final Color kYellowTarget = ColorMatch.makeColor(0.439, 0.486, 0.075);
+  private final Color kRedTarget = ColorMatch.makeColor(0.600, 0.333, 0.067);
+  private final Color kGreenTarget = ColorMatch.makeColor(0.316, 526, 0.158);
+  private final Color kBlueTarget = ColorMatch.makeColor(0.270, 0.462, 0.269);
+  private final Color kYellowTarget = ColorMatch.makeColor(0.442, 0.478, 0.080);
 
   private Color rawColor;
   private char currentColor;
