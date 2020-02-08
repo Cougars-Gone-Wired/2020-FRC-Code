@@ -29,8 +29,7 @@ public class Intake {
             case NOT_MOVING:
                 if (intakeAxis >= Constants.DEADZONE && !Robot.arms.isIntakeUpPositon() && Robot.arms.isShooterShootingPosition()) {
                     setIntaking();
-                }
-                else if (intakeAxis <= -Constants.DEADZONE) {
+                } else if (intakeAxis <= -Constants.DEADZONE && !Robot.arms.isIntakeUpPositon() && Robot.arms.isShooterShootingPosition()) {
                     setOuttaking();
                 }
                 break;

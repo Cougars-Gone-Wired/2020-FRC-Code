@@ -32,13 +32,13 @@ public class Feeder {
     public void feed() {
         switch(currentFeederState) {
             case NOT_MOVING:
-                if (Robot.intake.isIntaking() && !feederLineBreak.get() && !Robot.shooter.isShooting()) {
+                if (Robot.intake.isIntaking() && !Robot.shooter.isShooting() && !feederLineBreak.get()) {
                     setIntaking();
 
                 } else if (Robot.intake.isOuttaking() && !Robot.shooter.isShooting()) {
                     setOuttaking();
 
-                } else if (!Robot.intake.isNotMoving() && Robot.shooter.isShooting() && Robot.shooter.atDesiredVelocity()) {
+                } else if (Robot.intake.isNotMoving() && Robot.shooter.isShooting() && Robot.shooter.atDesiredVelocity()) {
                     setFeedingShooter();
                 }
                 break;

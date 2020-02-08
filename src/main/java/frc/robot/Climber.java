@@ -34,8 +34,7 @@ public class Climber {
             case NOT_MOVING:
                 if (climberUpTriggerBool && !climberDownTriggerBool && Robot.arms.isShooterClimbingPosition()) {
                     setMovingUp();
-                }
-                if (climberDownTriggerBool && !climberUpTriggerBool) {
+                } else if (climberDownTriggerBool && !climberUpTriggerBool) {
                     setMovingDown();   
                 }
                 break;
