@@ -60,6 +60,8 @@ public class Robot extends TimedRobot {
         autoPrograms.autoDashboard();
         drive.dashboard();
         limelight.dashboard();
+
+        camera.stop(controllers.getStopCameraButton());
     }
 
     @Override
@@ -106,8 +108,6 @@ public class Robot extends TimedRobot {
         climber.climb(controllers.getClimberUpTrigger(), controllers.getClimberDownTrigger());
         drive.robotDrive(controllers.getDriveSpeedAxis(), controllers.getDriveTurnAxis(), controllers.getDriveSideToggle());
         limelight.limelightDrive(controllers.getLimelightButton());
-
-        camera.stop(controllers.getStopCameraButton());
 
         recorder.record();
     }
