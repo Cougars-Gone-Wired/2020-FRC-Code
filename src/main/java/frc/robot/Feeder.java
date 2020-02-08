@@ -13,6 +13,8 @@ public class Feeder {
 
     private DigitalInput feederLineBreak;
 
+    
+
     public Feeder() {
         feederMotor = new WPI_TalonSRX(Constants.FEEDER_MOTOR_ID);
         feederLineBreak = new DigitalInput(Constants.FEEDER_LINEBREAK_PORT);
@@ -56,7 +58,7 @@ public class Feeder {
                 break;
                 
             case FEEDING_SHOOTER:
-                if (!Robot.intake.isNotMoving() || !Robot.shooter.isShooting()) {
+                if (!Robot.intake.isNotMoving() || !Robot.shooter.isShooting() || !Robot.shooter.atDesiredVelocity()) {
                     setNotMoving();
                 }
                 break;

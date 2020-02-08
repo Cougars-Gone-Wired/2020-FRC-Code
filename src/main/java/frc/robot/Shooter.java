@@ -14,6 +14,7 @@ public class Shooter {
     static double D = 0;
     static double F = 0;
     static double DESIRED_VELOCITY = 0;
+    static double VELOCITY_THRESHOLD = 20;
 
     private WPI_TalonFX shooterMotor;
     private TalonFXSensorCollection sensors;
@@ -144,6 +145,6 @@ public class Shooter {
     }
 
     public boolean atDesiredVelocity() {
-        return velocity >= DESIRED_VELOCITY;
+        return (velocity >= DESIRED_VELOCITY - VELOCITY_THRESHOLD) && (velocity <= DESIRED_VELOCITY + VELOCITY_THRESHOLD);
     }
 }

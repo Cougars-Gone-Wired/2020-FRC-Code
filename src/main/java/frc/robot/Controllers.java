@@ -12,7 +12,6 @@ public class Controllers {
     private double intakeArmAxis;
     private double intakeAxis;
     private double shooterTrigger;
-    private double feederAxis;
 
     // Mobility
     private Joystick mobilityController;
@@ -36,7 +35,6 @@ public class Controllers {
         intakeArmAxis = manipulatorController.getRawAxis(Constants.INTAKE_ARM_AXIS);
         intakeAxis = manipulatorController.getRawAxis(Constants.INTAKE_AXIS);
         shooterTrigger = manipulatorController.getRawAxis(Constants.SHOOTER_TRIGGER);
-        feederAxis = manipulatorController.getRawAxis(Constants.FEEDER_AXIS);
 
         // Mobility
         climberUpTrigger = mobilityController.getRawAxis(Constants.CLIMBER_UP_TRIGGER);
@@ -66,10 +64,6 @@ public class Controllers {
 
     public double getShooterTrigger() {
         return shooterTrigger;
-    }
-
-    public double getFeederAxis() {
-        return feederAxis;
     }
 
     // Mobilty
