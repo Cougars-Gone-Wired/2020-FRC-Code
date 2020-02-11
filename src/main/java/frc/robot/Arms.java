@@ -9,7 +9,8 @@ public class Arms {
     // private Solenoid bigSolenoid;
     private DoubleSolenoid smallSolenoid;
     private DoubleSolenoid bigSolenoid;
-    private Solenoid intakeArmSolenoid;
+    // private Solenoid intakeArmSolenoid;
+    private DoubleSolenoid intakeArmSolenoid;
 
     private boolean triggerDown = false;
 
@@ -18,7 +19,8 @@ public class Arms {
         // bigSolenoid = new Solenoid(Constants.ARM_BIG_SOLENOID_PORT);
         smallSolenoid = new DoubleSolenoid(Constants.ARM_SMALL_SOLENOID_PORT_1, Constants.ARM_SMALL_SOLENOID_PORT_2);
         bigSolenoid = new DoubleSolenoid(Constants.ARM_BIG_SOLENOID_PORT_1, Constants.ARM_BIG_SOLENOID_PORT_2);
-        intakeArmSolenoid = new Solenoid(Constants.INTAKE_SOLENOID_PORT);
+        // intakeArmSolenoid = new Solenoid(Constants.INTAKE_SOLENOID_PORT);
+        intakeArmSolenoid = new DoubleSolenoid(Constants.INTAKE_SOLENOID_PORT_1, Constants.INTAKE_SOLENOID_PORT_2);
         initialize();
     }
 
@@ -125,12 +127,14 @@ public class Arms {
     }
 
     public void setUpPosition() {
-        intakeArmSolenoid.set(false);
+        //intakeArmSolenoid.set(false);
+        intakeArmSolenoid.set(DoubleSolenoid.Value.kReverse);
         currentIntakeArmState = IntakeArmStates.UP;
     }
 
     public void setDownPosition() {
-        intakeArmSolenoid.set(true);
+        //intakeArmSolenoid.set(true);
+        intakeArmSolenoid.set(DoubleSolenoid.Value.kForward);
         currentIntakeArmState = IntakeArmStates.DOWN;    
     }
 

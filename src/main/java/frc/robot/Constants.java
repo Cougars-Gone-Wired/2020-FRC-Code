@@ -26,11 +26,12 @@ public class Constants {
     static final int ARM_SMALL_SOLENOID_PORT_2 = 1;
     static final int ARM_BIG_SOLENOID_PORT_1 = 2;
     static final int ARM_BIG_SOLENOID_PORT_2 = 3;
-    static final int INTAKE_SOLENOID_PORT = 4;
+    static final int INTAKE_SOLENOID_PORT_1 = 4;
+    static final int INTAKE_SOLENOID_PORT_2 = 5;
     static final int INTAKE_MOTOR_ID = 8;
     static final int SHOOTER_MOTOR_ID = 7;
-    static final int CHOMPER_SOLENOID_PORT = 5;
-    static final int HARD_STOP_SOLENOID_PORT = 6;
+    static final int CHOMPER_SOLENOID_PORT = 6;
+    static final int HARD_STOP_SOLENOID_PORT = 7;
     static final int FEEDER_MOTOR_ID = 9;
     static final int FEEDER_LINEBREAK_PORT = 1;
     static final int CONTROL_PANEL_MOTOR_ID = 10;
