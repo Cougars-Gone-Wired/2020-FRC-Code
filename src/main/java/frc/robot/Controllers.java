@@ -10,7 +10,7 @@ public class Controllers {
     private boolean armDownButton;
     private boolean stopCameraButton;
     private double intakeArmAxis;
-    private double intakeAxis;
+    private double intakeTrigger;
     private double shooterTrigger;
 
     // Mobility
@@ -33,7 +33,7 @@ public class Controllers {
         armDownButton = manipulatorController.getRawButtonPressed(Constants.ARM_DOWN_BUTTON);
         stopCameraButton = manipulatorController.getRawButtonPressed(Constants.STOP_CAMERA_BUTTON);
         intakeArmAxis = manipulatorController.getRawAxis(Constants.INTAKE_ARM_AXIS);
-        intakeAxis = manipulatorController.getRawAxis(Constants.INTAKE_AXIS);
+        intakeTrigger = manipulatorController.getRawAxis(Constants.INTAKE_TRIGGER);
         shooterTrigger = manipulatorController.getRawAxis(Constants.SHOOTER_TRIGGER);
 
         // Mobility
@@ -58,8 +58,8 @@ public class Controllers {
         return intakeArmAxis;
     }
     
-    public double getIntakeAxis() {
-        return intakeAxis;
+    public double getIntakeTrigger() {
+        return intakeTrigger;
     }
 
     public double getShooterTrigger() {

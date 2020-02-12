@@ -7,7 +7,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Shooter {
-    private static final double SHOOTER_SPEED = .45;
+    private static final double SHOOTER_SPEED = -.45;
     static double P = 0;
     static double I = 0; 
     static int IZONE = 0;

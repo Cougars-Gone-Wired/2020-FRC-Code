@@ -4,11 +4,9 @@ import edu.wpi.first.wpilibj.Solenoid;
 
 public class Chomper {
     private Solenoid chompSolenoid;
-    private Solenoid hardStopSolenoid;
 
     public Chomper() {
         chompSolenoid = new Solenoid(Constants.CHOMPER_SOLENOID_PORT);
-        hardStopSolenoid = new Solenoid(Constants.HARD_STOP_SOLENOID_PORT);
         initialize();
     }
 
@@ -61,19 +59,16 @@ public class Chomper {
 
     public void setIdle() {
         chompSolenoid.set(false);
-        hardStopSolenoid.set(true);
         currentChompState = ChompStates.IDLE;
     }
 
     public void setIntakeReady() {
         chompSolenoid.set(true);
-        hardStopSolenoid.set(true);
         currentChompState = ChompStates.INTAKE_READY;
     }
 
     public void setShooterReady() {
         chompSolenoid.set(false);
-        hardStopSolenoid.set(false);
         currentChompState = ChompStates.SHOOTER_READY;
     }
 }
