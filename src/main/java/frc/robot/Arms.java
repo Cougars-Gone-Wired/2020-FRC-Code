@@ -35,24 +35,24 @@ public class Arms {
 
     private ShooterArmStates currentShooterArmState;
 
-    public void shooterArm(boolean upButton, boolean downButton) {
+    public void shooterArm(boolean moveUpButton, boolean moveDownButton) {
         switch (currentShooterArmState) {
             case STARTING_POSITION:
-                if (downButton && !upButton) {
+                if (moveDownButton && !moveUpButton) {
                     setShootingPostion();
-                } else if (!downButton && upButton && (currentIntakeArmState != IntakeArmStates.UP)) {
+                } else if (!moveDownButton && moveUpButton && (currentIntakeArmState != IntakeArmStates.UP)) {
                     setClimbingPostion();
                 }
                 break;
 
             case SHOOTING_POSITION:
-                if (!downButton && upButton) {
+                if (!moveDownButton && moveUpButton) {
                     setStartingPosition();
                 }
                 break;
 
             case CLIMBING_POSITION:
-                if (downButton && !upButton) {
+                if (moveDownButton && !moveUpButton) {
                     setStartingPosition();
                 }
                 break;
@@ -102,16 +102,16 @@ public class Arms {
 
     private IntakeArmStates currentIntakeArmState;
 
-    public void intakeArm(double intakeArmAxis) {
+    public void intakeArm(double intakeArmTrigger) {
         switch(currentIntakeArmState) {
             case DOWN:
-                if (toggle(intakeArmAxis) && (currentShooterArmState != ShooterArmStates.CLIMBING_POSITION)) {
+                if (toggle(intakeArmTrigger) && (currentShooterArmState != ShooterArmStates.CLIMBING_POSITION)) {
                     setUpPosition();
                 }
                 break;
 
             case UP:
-                if (toggle(intakeArmAxis)) {
+                if (toggle(intakeArmTrigger)) {
                     setDownPosition();
                 }
                 break;
@@ -138,8 +138,8 @@ public class Arms {
         currentIntakeArmState = IntakeArmStates.DOWN;    
     }
 
-    public boolean toggle(double intakeArmAxis) {
-        if(intakeArmAxis > Constants.DEADZONE) {
+    public boolean toggle(double intakeArmTrigger) {
+        if(intakeArmTrigger > Constants.DEADZONE) {
             if(!triggerDown) {
                 triggerDown = true;
                 return true;

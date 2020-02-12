@@ -5,7 +5,7 @@ public class Constants {
     // Manipulator Controller
     static final int MANIPULATOR_CONTROLLER_ID = 0;
     static final int SHOOTER_TRIGGER = 3;
-    static final int INTAKE_AXIS = 1;
+    static final int INTAKE_TRIGGER = 1;
     static final int FEEDER_AXIS = 5;
     static final int ARM_UP_BUTTON = 6;
     static final int ARM_DOWN_BUTTON = 5;
@@ -31,7 +31,6 @@ public class Constants {
     static final int INTAKE_MOTOR_ID = 8;
     static final int SHOOTER_MOTOR_ID = 7;
     static final int CHOMPER_SOLENOID_PORT = 6;
-    static final int HARD_STOP_SOLENOID_PORT = 7;
     static final int FEEDER_MOTOR_ID = 9;
     static final int FEEDER_LINEBREAK_PORT = 1;
     static final int CONTROL_PANEL_MOTOR_ID = 10;

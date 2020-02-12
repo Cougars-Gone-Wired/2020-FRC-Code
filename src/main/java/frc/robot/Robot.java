@@ -100,7 +100,7 @@ public class Robot extends TimedRobot {
 
         arms.shooterArm(controllers.isArmUpButton(), controllers.isArmDownButton());
         arms.intakeArm(controllers.getIntakeArmAxis());
-        intake.intake(controllers.getIntakeAxis());
+        intake.intake(controllers.getIntakeTrigger());
         shooter.shoot(controllers.getShooterTrigger());
         feeder.feed();
         chomper.controlChomp();
