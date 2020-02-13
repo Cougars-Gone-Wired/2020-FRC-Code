@@ -5,7 +5,6 @@ import java.util.List;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.AutoPrograms.Programs;
 import frc.robot.recorder.*;
 
 public class Robot extends TimedRobot {

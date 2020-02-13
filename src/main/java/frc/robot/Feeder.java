@@ -13,8 +13,6 @@ public class Feeder {
 
     private DigitalInput feederLineBreak;
 
-    
-
     public Feeder() {
         feederMotor = new WPI_TalonSRX(Constants.FEEDER_MOTOR_ID);
         feederLineBreak = new DigitalInput(Constants.FEEDER_LINEBREAK_PORT);
