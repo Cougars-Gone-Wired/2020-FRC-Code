@@ -11,6 +11,8 @@ public class Robot extends TimedRobot {
 
     private AutoPrograms autoPrograms;
 
+    public static int ticks = 0;
+
     public static Controllers controllers;
 
     public static Arms arms;
@@ -56,6 +58,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotPeriodic() {
+        ticks++;
         autoPrograms.autoDashboard();
         drive.dashboard();
         limelight.dashboard();

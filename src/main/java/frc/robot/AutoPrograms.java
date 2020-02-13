@@ -47,6 +47,7 @@ public class AutoPrograms {
 
     public void autoDashboard() {
         SmartDashboard.putNumber("Gyro angle", gyro.getAngle());
+        SmartDashboard.putNumber("Ticks", Robot.ticks);
     }
 
     public void initAuto() {
@@ -83,7 +84,6 @@ public class AutoPrograms {
             break;
 
         case DEAD_RECKONING:
-            // moveOffLine();
             shootMoveOffLine();
 
             break;
@@ -118,7 +118,7 @@ public class AutoPrograms {
     }
 
     public void move(double distance, double speed) {
-        if (Robot.drive.ticksToInches(Robot.drive.getSensorAvg()) < distance) {
+        if (Robot.drive.getSensorsDistance() < distance) {
             Robot.drive.driveStraight(speed);
         } else {
             Robot.drive.driveStraight(0);
@@ -129,8 +129,12 @@ public class AutoPrograms {
 
     }
 
-    public void shoot(int number) {
-        // bla
+    public void shoot(int seconds) {
+        if (seconds >= Robot.ticks / 5) {
+            Robot.shooter.setShooting();
+        } else {
+            Robot.shooter.setNotMoving();
+        }
     }
 
     public void shootMoveOffLine() {
