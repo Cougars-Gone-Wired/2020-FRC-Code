@@ -100,14 +100,14 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
         controllers.updateControllerValues();
 
-        arms.shooterArm(controllers.isArmUpButton(), controllers.isArmDownButton());
-        arms.intakeArm(controllers.getIntakeArmAxis());
-        intake.intake(controllers.getIntakeTrigger());
+        arms.controlArm(controllers.isArmUpButton(), controllers.isArmDownButton());
+        arms.controlIntakeArm(controllers.getIntakeAxis());
+        intake.intake(controllers.getIntakeArmTrigger());
         shooter.shoot(controllers.getShooterTrigger());
         feeder.feed();
-        chomper.controlChomp();
+        chomper.controlChomper();
 
-        climber.climb(controllers.getClimberUpTrigger(), controllers.getClimberDownTrigger());
+        climber.controlClimb(controllers.getClimberUpTrigger(), controllers.getClimberDownTrigger());
         drive.robotDrive(controllers.getDriveSpeedAxis(), controllers.getDriveTurnAxis(), controllers.getDriveSideToggle());
         limelight.limelightDrive(controllers.getLimelightButton());
 

@@ -10,7 +10,7 @@ public class Feeder {
     private static final double FEED_INTAKE_SPEED = 0.8;
 
     private WPI_TalonSRX feederMotor;
-
+    
     private DigitalInput feederLineBreak;
 
     public Feeder() {

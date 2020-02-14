@@ -20,17 +20,17 @@ public class Climber {
         setNotMoving();
     }
 
-    private enum ClimbStates {
+    private enum ClimberStates {
         NOT_MOVING, MOVING_UP, MOVING_DOWN
     }
 
-    private ClimbStates currentClimbState;
+    private ClimberStates currentClimberState;
 
-    public void climb(double climberUpTrigger, double climberDownTrigger) {
+    public void controlClimb(double climberUpTrigger, double climberDownTrigger) {
         climberUpTriggerBool = (climberUpTrigger >= Constants.DEADZONE);
         climberDownTriggerBool = (climberDownTrigger >= Constants.DEADZONE);
         
-        switch (currentClimbState) {
+        switch (currentClimberState) {
             case NOT_MOVING:
                 if (climberUpTriggerBool && !climberDownTriggerBool && Robot.arms.isShooterClimbingPosition()) {
                     setMovingUp();
@@ -54,30 +54,30 @@ public class Climber {
     }
 
     public boolean isNotMoving() {
-        return currentClimbState == ClimbStates.NOT_MOVING;
+        return currentClimberState == ClimberStates.NOT_MOVING;
     }
 
     public boolean isMovingUp() {
-        return currentClimbState == ClimbStates.MOVING_UP;
+        return currentClimberState == ClimberStates.MOVING_UP;
     }
     
     public boolean isMovingDown() {
-        return currentClimbState == ClimbStates.MOVING_DOWN;
+        return currentClimberState == ClimberStates.MOVING_DOWN;
     }
 
     public void setNotMoving() {
         climbMotor.set(0);
-        currentClimbState = ClimbStates.NOT_MOVING;
+        currentClimberState = ClimberStates.NOT_MOVING;
     }
 
     public void setMovingUp() {
         climbMotor.set(LIFT_SPEED);
-        currentClimbState = ClimbStates.MOVING_UP;
+        currentClimberState = ClimberStates.MOVING_UP;
     }
 
     public void setMovingDown() {
         climbMotor.set(-LIFT_SPEED);
-        currentClimbState = ClimbStates.MOVING_DOWN;
+        currentClimberState = ClimberStates.MOVING_DOWN;
     }
 
     public void setMotorsBrake() {

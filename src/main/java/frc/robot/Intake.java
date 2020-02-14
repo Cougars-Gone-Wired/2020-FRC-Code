@@ -24,6 +24,7 @@ public class Intake {
     private IntakeStates currentIntakeState;
 
     public void intake(double intakeAxis) {
+        
         switch(currentIntakeState) {
             case NOT_MOVING:
                 if (intakeAxis >= Constants.DEADZONE && !Robot.arms.isIntakeUpPositon() && Robot.arms.isShooterShootingPosition()) {

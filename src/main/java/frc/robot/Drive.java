@@ -5,7 +5,6 @@ import com.ctre.phoenix.motorcontrol.TalonFXSensorCollection;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
-// import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -54,12 +53,6 @@ public class Drive {
         leftMotors = new SpeedControllerGroup(frontLeftMotor, midLeftMotor, backLeftMotor);
         rightMotors = new SpeedControllerGroup(frontRightMotor, midRightMotor, backRightMotor);
 
-        // frontLeftMotor.follow(middleLeftMotor);
-        // backLeftMotor.follow(middleLeftMotor);
-
-        // frontRightMotor.follow(middleRightMotor);
-        // backRightMotor.follow(middleRightMotor);
-
         initMotors();
         initalize();
 
@@ -99,8 +92,7 @@ public class Drive {
     private DriveStates currentDriveState;
 
     public void robotDrive(double driveSpeedAxis, double driveTurnAxis, boolean toggle) {
-        if(!
-        Robot.limelight.isDriveNotMoving()) {
+        if(!Robot.limelight.isDriveNotMoving()) {
             driveSpeedAxis *= 0;
             driveTurnAxis *= 0;
         } else {
@@ -161,10 +153,6 @@ public class Drive {
         frontRightMotor.setNeutralMode(NeutralMode.Coast);
         midRightMotor.setNeutralMode(NeutralMode.Coast);
         backRightMotor.setNeutralMode(NeutralMode.Coast);
-    }
-
-    public DifferentialDrive getDifferentialDrive() {
-        return robotDrive;
     }
 
     public void driveStraight(double speed) {

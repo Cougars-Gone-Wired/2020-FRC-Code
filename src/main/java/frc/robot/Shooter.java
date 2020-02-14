@@ -81,6 +81,7 @@ public class Shooter {
     private ShooterStates currentShooterState;
 
     public void shoot(double shooterTrigger) {
+        shooterDashboard();
         shooterTriggerBool = (shooterTrigger >= Constants.DEADZONE);
         velocity = sensors.getIntegratedSensorVelocity();
 

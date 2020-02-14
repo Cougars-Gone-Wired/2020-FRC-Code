@@ -3,6 +3,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Solenoid;
 
 public class Chomper {
+
     private Solenoid chompSolenoid;
 
     public Chomper() {
@@ -14,15 +15,15 @@ public class Chomper {
         setIdle();
     }
 
-    public enum ChompStates {
+    public enum ChomperStates {
         IDLE, INTAKE_READY, SHOOTER_READY
     }
 
-    private ChompStates currentChompState;
+    private ChomperStates currentChomperState;
 
-    public void controlChomp() {
+    public void controlChomper() {
 
-        switch(currentChompState) {
+        switch(currentChomperState) {
             case IDLE:
                 if (Robot.feeder.isIntaking()) {
                     setIntakeReady();
@@ -41,34 +42,34 @@ public class Chomper {
                 if (Robot.feeder.isNotMoving()) {
                     setIdle();
                 }
-            break;
+                break;
         }
     }
 
     public boolean isIdle() {
-        return currentChompState == ChompStates.IDLE;
+        return currentChomperState == ChomperStates.IDLE;
     }
 
     public boolean isIntakeReady() {
-        return currentChompState == ChompStates.INTAKE_READY;
+        return currentChomperState == ChomperStates.INTAKE_READY;
     }
 
     public boolean isShooterReady() {
-        return currentChompState == ChompStates.SHOOTER_READY;
+        return currentChomperState == ChomperStates.SHOOTER_READY;
     }
 
     public void setIdle() {
         chompSolenoid.set(false);
-        currentChompState = ChompStates.IDLE;
+        currentChomperState = ChomperStates.IDLE;
     }
 
     public void setIntakeReady() {
         chompSolenoid.set(true);
-        currentChompState = ChompStates.INTAKE_READY;
+        currentChomperState = ChomperStates.INTAKE_READY;
     }
 
     public void setShooterReady() {
         chompSolenoid.set(false);
-        currentChompState = ChompStates.SHOOTER_READY;
+        currentChomperState = ChomperStates.SHOOTER_READY;
     }
 }

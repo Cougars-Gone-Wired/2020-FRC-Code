@@ -1,26 +1,19 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.Solenoid;
 
 public class Arms {
 
-    // private Solenoid smallSolenoid;
-    // private Solenoid bigSolenoid;
-    private DoubleSolenoid smallSolenoid;
-    private DoubleSolenoid bigSolenoid;
-    // private Solenoid intakeArmSolenoid;
+    private DoubleSolenoid armTopSolenoid;
+    private DoubleSolenoid armBottomSolenoid;
     private DoubleSolenoid intakeArmSolenoid;
 
-    private boolean triggerDown = false;
+    private boolean triggerDownBool = false;
 
     public Arms() {
-        // smallSolenoid = new Solenoid(Constants.ARM_SMALL_SOLENOID_PORT);
-        // bigSolenoid = new Solenoid(Constants.ARM_BIG_SOLENOID_PORT);
-        smallSolenoid = new DoubleSolenoid(Constants.ARM_SMALL_SOLENOID_PORT_1, Constants.ARM_SMALL_SOLENOID_PORT_2);
-        bigSolenoid = new DoubleSolenoid(Constants.ARM_BIG_SOLENOID_PORT_1, Constants.ARM_BIG_SOLENOID_PORT_2);
-        // intakeArmSolenoid = new Solenoid(Constants.INTAKE_SOLENOID_PORT);
-        intakeArmSolenoid = new DoubleSolenoid(Constants.INTAKE_SOLENOID_PORT_1, Constants.INTAKE_SOLENOID_PORT_2);
+        armTopSolenoid = new DoubleSolenoid(Constants.ARM_TOP_SOLENOID_PORT_1, Constants.ARM_TOP_SOLENOID_PORT_2);
+        armBottomSolenoid = new DoubleSolenoid(Constants.ARM_BOTTOM_SOLENOID_PORT_1, Constants.ARM_BOTTOM_SOLENOID_PORT_2);
+        intakeArmSolenoid = new DoubleSolenoid(Constants.INTAKE_ARM_SOLENOID_PORT_1, Constants.INTAKE_ARM_SOLENOID_PORT_2);
         initialize();
     }
 
@@ -29,14 +22,15 @@ public class Arms {
         setUpPosition();
     }
 
-    public enum ShooterArmStates {
+    public enum ArmStates {
         STARTING_POSITION, SHOOTING_POSITION, CLIMBING_POSITION
     }
 
-    private ShooterArmStates currentShooterArmState;
+    private ArmStates currentArmState;
 
-    public void shooterArm(boolean moveUpButton, boolean moveDownButton) {
-        switch (currentShooterArmState) {
+    public void controlArm(boolean moveUpButton, boolean moveDownButton) {
+
+        switch (currentArmState) {
             case STARTING_POSITION:
                 if (moveDownButton && !moveUpButton) {
                     setShootingPostion();
@@ -60,39 +54,33 @@ public class Arms {
     }
 
     public boolean isShooterStartingPosition() {
-        return currentShooterArmState == ShooterArmStates.STARTING_POSITION;
+        return currentArmState == ArmStates.STARTING_POSITION;
     }
 
     public boolean isShooterShootingPosition() {
-        return currentShooterArmState == ShooterArmStates.SHOOTING_POSITION;
+        return currentArmState == ArmStates.SHOOTING_POSITION;
     }
 
     public boolean isShooterClimbingPosition() {
-        return currentShooterArmState == ShooterArmStates.CLIMBING_POSITION;
+        return currentArmState == ArmStates.CLIMBING_POSITION;
     }
 
     public void setStartingPosition() {
-        // smallSolenoid.set(false);
-        // bigSolenoid.set(true);
-        smallSolenoid.set(DoubleSolenoid.Value.kReverse);
-        bigSolenoid.set(DoubleSolenoid.Value.kForward);
-        currentShooterArmState = ShooterArmStates.STARTING_POSITION;
+        armTopSolenoid.set(DoubleSolenoid.Value.kReverse);
+        armBottomSolenoid.set(DoubleSolenoid.Value.kForward);
+        currentArmState = ArmStates.STARTING_POSITION;
     }
 
     public void setShootingPostion() {
-        // smallSolenoid.set(false);
-        // bigSolenoid.set(false);
-        smallSolenoid.set(DoubleSolenoid.Value.kReverse);
-        bigSolenoid.set(DoubleSolenoid.Value.kReverse);
-        currentShooterArmState = ShooterArmStates.SHOOTING_POSITION;
+        armTopSolenoid.set(DoubleSolenoid.Value.kReverse);
+        armBottomSolenoid.set(DoubleSolenoid.Value.kReverse);
+        currentArmState = ArmStates.SHOOTING_POSITION;
     }
 
     public void setClimbingPostion() {
-        // smallSolenoid.set(true);
-        // bigSolenoid.set(true);
-        smallSolenoid.set(DoubleSolenoid.Value.kForward);
-        bigSolenoid.set(DoubleSolenoid.Value.kForward);
-        currentShooterArmState = ShooterArmStates.CLIMBING_POSITION;
+        armTopSolenoid.set(DoubleSolenoid.Value.kForward);
+        armBottomSolenoid.set(DoubleSolenoid.Value.kForward);
+        currentArmState = ArmStates.CLIMBING_POSITION;
     }
     
 
@@ -102,16 +90,17 @@ public class Arms {
 
     private IntakeArmStates currentIntakeArmState;
 
-    public void intakeArm(double intakeArmTrigger) {
+    public void controlIntakeArm(double intakeArmTrigger) {
+        
         switch(currentIntakeArmState) {
             case DOWN:
-                if (toggle(intakeArmTrigger) && (currentShooterArmState != ShooterArmStates.CLIMBING_POSITION)) {
+                if (toggleTrigger(intakeArmTrigger) && (currentArmState != ArmStates.CLIMBING_POSITION)) {
                     setUpPosition();
                 }
                 break;
 
             case UP:
-                if (toggle(intakeArmTrigger)) {
+                if (toggleTrigger(intakeArmTrigger)) {
                     setDownPosition();
                 }
                 break;
@@ -127,25 +116,23 @@ public class Arms {
     }
 
     public void setUpPosition() {
-        //intakeArmSolenoid.set(false);
         intakeArmSolenoid.set(DoubleSolenoid.Value.kReverse);
         currentIntakeArmState = IntakeArmStates.UP;
     }
 
     public void setDownPosition() {
-        //intakeArmSolenoid.set(true);
         intakeArmSolenoid.set(DoubleSolenoid.Value.kForward);
         currentIntakeArmState = IntakeArmStates.DOWN;    
     }
 
-    public boolean toggle(double intakeArmTrigger) {
+    public boolean toggleTrigger(double intakeArmTrigger) {
         if(intakeArmTrigger > Constants.DEADZONE) {
-            if(!triggerDown) {
-                triggerDown = true;
+            if(!triggerDownBool) {
+                triggerDownBool = true;
                 return true;
             }
         } else {
-            triggerDown = false;
+            triggerDownBool = false;
         }
         return false;
     }
