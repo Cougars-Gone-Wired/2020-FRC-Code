@@ -10,12 +10,14 @@ public class Feeder {
     private static final double FEED_INTAKE_SPEED = 0.8;
 
     private WPI_TalonSRX feederMotor;
-    
-    private DigitalInput feederLineBreak;
+
+    private DigitalInput feederUpperLineBreak;
+    private DigitalInput feederLowerLineBreak;
 
     public Feeder() {
         feederMotor = new WPI_TalonSRX(Constants.FEEDER_MOTOR_ID);
-        feederLineBreak = new DigitalInput(Constants.FEEDER_LINEBREAK_PORT);
+        feederUpperLineBreak = new DigitalInput(Constants.FEEDER_UPPER_LINEBREAK_PORT);
+        feederLowerLineBreak = new DigitalInput(Constants.FEEDER_LOWER_LINEBREAK_PORT);
         initialize();
     }
 
@@ -32,7 +34,7 @@ public class Feeder {
     public void feed() {
         switch(currentFeederState) {
             case NOT_MOVING:
-                if (Robot.intake.isIntaking() && !Robot.shooter.isShooting() && !feederLineBreak.get()) {
+                if (Robot.intake.isIntaking() && !Robot.shooter.isShooting() && (feederUpperLineBreak.get() || feederLowerLineBreak.get())) {
                     setIntaking();
 
                 } else if (Robot.intake.isOuttaking() && !Robot.shooter.isShooting()) {
@@ -44,7 +46,7 @@ public class Feeder {
                 break;
 
             case INTAKING:
-                if(!Robot.intake.isIntaking() || Robot.shooter.isShooting() || feederLineBreak.get()) {
+                if(!Robot.intake.isIntaking() || Robot.shooter.isShooting() || !(feederUpperLineBreak.get() || feederLowerLineBreak.get())) {
                     setNotMoving();
                 }
                 break;

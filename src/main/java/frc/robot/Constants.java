@@ -37,7 +37,8 @@ public class Constants {
     static final int FEEDER_MOTOR_ID = 2;
     static final int CONTROL_PANEL_MOTOR_ID = 3;
         //Sensors
-    static final int FEEDER_LINEBREAK_PORT = 1;
+    static final int FEEDER_LOWER_LINEBREAK_PORT = 1;
+    static final int FEEDER_UPPER_LINEBREAK_PORT = 2;
 
     // Mobility Ids
     static final int CLIMBER_MOTOR_ID = 4;
