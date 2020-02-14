@@ -32,7 +32,8 @@ public class Constants {
     static final int SHOOTER_MOTOR_ID = 7;
     static final int CHOMPER_SOLENOID_PORT = 6;
     static final int FEEDER_MOTOR_ID = 9;
-    static final int FEEDER_LINEBREAK_PORT = 1;
+    static final int FEEDER_LOWER_LINEBREAK_PORT = 1;
+    static final int FEEDER_UPPER_LINEBREAK_PORT = 2;
     static final int CONTROL_PANEL_MOTOR_ID = 10;
 
     // Mobility Ids
