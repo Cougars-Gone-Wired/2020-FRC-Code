@@ -25,23 +25,35 @@ public class Intake {
 
     public void intake(double intakeAxis) {
         
-        switch(currentIntakeState) {
+        switch (currentIntakeState) {
             case NOT_MOVING:
-                if (intakeAxis >= Constants.DEADZONE && !Robot.arms.isIntakeUpPositon() && Robot.arms.isShooterShootingPosition()) {
+                if (intakeAxis >= Constants.DEADZONE 
+                        && !Robot.arms.isIntakeUpPositon() 
+                        && Robot.arms.isArmShootingPosition() 
+                        && !Robot.arms.isArmClimbingPosition()) {
                     setIntaking();
-                } else if (intakeAxis <= -Constants.DEADZONE && !Robot.arms.isIntakeUpPositon() && Robot.arms.isShooterShootingPosition()) {
+                } else if (intakeAxis <= -Constants.DEADZONE 
+                        && !Robot.arms.isIntakeUpPositon() 
+                        && Robot.arms.isArmShootingPosition() && 
+                        !Robot.arms.isArmClimbingPosition()) {
                     setOuttaking();
                 }
                 break;
 
             case INTAKING:
-                if (intakeAxis < Constants.DEADZONE || Robot.arms.isIntakeUpPositon() || !Robot.arms.isShooterShootingPosition()) {
+                if (intakeAxis < Constants.DEADZONE 
+                        || Robot.arms.isIntakeUpPositon() 
+                        || !Robot.arms.isArmShootingPosition()
+                        || Robot.arms.isArmClimbingPosition()) {
                     setNotMoving();
                 }
                 break;
 
             case OUTTAKING:
-                if (intakeAxis > -Constants.DEADZONE || Robot.arms.isIntakeUpPositon() || !Robot.arms.isShooterShootingPosition()) {
+                if (intakeAxis > -Constants.DEADZONE 
+                        || Robot.arms.isIntakeUpPositon() 
+                        || !Robot.arms.isArmShootingPosition()
+                        || Robot.arms.isArmClimbingPosition()) {
                     setNotMoving();
                 }
                 break;

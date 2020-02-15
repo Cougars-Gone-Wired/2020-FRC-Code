@@ -24,7 +24,7 @@ public class Camera implements Runnable {
         Mat output = new Mat();
 
         while (!exit) {
-            if(cvSink.grabFrame(image) == 0) {
+            if (cvSink.grabFrame(image) == 0) {
                 cvSource.notifyError(cvSink.getError());
                 continue;
             }

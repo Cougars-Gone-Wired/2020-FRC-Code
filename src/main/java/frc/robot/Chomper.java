@@ -23,7 +23,7 @@ public class Chomper {
 
     public void controlChomper() {
 
-        switch(currentChomperState) {
+        switch (currentChomperState) {
             case IDLE:
                 if (Robot.feeder.isIntaking()) {
                     setIntakeReady();

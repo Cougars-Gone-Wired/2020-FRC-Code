@@ -88,12 +88,12 @@ public class Shooter {
 
         switch (currentShooterState) {
         case NOT_MOVING:
-            if (shooterTriggerBool && !Robot.arms.isShooterClimbingPosition()) {
+            if (shooterTriggerBool && !Robot.arms.isArmClimbingPosition()) {
                 setShooting();
             }
             break;
         case SHOOTING:
-            if (!shooterTriggerBool || Robot.arms.isShooterClimbingPosition()) {
+            if (!shooterTriggerBool || Robot.arms.isArmClimbingPosition()) {
                 setNotMoving();
             } 
             break;

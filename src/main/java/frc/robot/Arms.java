@@ -59,15 +59,15 @@ public class Arms {
         }
     }
 
-    public boolean isShooterStartingPosition() {
+    public boolean isArmStartingPosition() {
         return currentArmState == ArmStates.STARTING_POSITION;
     }
 
-    public boolean isShooterShootingPosition() {
+    public boolean isArmShootingPosition() {
         return currentArmState == ArmStates.SHOOTING_POSITION;
     }
 
-    public boolean isShooterClimbingPosition() {
+    public boolean isArmClimbingPosition() {
         return currentArmState == ArmStates.CLIMBING_POSITION;
     }
 
@@ -140,8 +140,8 @@ public class Arms {
     }
 
     public boolean toggleTrigger(double intakeArmTrigger) {
-        if(intakeArmTrigger > Constants.DEADZONE) {
-            if(!triggerDownBool) {
+        if (intakeArmTrigger > Constants.DEADZONE) {
+            if (!triggerDownBool) {
                 triggerDownBool = true;
                 return true;
             }

@@ -58,7 +58,7 @@ public class Limelight {
         ta = table.getEntry("ta").getDouble(0);
         getDashboard();
 
-        switch(limelightDriveState) {
+        switch (limelightDriveState) {
             case DO_NOTHING:
                 if (aimButton) {
                     //turnlightsOn();
@@ -170,7 +170,7 @@ public class Limelight {
         ta = table.getEntry("ta").getDouble(0);
         getDashboard();
 
-        switch(limelightAutoState) {
+        switch (limelightAutoState) {
             case IDLE:
                 if (aimButton) {
                     // turnlightsOn();

@@ -32,33 +32,43 @@ public class Feeder {
     private FeederStates currentFeederState;
 
     public void feed() {
-        switch(currentFeederState) {
+        switch (currentFeederState) {
             case NOT_MOVING:
-                if (Robot.intake.isIntaking() && !Robot.shooter.isShooting() && (feederUpperLineBreak.get() || feederLowerLineBreak.get())) {
+                if (Robot.intake.isIntaking() 
+                        && !Robot.shooter.isShooting() 
+                        && (feederUpperLineBreak.get() || feederLowerLineBreak.get())) {
                     setIntaking();
 
-                } else if (Robot.intake.isOuttaking() && !Robot.shooter.isShooting()) {
+                } else if (Robot.intake.isOuttaking() 
+                        && !Robot.shooter.isShooting()) {
                     setOuttaking();
 
-                } else if (Robot.intake.isNotMoving() && Robot.shooter.isShooting() && Robot.shooter.atDesiredVelocity()) {
+                } else if (Robot.intake.isNotMoving() 
+                        && Robot.shooter.isShooting() 
+                        && Robot.shooter.atDesiredVelocity()) {
                     setFeedingShooter();
                 }
                 break;
 
             case INTAKING:
-                if(!Robot.intake.isIntaking() || Robot.shooter.isShooting() || !(feederUpperLineBreak.get() || feederLowerLineBreak.get())) {
+                if(!Robot.intake.isIntaking() 
+                        || Robot.shooter.isShooting() 
+                        || !(feederUpperLineBreak.get() || feederLowerLineBreak.get())) {
                     setNotMoving();
                 }
                 break;
 
             case OUTTAKING:
-                if(!Robot.intake.isOuttaking() || Robot.shooter.isShooting()) {
+                if(!Robot.intake.isOuttaking() 
+                        || Robot.shooter.isShooting()) {
                     setNotMoving();
                 }
                 break;
                 
             case FEEDING_SHOOTER:
-                if (!Robot.intake.isNotMoving() || !Robot.shooter.isShooting() || !Robot.shooter.atDesiredVelocity()) {
+                if (!Robot.intake.isNotMoving() 
+                        || !Robot.shooter.isShooting() 
+                        || !Robot.shooter.atDesiredVelocity()) {
                     setNotMoving();
                 }
                 break;
