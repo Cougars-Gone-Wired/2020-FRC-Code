@@ -105,8 +105,8 @@ public class Robot extends TimedRobot {
         intake.intake(controllers.getIntakeArmTrigger());
         shooter.shoot(controllers.getShooterTrigger());
         // shooter.pidShooter(controllers.getShooterTrigger());
-        feeder.feed();
-        chomper.controlChomper();
+        feeder.feed(controllers.getFeederAxis());
+        chomper.controlChomper(controllers.getChomperUpButton(), controllers.getChomperDownButton());
 
         climber.controlClimb(controllers.getClimberUpTrigger(), controllers.getClimberDownTrigger());
         drive.robotDrive(controllers.getDriveSpeedAxis(), controllers.getDriveTurnAxis(), controllers.getDriveSideToggle());

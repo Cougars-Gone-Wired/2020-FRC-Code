@@ -88,12 +88,12 @@ public class Shooter {
 
         switch (currentShooterState) {
         case NOT_MOVING:
-            if (shooterTriggerBool && !Robot.arms.isShooterClimbingPosition()) {
+            if (shooterTriggerBool) {
                 setShooting();
             }
             break;
         case SHOOTING:
-            if (!shooterTriggerBool || Robot.arms.isShooterClimbingPosition()) {
+            if (!shooterTriggerBool) {
                 setNotMoving();
             } 
             break;
@@ -108,14 +108,12 @@ public class Shooter {
 
         switch (currentShooterState) {
             case NOT_MOVING:
-                //if (shooterTriggerBool && !Robot.arms.isShooterClimbingPosition()) {
                 if (shooterTriggerBool) {
                     setPIDShooting();
                 }
                 break;
             case SHOOTING:
                 setPIDShooting();
-                //if (!shooterTriggerBool || Robot.arms.isShooterClimbingPosition()) {
                 if (!shooterTriggerBool) {
                     setNotMoving();
                 } 

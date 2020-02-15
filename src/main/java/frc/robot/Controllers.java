@@ -12,6 +12,9 @@ public class Controllers {
     private double intakeAxis;
     private double shooterTrigger;
     private boolean stopCameraButton;
+    private double feederAxis;
+    private boolean chomperUpButton;
+    private boolean chomperDownButton;
 
     // Mobility
     private Joystick mobilityController;
@@ -35,6 +38,9 @@ public class Controllers {
         intakeAxis = manipulatorController.getRawAxis(Constants.INTAKE_AXIS);
         shooterTrigger = manipulatorController.getRawAxis(Constants.SHOOTER_TRIGGER);
         stopCameraButton = manipulatorController.getRawButtonPressed(Constants.STOP_CAMERA_BUTTON);
+        feederAxis = manipulatorController.getRawAxis(Constants.FEEDER_AXIS);
+        chomperUpButton = manipulatorController.getRawButtonPressed(Constants.CHOMPER_UP_BUTTON);
+        chomperDownButton = manipulatorController.getRawButtonPressed(Constants.CHOMPER_DOWN_BUTTON);
 
         // Mobility
         climberUpTrigger = mobilityController.getRawAxis(Constants.CLIMBER_UP_TRIGGER);
@@ -70,6 +76,17 @@ public class Controllers {
         return stopCameraButton;
     }
 
+    public double getFeederAxis() {
+        return feederAxis;
+    }
+
+    public boolean getChomperUpButton() {
+        return chomperUpButton;
+    }
+
+    public boolean getChomperDownButton() {
+        return chomperDownButton;
+    }
     // Mobilty
     public double getClimberUpTrigger() {
         return climberUpTrigger;

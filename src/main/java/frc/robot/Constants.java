@@ -10,6 +10,9 @@ public class Constants {
     static final int INTAKE_AXIS = 1;
     static final int SHOOTER_TRIGGER = 3;
     static final int STOP_CAMERA_BUTTON = 8;
+    static final int FEEDER_AXIS = 5;
+    static final int CHOMPER_UP_BUTTON = 4;
+    static final int CHOMPER_DOWN_BUTTON = 1;
 
     // Mobility Controller
     static final int MOBILITY_CONTROLLER_ID = 1;

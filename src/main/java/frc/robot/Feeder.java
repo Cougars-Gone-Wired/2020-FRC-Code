@@ -6,8 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.DigitalInput;
 
 public class Feeder {
-    private static final double FEED_SHOOTER_SPEED = 0.6;
-    private static final double FEED_INTAKE_SPEED = 0.8;
+    private static final double FEED_INTAKE_SPEED = 0.6;
 
     private WPI_TalonSRX feederMotor;
 
@@ -26,39 +25,40 @@ public class Feeder {
     }
 
     public enum FeederStates {
-        NOT_MOVING, INTAKING, OUTTAKING, FEEDING_SHOOTER
+        NOT_MOVING, INTAKING, OUTTAKING
     }
 
     private FeederStates currentFeederState;
 
-    public void feed() {
+    public void feed(double feederAxis) {
         switch(currentFeederState) {
             case NOT_MOVING:
-                if (Robot.intake.isIntaking() && !Robot.shooter.isShooting() && (feederUpperLineBreak.get() || feederLowerLineBreak.get())) {
+                if (feederAxis >= Constants.DEADZONE && (feederUpperLineBreak.get() || feederLowerLineBreak.get())) {
+                // if (feederAxis >= Constants.DEADZONE && !feederLineBreak.get()) {
+                // if (feederAxis >= Constants.DEADZONE) {
                     setIntaking();
 
-                } else if (Robot.intake.isOuttaking() && !Robot.shooter.isShooting()) {
+                } else if (feederAxis <= -Constants.DEADZONE) {
                     setOuttaking();
-
-                } else if (Robot.intake.isNotMoving() && Robot.shooter.isShooting() && Robot.shooter.atDesiredVelocity()) {
-                    setFeedingShooter();
                 }
                 break;
 
             case INTAKING:
-                if(!Robot.intake.isIntaking() || Robot.shooter.isShooting() || !(feederUpperLineBreak.get() || feederLowerLineBreak.get())) {
+                // if(!feederUpperLineBreak.get()) {
+                //     if(!feederLowerLineBreak.get()) {
+                //         setNotMoving();
+                //     }
+                // }
+
+                if(feederAxis < Constants.DEADZONE || !(feederUpperLineBreak.get() || feederLowerLineBreak.get())) {
+                // if(feederAxis < Constants.DEADZONE || feederLineBreak.get()) {
+                // if(feederAxis < Constants.DEADZONE) {
                     setNotMoving();
                 }
                 break;
 
             case OUTTAKING:
-                if(!Robot.intake.isOuttaking() || Robot.shooter.isShooting()) {
-                    setNotMoving();
-                }
-                break;
-                
-            case FEEDING_SHOOTER:
-                if (!Robot.intake.isNotMoving() || !Robot.shooter.isShooting() || !Robot.shooter.atDesiredVelocity()) {
+                if(feederAxis > -Constants.DEADZONE) {
                     setNotMoving();
                 }
                 break;
@@ -77,10 +77,6 @@ public class Feeder {
         return currentFeederState == FeederStates.OUTTAKING;
     }
 
-    public boolean isFeedingShooter() {
-        return currentFeederState == FeederStates.FEEDING_SHOOTER;
-    }
-
     public void setNotMoving() {
         feederMotor.set(0);
         currentFeederState = FeederStates.NOT_MOVING;
@@ -94,11 +90,6 @@ public class Feeder {
     public void setOuttaking() {
         feederMotor.set(-FEED_INTAKE_SPEED);
         currentFeederState = FeederStates.OUTTAKING;
-    }
-
-    public void setFeedingShooter() {
-        feederMotor.set(FEED_SHOOTER_SPEED);
-        currentFeederState = FeederStates.FEEDING_SHOOTER;
     }
 
     public void setMotorsBrake() {

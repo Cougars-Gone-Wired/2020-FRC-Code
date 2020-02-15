@@ -40,7 +40,7 @@ public class Arms {
             case STARTING_POSITION:
                 if (moveDownButton && !moveUpButton) {
                     setShootingPostion();
-                } else if (!moveDownButton && moveUpButton && (currentIntakeArmState != IntakeArmStates.UP)) {
+                } else if (!moveDownButton && moveUpButton) {
                     setClimbingPostion();
                 }
                 break;
@@ -104,7 +104,7 @@ public class Arms {
         
         switch(currentIntakeArmState) {
             case DOWN:
-                if (toggleTrigger(intakeArmTrigger) && (currentArmState != ArmStates.CLIMBING_POSITION)) {
+                if (toggleTrigger(intakeArmTrigger)) {
                     setUpPosition();
                 }
                 break;
