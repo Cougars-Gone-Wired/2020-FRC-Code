@@ -93,11 +93,11 @@ public class Drive {
 
     public void robotDrive(double driveSpeedAxis, double driveTurnAxis, boolean toggle) {
         if(!Robot.limelight.isDriveNotMoving()) {
-            driveSpeedAxis *= 0;
-            driveTurnAxis *= 0;
+            driveSpeedAxis = 0;
+            driveTurnAxis = 0;
         } else {
-            driveSpeedAxis = driveSpeedAxis * DRIVE_SPEED;
-            driveTurnAxis = driveTurnAxis * TURN_SPEED;
+            driveSpeedAxis *= DRIVE_SPEED;
+            driveTurnAxis *= TURN_SPEED;
         }
 
         switch (currentDriveState) {
