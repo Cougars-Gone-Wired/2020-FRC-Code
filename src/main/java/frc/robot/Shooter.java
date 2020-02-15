@@ -7,12 +7,12 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Shooter {
-    private static final double SHOOTER_SPEED = -.45;
-    static double P = 0;
-    static double I = 0; 
-    static int IZONE = 0;
-    static double D = 0;
-    static double F = 0;
+    private static final double SHOOTER_SPEED = 0.45;
+    static double P = 0.4; // 0.46
+    static double I = 0.001; // 0.001
+    static int IZONE = 80; // 180
+    static double D = 10; // 15
+    static double F = 0.0465; // 0.048
     static double DESIRED_VELOCITY = 0;
     static double VELOCITY_THRESHOLD = 20;
 
@@ -38,6 +38,7 @@ public class Shooter {
     }
 
     public void initShooterMotor() {
+        shooterMotor.setInverted(true);
         shooterMotor.config_kP(0, P, 10);
         shooterMotor.config_kI(0, I, 10);
         shooterMotor.config_IntegralZone(0, IZONE, 10);
