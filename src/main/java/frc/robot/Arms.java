@@ -3,12 +3,15 @@ package frc.robot;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 public class Arms {
+    static final int ARM_STATE_DELAY = 2; // in seconds
 
     private DoubleSolenoid armTopSolenoid;
     private DoubleSolenoid armBottomSolenoid;
     private DoubleSolenoid intakeArmSolenoid;
 
-    private boolean triggerDownBool = false;
+    private int armStateCounts;
+    private int intakeArmStateCounts;
+    private boolean triggerDownBool;
 
     public Arms() {
         armTopSolenoid = new DoubleSolenoid(Constants.ARM_TOP_SOLENOID_PORT_1, Constants.ARM_TOP_SOLENOID_PORT_2);
@@ -18,6 +21,9 @@ public class Arms {
     }
 
     public void initialize() {
+        armStateCounts = 0;
+        intakeArmStateCounts = 0;
+        triggerDownBool = false;
         setStartingPosition();
         setUpPosition();
     }
@@ -68,7 +74,11 @@ public class Arms {
     public void setStartingPosition() {
         armTopSolenoid.set(DoubleSolenoid.Value.kReverse);
         armBottomSolenoid.set(DoubleSolenoid.Value.kForward);
-        currentArmState = ArmStates.STARTING_POSITION;
+        armStateCounts++;
+        if (armStateCounts / 500 >= ARM_STATE_DELAY) {
+            armStateCounts = 0;
+            currentArmState = ArmStates.STARTING_POSITION;
+        }
     }
 
     public void setShootingPostion() {
@@ -122,7 +132,11 @@ public class Arms {
 
     public void setDownPosition() {
         intakeArmSolenoid.set(DoubleSolenoid.Value.kForward);
-        currentIntakeArmState = IntakeArmStates.DOWN;    
+        intakeArmStateCounts++;
+        if (intakeArmStateCounts / 500 >= ARM_STATE_DELAY) {
+            intakeArmStateCounts = 0;
+            currentIntakeArmState = IntakeArmStates.DOWN;
+        }    
     }
 
     public boolean toggleTrigger(double intakeArmTrigger) {

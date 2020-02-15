@@ -13,7 +13,7 @@ public class Shooter {
     static int IZONE = 80; // 180
     static double D = 10; // 15
     static double F = 0.0465; // 0.048
-    static double DESIRED_VELOCITY = 0;
+    static double DESIRED_VELOCITY = 9500; // 9225
     static double VELOCITY_THRESHOLD = 20;
 
     private WPI_TalonFX shooterMotor;
