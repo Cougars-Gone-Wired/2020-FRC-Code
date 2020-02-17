@@ -27,7 +27,7 @@ public class Arms {
         intakeArmStateCounts = 0;
         triggerDownBool = false;
         armSwitchingStates = false;
-        armSwitchingStates = false;
+        intakeArmSwitchingStates = false;
         setStartingPosition();
         setUpPosition();
     }
@@ -51,9 +51,6 @@ public class Arms {
 
             case SHOOTING_POSITION:
                 if (!moveDownButton && moveUpButton) {
-                    armSwitchingStates = true;
-                }
-                if (armSwitchingStates) {
                     setStartingPosition();
                 }
                 break;
@@ -63,7 +60,7 @@ public class Arms {
                     armSwitchingStates = true;
                 }
                 if (armSwitchingStates) {
-                    setStartingPosition();
+                    setStartingPositionWithDelay();
                 }
                 break;
         }
@@ -82,6 +79,12 @@ public class Arms {
     }
 
     public void setStartingPosition() {
+        armTopSolenoid.set(DoubleSolenoid.Value.kReverse);
+        armBottomSolenoid.set(DoubleSolenoid.Value.kForward);
+        currentArmState = ArmStates.STARTING_POSITION;
+    }
+
+    public void setStartingPositionWithDelay() {
         armTopSolenoid.set(DoubleSolenoid.Value.kReverse);
         armBottomSolenoid.set(DoubleSolenoid.Value.kForward);
         if (armStateCounts / 500 >= ARM_STATE_DELAY) {
@@ -125,7 +128,7 @@ public class Arms {
                     intakeArmSwitchingStates = true;
                 }
                 if (intakeArmSwitchingStates) {
-                    setDownPosition();
+                    setDownPositionWithDelay();
                 }
                 break;
         }
@@ -145,6 +148,11 @@ public class Arms {
     }
 
     public void setDownPosition() {
+        intakeArmSolenoid.set(DoubleSolenoid.Value.kForward);
+        currentIntakeArmState = IntakeArmStates.DOWN;
+    }
+
+    public void setDownPositionWithDelay() {
         intakeArmSolenoid.set(DoubleSolenoid.Value.kForward);
         if (intakeArmStateCounts / 500 >= ARM_STATE_DELAY) {
             intakeArmStateCounts = 0;
