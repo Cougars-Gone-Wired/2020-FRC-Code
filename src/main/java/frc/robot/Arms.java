@@ -12,6 +12,8 @@ public class Arms {
     private int armStateCounts;
     private int intakeArmStateCounts;
     private boolean triggerDownBool;
+    private boolean armSwitchingStates;
+    private boolean intakeArmSwitchingStates;
 
     public Arms() {
         armTopSolenoid = new DoubleSolenoid(Constants.ARM_TOP_SOLENOID_PORT_1, Constants.ARM_TOP_SOLENOID_PORT_2);
@@ -24,6 +26,8 @@ public class Arms {
         armStateCounts = 0;
         intakeArmStateCounts = 0;
         triggerDownBool = false;
+        armSwitchingStates = false;
+        armSwitchingStates = false;
         setStartingPosition();
         setUpPosition();
     }
@@ -47,12 +51,18 @@ public class Arms {
 
             case SHOOTING_POSITION:
                 if (!moveDownButton && moveUpButton) {
+                    armSwitchingStates = true;
+                }
+                if (armSwitchingStates) {
                     setStartingPosition();
                 }
                 break;
 
             case CLIMBING_POSITION:
                 if (moveDownButton && !moveUpButton) {
+                    armSwitchingStates = true;
+                }
+                if (armSwitchingStates) {
                     setStartingPosition();
                 }
                 break;
@@ -74,11 +84,12 @@ public class Arms {
     public void setStartingPosition() {
         armTopSolenoid.set(DoubleSolenoid.Value.kReverse);
         armBottomSolenoid.set(DoubleSolenoid.Value.kForward);
-        armStateCounts++;
         if (armStateCounts / 500 >= ARM_STATE_DELAY) {
             armStateCounts = 0;
+            armSwitchingStates = false;
             currentArmState = ArmStates.STARTING_POSITION;
         }
+        armStateCounts++;
     }
 
     public void setShootingPostion() {
@@ -111,6 +122,9 @@ public class Arms {
 
             case UP:
                 if (toggleTrigger(intakeArmTrigger)) {
+                    intakeArmSwitchingStates = true;
+                }
+                if (intakeArmSwitchingStates) {
                     setDownPosition();
                 }
                 break;
@@ -132,11 +146,12 @@ public class Arms {
 
     public void setDownPosition() {
         intakeArmSolenoid.set(DoubleSolenoid.Value.kForward);
-        intakeArmStateCounts++;
         if (intakeArmStateCounts / 500 >= ARM_STATE_DELAY) {
             intakeArmStateCounts = 0;
+            intakeArmSwitchingStates = false;
             currentIntakeArmState = IntakeArmStates.DOWN;
-        }    
+        }
+        intakeArmStateCounts++;
     }
 
     public boolean toggleTrigger(double intakeArmTrigger) {
