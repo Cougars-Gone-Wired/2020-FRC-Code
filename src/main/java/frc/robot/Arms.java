@@ -9,8 +9,6 @@ public class Arms {
     private DoubleSolenoid armBottomSolenoid;
     private DoubleSolenoid intakeArmSolenoid;
 
-    private int armStateCounts;
-    private int intakeArmStateCounts;
     private boolean triggerDownBool;
 
     public Arms() {
@@ -21,8 +19,6 @@ public class Arms {
     }
 
     public void initialize() {
-        armStateCounts = 0;
-        intakeArmStateCounts = 0;
         triggerDownBool = false;
         setStartingPosition();
         setUpPosition();
@@ -74,11 +70,7 @@ public class Arms {
     public void setStartingPosition() {
         armTopSolenoid.set(DoubleSolenoid.Value.kReverse);
         armBottomSolenoid.set(DoubleSolenoid.Value.kForward);
-        armStateCounts++;
-        if (armStateCounts / 500 >= ARM_STATE_DELAY) {
-            armStateCounts = 0;
-            currentArmState = ArmStates.STARTING_POSITION;
-        }
+        currentArmState = ArmStates.STARTING_POSITION;
     }
 
     public void setShootingPostion() {
@@ -132,11 +124,7 @@ public class Arms {
 
     public void setDownPosition() {
         intakeArmSolenoid.set(DoubleSolenoid.Value.kForward);
-        intakeArmStateCounts++;
-        if (intakeArmStateCounts / 500 >= ARM_STATE_DELAY) {
-            intakeArmStateCounts = 0;
-            currentIntakeArmState = IntakeArmStates.DOWN;
-        }    
+        currentIntakeArmState = IntakeArmStates.DOWN;
     }
 
     public boolean toggleTrigger(double intakeArmTrigger) {
