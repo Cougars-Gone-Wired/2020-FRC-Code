@@ -4,8 +4,8 @@ public class Constants {
 
     // Manipulator Controller
     static final int MANIPULATOR_CONTROLLER_ID = 0;
-    static final int ARM_UP_BUTTON = 5;
-    static final int ARM_DOWN_BUTTON = 6;
+    static final int ARM_UP_BUTTON = 6;
+    static final int ARM_DOWN_BUTTON = 5;
     static final int INTAKE_ARM_TRIGGER = 2;
     static final int INTAKE_AXIS = 1;
     static final int SHOOTER_TRIGGER = 3;
