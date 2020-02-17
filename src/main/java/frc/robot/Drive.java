@@ -1,57 +1,54 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.TalonFXSensorCollection;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.DriveConstants;
 
-public class Drive {
+public class Drive extends SubsystemBase{
     public static double DRIVE_SPEED = 0.9;
     public static double TURN_SPEED = 0.7;
 
     private WPI_TalonFX frontLeftMotor;
-    private WPI_TalonFX midLeftMotor;
+    private WPI_TalonFX middleLeftMotor;
     private WPI_TalonFX backLeftMotor;
 
     private WPI_TalonFX frontRightMotor;
-    private WPI_TalonFX midRightMotor;
+    private WPI_TalonFX middleRightMotor;
     private WPI_TalonFX backRightMotor;
-
-    private TalonFXSensorCollection frontLeftSensors;
-    private TalonFXSensorCollection midLeftSensors;
-    private TalonFXSensorCollection backLeftSensors;
-
-    private TalonFXSensorCollection frontRightSensors;
-    private TalonFXSensorCollection midRightSensors;
-    private TalonFXSensorCollection backRightSensors;
 
     private SpeedControllerGroup leftMotors;
     private SpeedControllerGroup rightMotors;
 
     private DifferentialDrive robotDrive;
 
+    private Encoders encoders;
+    private Gyro gyro;
+
+    private DifferentialDriveKinematics driveKinematics; // used to convert single velocity to velocity compenents for left and right side
+    private DifferentialDriveOdometry driveOdomentry;
+
     public Drive() {
         frontLeftMotor = new WPI_TalonFX(Constants.FRONT_LEFT_MOTOR_ID);
-        midLeftMotor = new WPI_TalonFX(Constants.MIDDLE_LEFT_MOTOR_ID);
+        middleLeftMotor = new WPI_TalonFX(Constants.MIDDLE_LEFT_MOTOR_ID);
         backLeftMotor = new WPI_TalonFX(Constants.BACK_LEFT_MOTOR_ID);
 
         frontRightMotor = new WPI_TalonFX(Constants.FRONT_RIGHT_MOTOR_ID);
-        midRightMotor = new WPI_TalonFX(Constants.MIDDLE_RIGHT_MOTOR_ID);
+        middleRightMotor = new WPI_TalonFX(Constants.MIDDLE_RIGHT_MOTOR_ID);
         backRightMotor = new WPI_TalonFX(Constants.BACK_RIGHT_MOTOR_ID);
 
-        frontLeftSensors = new TalonFXSensorCollection(frontLeftMotor);
-        midLeftSensors = new TalonFXSensorCollection(midLeftMotor);
-        backLeftSensors = new TalonFXSensorCollection(backLeftMotor);
+        leftMotors = new SpeedControllerGroup(frontLeftMotor, middleLeftMotor, backLeftMotor);
+        rightMotors = new SpeedControllerGroup(frontRightMotor, middleRightMotor, backRightMotor);
 
-        frontRightSensors = new TalonFXSensorCollection(frontRightMotor);
-        midRightSensors = new TalonFXSensorCollection(midRightMotor);
-        backRightSensors = new TalonFXSensorCollection(backRightMotor);
-
-        leftMotors = new SpeedControllerGroup(frontLeftMotor, midLeftMotor, backLeftMotor);
-        rightMotors = new SpeedControllerGroup(frontRightMotor, midRightMotor, backRightMotor);
+        encoders = new Encoders(this);
+        gyro = new Gyro();
 
         initMotors();
         initalize();
@@ -59,30 +56,38 @@ public class Drive {
         robotDrive = new DifferentialDrive(leftMotors, rightMotors);
         robotDrive.setDeadband(Constants.DEADZONE);
         robotDrive.setSafetyEnabled(false);
+
+        driveKinematics = new DifferentialDriveKinematics(DriveConstants.TRACK_WIDTH);
+        driveOdomentry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(gyro.getHeading()));
     }
 
     public void initMotors() {
         frontLeftMotor.configOpenloopRamp(0);
-        midLeftMotor.configOpenloopRamp(0);
+        middleLeftMotor.configOpenloopRamp(0);
         backLeftMotor.configOpenloopRamp(0);
 
         frontRightMotor.configOpenloopRamp(0);
-        midRightMotor.configOpenloopRamp(0);
+        middleRightMotor.configOpenloopRamp(0);
         backRightMotor.configOpenloopRamp(0);
     }
 
     public void initalize() {
-        midLeftMotor.set(0);
+        middleLeftMotor.set(0);
         frontLeftMotor.set(0);
         backLeftMotor.set(0);
 
-        midRightMotor.set(0);
+        middleRightMotor.set(0);
         frontRightMotor.set(0);
         backRightMotor.set(0);
 
         resetSensors();
 
         currentDriveState = DriveStates.SHOOTER_SIDE;
+    }
+
+    public void resetSensors() {
+        encoders.resetEncoders();
+        gyro.zeroHeading();
     }
 
     public enum DriveStates {
@@ -139,100 +144,70 @@ public class Drive {
 
     public void setMotorsBrake() {
         frontLeftMotor.setNeutralMode(NeutralMode.Brake);
-        midLeftMotor.setNeutralMode(NeutralMode.Brake);
+        middleLeftMotor.setNeutralMode(NeutralMode.Brake);
         backLeftMotor.setNeutralMode(NeutralMode.Brake);
         frontRightMotor.setNeutralMode(NeutralMode.Brake);
-        midRightMotor.setNeutralMode(NeutralMode.Brake);
+        middleRightMotor.setNeutralMode(NeutralMode.Brake);
         backRightMotor.setNeutralMode(NeutralMode.Brake);
     }
 
     public void setMotorsCoast() {
         frontLeftMotor.setNeutralMode(NeutralMode.Coast);
-        midLeftMotor.setNeutralMode(NeutralMode.Coast);
+        middleLeftMotor.setNeutralMode(NeutralMode.Coast);
         backLeftMotor.setNeutralMode(NeutralMode.Coast);
         frontRightMotor.setNeutralMode(NeutralMode.Coast);
-        midRightMotor.setNeutralMode(NeutralMode.Coast);
+        middleRightMotor.setNeutralMode(NeutralMode.Coast);
         backRightMotor.setNeutralMode(NeutralMode.Coast);
+    }
+
+    public WPI_TalonFX getFrontLeftMotor() {
+        return frontLeftMotor;
+    }
+    public WPI_TalonFX getMiddleLeftMotor() {
+        return middleLeftMotor;
+    }
+    public WPI_TalonFX getBackLeftMotor() {
+        return backLeftMotor;
+    }
+    public WPI_TalonFX getFrontRightMotor() {
+        return frontRightMotor;
+    }
+    public WPI_TalonFX getMiddleRightMotor() {
+        return middleRightMotor;
+    }
+    public WPI_TalonFX getBackRightMotor() {
+        return backRightMotor;
+    }
+
+     @Override
+    public void periodic() {
+        driveOdomentry.update(Rotation2d.fromDegrees(gyro.getHeading()), encoders.getLeftEncodersMeters(), encoders.getRightEncodersMeters());
+    }
+
+    public void tankDriveVolts(double leftVolts, double rightVolts) {
+        leftMotors.setVoltage(leftVolts);
+        rightMotors.setVoltage(-rightVolts);
+    }
+
+    public void resetOdometry(Pose2d position) {
+        resetSensors();
+        driveOdomentry.resetPosition(position, Rotation2d.fromDegrees(gyro.getHeading()));
+    }
+
+    // returns estimated x and y position of robot in meters
+    public Pose2d getPosition() {
+        return driveOdomentry.getPoseMeters();
+    }
+
+    public DifferentialDriveKinematics getDriveKinematics() {
+        return driveKinematics;
+    }
+
+    public Encoders getEncoders() {
+        return encoders;
     }
 
     public void driveStraight(double speed) {
         robotDrive.curvatureDrive(speed, 0, false);
-    }
-
-    //NOTE: I kinda wanna move this to its own class, I think it doesn't belong in the drive class. - Judd
-    public double getFrontLeftSensors() {
-        return frontLeftSensors.getIntegratedSensorPosition();
-    }
-    public double getMidLeftSensors() {
-        return midLeftSensors.getIntegratedSensorPosition();
-    }
-    public double getBackLeftSensors() {
-        return backLeftSensors.getIntegratedSensorPosition();
-    }
-    public double getFrontRightSensors() {
-        return frontRightSensors.getIntegratedSensorPosition();
-    }
-    public double getMidRightSensors() {
-        return midRightSensors.getIntegratedSensorPosition();
-    }
-    public double getBackRightSensors() {
-        return backRightSensors.getIntegratedSensorPosition();
-    }
-
-    public double getLeftSensors() {
-        return avgSensorGroup(getFrontLeftSensors(), getMidLeftSensors(), getBackLeftSensors());
-    }
-    public double getRightSensors() {
-        return avgSensorGroup(getFrontRightSensors(), getMidRightSensors(), getBackRightSensors());
-    }
-
-    public double getSensorsDistance() {
-        return ticksToInches((Math.abs(getLeftSensors()) + Math.abs(getRightSensors())) / 2);
-    }
-
-    public void resetSensors() {
-        frontLeftSensors.setIntegratedSensorPosition(0, 10);
-        midLeftSensors.setIntegratedSensorPosition(0, 10);
-        backLeftSensors.setIntegratedSensorPosition(0, 10);
-
-        frontRightSensors.setIntegratedSensorPosition(0, 10);
-        midRightSensors.setIntegratedSensorPosition(0, 10);
-        backRightSensors.setIntegratedSensorPosition(0, 10);
-    }
-
-
-    public void dashboard() {
-        double fls = getFrontLeftSensors();
-        double mls = getMidLeftSensors();
-        double bls = getBackLeftSensors();
-        double frs = getFrontRightSensors();
-        double mrs = getMidRightSensors();
-        double brs = getBackRightSensors();
-
-        SmartDashboard.putNumber("Front Left", ticksToInches(fls));
-        SmartDashboard.putNumber("Middle Left", ticksToInches(mls));
-        SmartDashboard.putNumber("Back Left", ticksToInches(bls));
-        SmartDashboard.putNumber("Front Right", ticksToInches(frs));
-        SmartDashboard.putNumber("Middle Right", ticksToInches(mrs));
-        SmartDashboard.putNumber("Back Right", ticksToInches(brs));
-
-        SmartDashboard.putNumber("Left Average", ticksToInches(getLeftSensors()));
-        SmartDashboard.putNumber("Right Average", ticksToInches(getRightSensors()));
-        SmartDashboard.putNumber("All the sensors", getSensorsDistance());
-
-        SmartDashboard.putNumber("Front Left Temp", frontLeftMotor.getTemperature());
-        SmartDashboard.putNumber("Mid Left Temp", midLeftMotor.getTemperature());
-        SmartDashboard.putNumber("Back Left Temp", backLeftMotor.getTemperature());
-        SmartDashboard.putNumber("Front Right Temp", frontRightMotor.getTemperature());
-        SmartDashboard.putNumber("Mid Right Temp", midRightMotor.getTemperature());
-        SmartDashboard.putNumber("Back Right Temp", backRightMotor.getTemperature());
-    }
-
-    public double avgSensorGroup(double sensor1, double sensor2, double sensor3) {
-        return (sensor1 + sensor2 + sensor3)/3;
-    }
-
-    public double ticksToInches(double ticks) {
-        return (9 * Math.PI * ticks) / 16384;
     }
 }

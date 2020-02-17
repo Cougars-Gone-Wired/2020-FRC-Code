@@ -4,6 +4,8 @@ package frc.robot;
 import java.util.List;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.recorder.*;
 
@@ -29,6 +31,9 @@ public class Robot extends TimedRobot {
     public static StateRunner runner;
 
     public static Camera camera;
+
+    private AutoSelector autoSelector;
+    private Command autonomousCommand;
 
     @Override
     public void robotInit() {
@@ -58,9 +63,9 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotPeriodic() {
+        CommandScheduler.getInstance().run();
         ticks++;
         autoPrograms.autoDashboard();
-        drive.dashboard();
         limelight.dashboard();
 
         camera.stop(controllers.getStopCameraButton());
@@ -68,14 +73,24 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
+        drive.initalize();
         setMotorsBrake();
+        
+        autoSelector.chooseAuto();
+        autonomousCommand = autoSelector.getAutoCommand();
+        if (autonomousCommand != null) {
+            autonomousCommand.schedule();
+        }
 
-        autoPrograms.initAuto();
+        //autoPrograms.initAuto();
     }
 
     @Override
     public void autonomousPeriodic() {
-        autoPrograms.runAuto();
+        feeder.feed();
+        chomper.controlChomper();
+
+        //autoPrograms.runAuto();
     }
 
     @Override

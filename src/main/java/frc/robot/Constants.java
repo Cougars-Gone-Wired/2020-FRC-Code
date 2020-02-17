@@ -48,4 +48,33 @@ public class Constants {
     static final int FRONT_RIGHT_MOTOR_ID = 8;
     static final int MIDDLE_RIGHT_MOTOR_ID = 9;
     static final int BACK_RIGHT_MOTOR_ID = 10;
+    
+    public class DriveConstants {
+        //Encoder Constants
+        public static final int TICKS_PER_REVOLUTION = 2048; // standard for TalonFX
+        public static final double WHEEL_DIAMETER = .1524; // in meters
+        public static final double GEARING_CONVERSION = 5.3333333;
+        public static final double DISTANCE_PER_TICK = (Math.PI * WHEEL_DIAMETER) / (TICKS_PER_REVOLUTION * GEARING_CONVERSION);
+        public static final double METER_PER_SECOND_CONSTANT = DISTANCE_PER_TICK / 10; // for converting units per 100ms to meters per second
+
+        public static final boolean areLeftEncodersReversed = false;
+        public static final boolean areRightEncodersReversed = true;
+        public static final boolean isGyroReversed = false;
+
+        //Ramsete Constants
+        // all constants in meters and seconds
+        public static final double TRACK_WIDTH = 0.6133; // width bewteen each side of drive train in meters
+
+        public static final double ks = 0.394;
+        public static final double kv = 1.21;
+        public static final double ka = 0.0457;
+
+        public static final double DriveP = 0;
+
+        public static final double maxVelocity = .3;
+        public static final double maxAcceleration = .3;
+
+        public static final double B = 2; // constant tuned for meters
+        public static final double Zeta = 0.7; // ↑ ↑ ↑
+    }
 }

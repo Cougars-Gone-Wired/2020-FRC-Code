@@ -105,7 +105,7 @@ public class AutoPrograms {
     public void runLimelightAuto() {
         switch (selectedPosition) {
         case LEFT:
-            Robot.limelight.limelightAuto(true);
+            //Robot.limelight.limelightAuto(true);
             // shoot
 
             break;
@@ -118,7 +118,7 @@ public class AutoPrograms {
     }
 
     public void move(double distance, double speed) {
-        if (Robot.drive.getSensorsDistance() < distance) {
+        if (Robot.drive.getEncoders().getAvgEncoderMetersAvg() < distance) {
             Robot.drive.driveStraight(speed);
         } else {
             Robot.drive.driveStraight(0);

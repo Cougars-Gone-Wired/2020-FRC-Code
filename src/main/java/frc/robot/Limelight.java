@@ -42,7 +42,6 @@ public class Limelight {
 
     public void initialize() {
         limelightDriveState = LimelightDriveStates.DO_NOTHING;
-        limelightAutoState = LimelightAutoStates.IDLE;
         // turnlightsOff();
     }
 
@@ -156,91 +155,50 @@ public class Limelight {
         limelightDriveState = LimelightDriveStates.SEEK_AIM_AND_DRIVE;
     }
 
-    
-    private enum LimelightAutoStates {
-        IDLE, AIMING, UNAIMING
-    }
-
-    private LimelightAutoStates limelightAutoState;
-
-    public int limelightAuto(boolean aimButton) {
+    public boolean limelightAutoAim() {
         tv = table.getEntry("tv").getDouble(0);
         tx = table.getEntry("tx").getDouble(0);
         ty = table.getEntry("ty").getDouble(0);
         ta = table.getEntry("ta").getDouble(0);
-        getDashboard();
-
-        switch (limelightAutoState) {
-            case IDLE:
-                if (aimButton) {
-                    // turnlightsOn();
-                    unaimAngle = tx - desired_angle;
-                    setAutoAiming();
-                }
-            break;
             
-            case AIMING:
-                if (!aimButton) {
-                setAutoUnaiming();
-                }
-
-                aim_adjust = aimKp * (tx / DEGREE_RANGE);
-                if (tx - desired_angle > angle_error) {
-                    aim_adjust += min;
-                } else if (tx - desired_angle < -angle_error) {
-                    aim_adjust -= min;
-                } else {
-                    aim_adjust = 0;
-                    return 1;
-                }
-                Robot.drive.limelightDrive(drive_adjust, aim_adjust);
-            break;
-
-            case UNAIMING:
-                aim_adjust = aimKp * ((tx - unaimAngle) / DEGREE_RANGE);
-                if (tx - unaimAngle > angle_error) {
-                    aim_adjust += min;
-                } else if (tx - unaimAngle < -angle_error) {
-                    aim_adjust -= min;
-                } else {
-                    aim_adjust = 0;
-                    setAutoIdle();
-                    return 2;
-                }
-                Robot.drive.limelightDrive(drive_adjust, aim_adjust);
-            break;
+        aim_adjust = aimKp * (tx / DEGREE_RANGE);
+        if (tx - desired_angle > angle_error) {
+            aim_adjust += min;
+        } else if (tx - desired_angle < -angle_error) {
+            aim_adjust -= min;
+        } else {
+            aim_adjust = 0;
+            return true;
         }
-        return 0;
-    }
 
-    public boolean isAutoIdle() {
-        return limelightAutoState == LimelightAutoStates.IDLE;
-    }
-
-    public boolean isAutoAiming() {
-        return limelightAutoState == LimelightAutoStates.AIMING;
-    }
-
-    public boolean isAutoUnaiming() {
-        return limelightAutoState == LimelightAutoStates.UNAIMING;
-    }
-
-    public void setAutoIdle() {
-        limelightAutoState = LimelightAutoStates.IDLE;
-        aim_adjust = 0; 
-        drive_adjust = 0;
         Robot.drive.limelightDrive(drive_adjust, aim_adjust);
+
+        return false;
     }
 
-    public void setAutoAiming() {
-        limelightAutoState = LimelightAutoStates.AIMING;
-    }
+    public boolean limelightAutoUnaim() {
+        tv = table.getEntry("tv").getDouble(0);
+        tx = table.getEntry("tx").getDouble(0);
+        ty = table.getEntry("ty").getDouble(0);
+        ta = table.getEntry("ta").getDouble(0);
 
-    public void setAutoUnaiming() {
-        aim_adjust = 0; 
-        drive_adjust = 0;
+        aim_adjust = aimKp * ((tx - unaimAngle) / DEGREE_RANGE);
+        if (tx - unaimAngle > angle_error) {
+            aim_adjust += min;
+        } else if (tx - unaimAngle < -angle_error) {
+            aim_adjust -= min;
+        } else {
+            aim_adjust = 0;
+            return true;
+        }
+
         Robot.drive.limelightDrive(drive_adjust, aim_adjust);
-        limelightAutoState = LimelightAutoStates.UNAIMING;
+        
+        return false;
+    }
+
+    public void setUnaimAngle() {
+        unaimAngle = tx - desired_angle;
     }
 
     public void turnlightsOn() {
