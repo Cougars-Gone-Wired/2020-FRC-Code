@@ -4,8 +4,8 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 public class Climber {
-    private static double LIFT_SPEED = 1.0;
-    private static double LOWER_SPEED = 0.7;
+    private static double CLIMBER_UP_SPEED = 1.0;
+    private static double CLIMBER_DOWN_SPEED = 0.7;
 
     private WPI_TalonSRX climbMotor;
 
@@ -72,12 +72,12 @@ public class Climber {
     }
 
     public void setMovingUp() {
-        climbMotor.set(LIFT_SPEED);
+        climbMotor.set(CLIMBER_UP_SPEED);
         currentClimberState = ClimberStates.MOVING_UP;
     }
 
     public void setMovingDown() {
-        climbMotor.set(-LOWER_SPEED);
+        climbMotor.set(-CLIMBER_DOWN_SPEED);
         currentClimberState = ClimberStates.MOVING_DOWN;
     }
 
