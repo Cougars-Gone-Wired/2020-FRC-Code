@@ -44,7 +44,7 @@ public class Arms {
             case STARTING_POSITION:
                 if (moveDownButton && !moveUpButton) {
                     setShootingPostion();
-                } else if (!moveDownButton && moveUpButton && (currentIntakeArmState != IntakeArmStates.UP)) {
+                } else if (!moveDownButton && moveUpButton && currentIntakeArmState != IntakeArmStates.UP) {
                     setClimbingPostion();
                 }
                 break;

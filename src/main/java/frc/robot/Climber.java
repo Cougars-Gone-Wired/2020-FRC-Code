@@ -33,7 +33,9 @@ public class Climber {
         
         switch (currentClimberState) {
             case NOT_MOVING:
-                if (climberUpTriggerBool && !climberDownTriggerBool && Robot.arms.isArmClimbingPosition()) {
+                if (climberUpTriggerBool && !climberDownTriggerBool 
+                        && Robot.arms.isArmClimbingPosition()
+                        && Robot.isClimbTime()) {
                     setMovingUp();
                 } else if (climberDownTriggerBool && !climberUpTriggerBool) {
                     setMovingDown();   

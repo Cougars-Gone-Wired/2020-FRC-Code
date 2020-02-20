@@ -4,6 +4,7 @@ package frc.robot;
 import java.util.List;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -13,7 +14,7 @@ public class Robot extends TimedRobot {
 
     private AutoPrograms autoPrograms;
 
-    public static int ticks = 0;
+    private static double startTime;
 
     public static Controllers controllers;
 
@@ -64,7 +65,6 @@ public class Robot extends TimedRobot {
     @Override
     public void robotPeriodic() {
         CommandScheduler.getInstance().run();
-        ticks++;
         autoPrograms.autoDashboard();
         limelight.dashboard();
 
@@ -73,6 +73,8 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
+        startTime = Timer.getFPGATimestamp();
+
         drive.initalize();
         setMotorsBrake();
         
@@ -159,6 +161,10 @@ public class Robot extends TimedRobot {
     @Override
     public void testPeriodic() {
         limelight.dashboardInitialize();
+    }
+
+    public static boolean isClimbTime() {
+        return Timer.getFPGATimestamp() - startTime > 180;
     }
 
     public void setMotorsBrake() {
