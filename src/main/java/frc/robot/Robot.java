@@ -11,8 +11,6 @@ import frc.robot.recorder.*;
 
 public class Robot extends TimedRobot {
 
-    private AutoPrograms autoPrograms;
-
     public static int ticks = 0;
 
     public static Controllers controllers;
@@ -48,8 +46,6 @@ public class Robot extends TimedRobot {
         climber = new Climber();
         drive = new Drive();
         limelight = new Limelight();
-        autoPrograms = new AutoPrograms();
-
 
         recorder = new StateRecorder();
         runner = new StateRunner();
@@ -64,8 +60,6 @@ public class Robot extends TimedRobot {
     @Override
     public void robotPeriodic() {
         CommandScheduler.getInstance().run();
-        ticks++;
-        autoPrograms.autoDashboard();
         limelight.dashboard();
 
         camera.stop(controllers.getStopCameraButton());
@@ -75,14 +69,14 @@ public class Robot extends TimedRobot {
     public void autonomousInit() {
         drive.initalize();
         setMotorsBrake();
-        
+
         autoSelector.chooseAuto();
         autonomousCommand = autoSelector.getAutoCommand();
         if (autonomousCommand != null) {
             autonomousCommand.schedule();
         }
 
-        //autoPrograms.initAuto();
+        // autoPrograms.initAuto();
     }
 
     @Override
@@ -90,7 +84,7 @@ public class Robot extends TimedRobot {
         feeder.feed();
         chomper.controlChomper();
 
-        //autoPrograms.runAuto();
+        // autoPrograms.runAuto();
     }
 
     @Override
@@ -124,7 +118,8 @@ public class Robot extends TimedRobot {
         chomper.controlChomper();
 
         climber.controlClimb(controllers.getClimberUpTrigger(), controllers.getClimberDownTrigger());
-        drive.robotDrive(controllers.getDriveSpeedAxis(), controllers.getDriveTurnAxis(), controllers.getDriveSideToggle());
+        drive.robotDrive(controllers.getDriveSpeedAxis(), controllers.getDriveTurnAxis(),
+                controllers.getDriveSideToggle());
         limelight.limelightDrive(controllers.getLimelightButton());
 
         recorder.record();
@@ -167,6 +162,7 @@ public class Robot extends TimedRobot {
         feeder.setMotorsBrake();
         intake.setMotorsBrake();
     }
+
     public void setMotorsCoast() {
         climber.setMotorsCoast();
         drive.setMotorsCoast();
