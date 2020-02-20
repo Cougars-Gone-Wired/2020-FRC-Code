@@ -13,9 +13,6 @@ public class Aim extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        if(isAimed) {
-            return true;
-        }
-        return false;
+        return isAimed;
     }
 }

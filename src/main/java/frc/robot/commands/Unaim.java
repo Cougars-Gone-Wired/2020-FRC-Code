@@ -13,9 +13,6 @@ public class Unaim extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        if(isUnaimed) {
-            return true;
-        }
-        return false;
+        return isUnaimed;
     }
 }

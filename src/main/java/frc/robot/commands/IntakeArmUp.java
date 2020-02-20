@@ -7,7 +7,7 @@ public class IntakeArmUp extends CommandBase {
 
     @Override
     public void initialize() {
-        Robot.arms.setUpPosition();;
+        Robot.arms.setUpPosition();
     }
 
     @Override
