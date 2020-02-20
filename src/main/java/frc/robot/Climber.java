@@ -23,6 +23,7 @@ public class Climber {
     }
 
     public void initalize() {
+        startTime = Timer.getFPGATimestamp();
         setNotMoving();
     }
 
