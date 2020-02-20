@@ -50,7 +50,11 @@ public class Constants {
     static final int BACK_RIGHT_MOTOR_ID = 10;
     
     public class DriveConstants {
-        //Encoder Constants
+
+        public static final double AUTO_DRIVE_SPEED = 0.3;
+        public static final double DRIVE_OFF_LINE_DISTANCE = 4;
+
+        // Encoder Constants
         public static final int TICKS_PER_REVOLUTION = 2048; // standard for TalonFX
         public static final double WHEEL_DIAMETER = .1524; // in meters
         public static final double GEARING_CONVERSION = 5.3333333;

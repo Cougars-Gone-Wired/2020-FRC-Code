@@ -2,28 +2,31 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.DriveConstants;
+import frc.robot.commands.DriveStraight;
 import frc.robot.commands.autoPrograms.IntakeThroughTrench;
 import frc.robot.commands.autoPrograms.ShootAndOffLine;
 import frc.robot.commands.autoPrograms.ShootFromTrench;
 
 public class AutoSelector {
 
-    private SendableChooser<String> autoChooser = new SendableChooser<>();    
+    public enum Programs {
+        DRIVE_OFF_LINE, SHOOT_AND_OFF_LINE, SHOOT_FROM_TRENCH, INTAKE_THROUGH_TRENCH
+    }
 
-    private final String SHOOT_AND_OFF_LINE = "Shoot and off line";
-    private final String SHOOT_FROM_TRENCH = "Shoot from trench";
-    private final String INTAKE_THROUGH_TRENCH = "Intake Through Trench";
+    private SendableChooser<Programs> autoChooser = new SendableChooser<>(); // sendable chooser to hold dead reckoning
 
-    private String autoPicker;
+    private Programs autoPicker;
 
     public AutoSelector() {
         initialize();
     }
 
     public void initialize() {
-        autoChooser.addOption("Shoot and off line", SHOOT_AND_OFF_LINE);
-        autoChooser.addOption("Shoot from trench", SHOOT_FROM_TRENCH);
-        autoChooser.addOption("Intake Through Trench", INTAKE_THROUGH_TRENCH);
+        autoChooser.addOption("Drive off line", Programs.DRIVE_OFF_LINE);
+        autoChooser.addOption("Shoot and off line", Programs.SHOOT_AND_OFF_LINE);
+        autoChooser.addOption("Shoot from trench", Programs.SHOOT_FROM_TRENCH);
+        autoChooser.addOption("Intake Through Trench", Programs.INTAKE_THROUGH_TRENCH);
     }
 
     public void chooseAuto() {
@@ -31,7 +34,7 @@ public class AutoSelector {
     }
 
     public Command getAutoCommand() {
-        
+
         switch (autoPicker) {
             case SHOOT_AND_OFF_LINE:
                 return new ShootAndOffLine();
@@ -41,6 +44,9 @@ public class AutoSelector {
 
             case INTAKE_THROUGH_TRENCH:
                 return new IntakeThroughTrench();
+
+            case DRIVE_OFF_LINE:
+                return new DriveStraight(DriveConstants.DRIVE_OFF_LINE_DISTANCE);
 
             default:
                 return null;
