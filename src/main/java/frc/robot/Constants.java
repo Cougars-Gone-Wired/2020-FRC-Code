@@ -41,8 +41,8 @@ public class Constants {
     static final int FEEDER_UPPER_LINEBREAK_PORT = 2;
 
     // Mobility Ids
-    static final int CLIMBER_MOTOR_ID_1 = 4;
-    static final int CLIMBER_MOTOR_ID_2 = 5;
+    static final int CLIMBER_LEFT_MOTOR_ID = 4;
+    static final int CLIMBER_RIGHT_MOTOR_ID = 5;
     static final int FRONT_LEFT_MOTOR_ID = 6;
     static final int MIDDLE_LEFT_MOTOR_ID = 7;
     static final int BACK_LEFT_MOTOR_ID = 8;

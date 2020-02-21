@@ -13,19 +13,18 @@ public class Climber {
     private static double CLIMBER_UP_SPEED = 1.0;
     private static double CLIMBER_DOWN_SPEED = 0.7;
 
-    private WPI_TalonSRX climbMotor1;
-    private WPI_TalonSRX climbMotor2;
-
-    private SpeedControllerGroup climbMotors;
+    private WPI_TalonSRX climberLeftMotor;
+    private WPI_TalonSRX climberRightMotor;
+    private SpeedControllerGroup climberMotors;
 
     private boolean climberUpTriggerBool;
     private boolean climberDownTriggerBool;
 
     public Climber() {
-        climbMotor1 = new WPI_TalonSRX(Constants.CLIMBER_MOTOR_ID_1);
-        climbMotor2 = new WPI_TalonSRX(Constants.CLIMBER_MOTOR_ID_2);
+        climberLeftMotor = new WPI_TalonSRX(Constants.CLIMBER_LEFT_MOTOR_ID);
+        climberRightMotor = new WPI_TalonSRX(Constants.CLIMBER_RIGHT_MOTOR_ID);
 
-        climbMotors = new SpeedControllerGroup(climbMotor1, climbMotor2);
+        climberMotors = new SpeedControllerGroup(climberLeftMotor, climberRightMotor);
 
         initalize();
     }
@@ -83,28 +82,28 @@ public class Climber {
     }
 
     public void setNotMoving() {
-        climbMotors.set(0);
+        climberMotors.set(0);
         currentClimberState = ClimberStates.NOT_MOVING;
     }
 
     public void setMovingUp() {
-        climbMotors.set(CLIMBER_UP_SPEED);
+        climberMotors.set(CLIMBER_UP_SPEED);
         currentClimberState = ClimberStates.MOVING_UP;
     }
 
     public void setMovingDown() {
-        climbMotors.set(-CLIMBER_DOWN_SPEED);
+        climberMotors.set(-CLIMBER_DOWN_SPEED);
         currentClimberState = ClimberStates.MOVING_DOWN;
     }
 
     public void setMotorsBrake() {
-        climbMotor1.setNeutralMode(NeutralMode.Brake);
-        climbMotor2.setNeutralMode(NeutralMode.Brake);
+        climberLeftMotor.setNeutralMode(NeutralMode.Brake);
+        climberRightMotor.setNeutralMode(NeutralMode.Brake);
     }
 
     public void setMotorsCoast() {
-        climbMotor1.setNeutralMode(NeutralMode.Coast);
-        climbMotor2.setNeutralMode(NeutralMode.Coast);
+        climberLeftMotor.setNeutralMode(NeutralMode.Coast);
+        climberRightMotor.setNeutralMode(NeutralMode.Coast);
     }
 
     public static boolean isClimbTime() {
