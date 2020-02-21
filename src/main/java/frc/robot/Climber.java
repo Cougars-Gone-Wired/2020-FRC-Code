@@ -3,6 +3,7 @@ package frc.robot;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Timer;
 
 public class Climber {
@@ -12,13 +13,20 @@ public class Climber {
     private static double CLIMBER_UP_SPEED = 1.0;
     private static double CLIMBER_DOWN_SPEED = 0.7;
 
-    private WPI_TalonSRX climbMotor;
+    private WPI_TalonSRX climbMotor1;
+    private WPI_TalonSRX climbMotor2;
+
+    private SpeedControllerGroup climbMotors;
 
     private boolean climberUpTriggerBool;
     private boolean climberDownTriggerBool;
 
     public Climber() {
-        climbMotor = new WPI_TalonSRX(Constants.CLIMBER_MOTOR_ID);
+        climbMotor1 = new WPI_TalonSRX(Constants.CLIMBER_MOTOR_ID_1);
+        climbMotor2 = new WPI_TalonSRX(Constants.CLIMBER_MOTOR_ID_2);
+
+        climbMotors = new SpeedControllerGroup(climbMotor1, climbMotor2);
+
         initalize();
     }
 
@@ -75,26 +83,28 @@ public class Climber {
     }
 
     public void setNotMoving() {
-        climbMotor.set(0);
+        climbMotors.set(0);
         currentClimberState = ClimberStates.NOT_MOVING;
     }
 
     public void setMovingUp() {
-        climbMotor.set(CLIMBER_UP_SPEED);
+        climbMotors.set(CLIMBER_UP_SPEED);
         currentClimberState = ClimberStates.MOVING_UP;
     }
 
     public void setMovingDown() {
-        climbMotor.set(-CLIMBER_DOWN_SPEED);
+        climbMotors.set(-CLIMBER_DOWN_SPEED);
         currentClimberState = ClimberStates.MOVING_DOWN;
     }
 
     public void setMotorsBrake() {
-        climbMotor.setNeutralMode(NeutralMode.Brake);
+        climbMotor1.setNeutralMode(NeutralMode.Brake);
+        climbMotor2.setNeutralMode(NeutralMode.Brake);
     }
 
     public void setMotorsCoast() {
-        climbMotor.setNeutralMode(NeutralMode.Coast);
+        climbMotor1.setNeutralMode(NeutralMode.Coast);
+        climbMotor2.setNeutralMode(NeutralMode.Coast);
     }
 
     public static boolean isClimbTime() {
