@@ -32,7 +32,7 @@ public class Controllers {
         armUpButton = manipulatorController.getRawButtonPressed(Constants.ARM_UP_BUTTON);
         armDownButton = manipulatorController.getRawButtonPressed(Constants.ARM_DOWN_BUTTON);
         intakeArmTrigger = manipulatorController.getRawAxis(Constants.INTAKE_ARM_TRIGGER);
-        intakeAxis = manipulatorController.getRawAxis(Constants.INTAKE_AXIS);
+        intakeAxis = -manipulatorController.getRawAxis(Constants.INTAKE_AXIS);
         shooterTrigger = manipulatorController.getRawAxis(Constants.SHOOTER_TRIGGER);
         stopCameraButton = manipulatorController.getRawButtonPressed(Constants.STOP_CAMERA_BUTTON);
 

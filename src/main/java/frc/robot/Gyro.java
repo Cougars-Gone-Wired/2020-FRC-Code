@@ -3,6 +3,7 @@ package frc.robot;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
 
 public class Gyro {
@@ -24,5 +25,9 @@ public class Gyro {
 
     public double getTurnRate() {
         return navX.getRate() * (DriveConstants.isGyroReversed ? -1.0 : 1.0);
+    }
+
+    public void dashboard() {
+        SmartDashboard.putNumber("Gyro", getHeading());
     }
 }

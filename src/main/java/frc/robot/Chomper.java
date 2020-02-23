@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Chomper {
 
@@ -25,7 +26,7 @@ public class Chomper {
 
         switch (currentChomperState) {
             case IDLE:
-                if (Robot.feeder.isIntaking()) {
+                if (Robot.feeder.isIntaking() || Robot.feeder.isOuttaking()) {
                     setIntakeReady();
                 } else if (Robot.feeder.isFeedingShooter()) {
                     setShooterReady();

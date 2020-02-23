@@ -13,8 +13,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 
 public class Drive extends SubsystemBase{
-    public static double DRIVE_SPEED = 0.9;
-    public static double TURN_SPEED = 0.7;
+    public static double DRIVE_SPEED = 0.8;
+    public static double TURN_SPEED = 0.6;
 
     private WPI_TalonFX frontLeftMotor;
     private WPI_TalonFX middleLeftMotor;
@@ -209,5 +209,10 @@ public class Drive extends SubsystemBase{
 
     public void driveStraight(double speed) {
         robotDrive.curvatureDrive(speed, 0, false);
+    }
+
+    public void dashboard() {
+        encoders.dashboard();
+        gyro.dashboard();
     }
 }

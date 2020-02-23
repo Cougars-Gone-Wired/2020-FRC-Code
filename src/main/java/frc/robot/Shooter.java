@@ -7,14 +7,14 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Shooter {
-    private static final double SHOOTER_SPEED = 0.45;
+    private static final double SHOOTER_SPEED = 0.65;
     static double P = 0.4; // 0.46
     static double I = 0.001; // 0.001
     static int IZONE = 80; // 180
     static double D = 10; // 15
     static double F = 0.0465; // 0.048
     static double DESIRED_VELOCITY = 9500; // 9225
-    static double VELOCITY_THRESHOLD = 20;
+    static double VELOCITY_THRESHOLD = 2000;
 
     private WPI_TalonFX shooterMotor;
     private TalonFXSensorCollection sensors;
@@ -84,7 +84,7 @@ public class Shooter {
     public void shoot(double shooterTrigger) {
         shooterDashboard();
         shooterTriggerBool = (shooterTrigger >= Constants.DEADZONE);
-        velocity = sensors.getIntegratedSensorVelocity();
+        velocity = -sensors.getIntegratedSensorVelocity();
 
         switch (currentShooterState) {
         case NOT_MOVING:

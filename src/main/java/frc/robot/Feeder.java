@@ -4,10 +4,11 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Feeder {
-    private static final double FEED_SHOOTER_SPEED = 0.6;
-    private static final double FEED_INTAKE_SPEED = 0.8;
+    private static final double FEED_SHOOTER_SPEED = 0.82;
+    private static final double FEED_INTAKE_SPEED = 0.6;
 
     private WPI_TalonSRX feederMotor;
 
@@ -32,11 +33,13 @@ public class Feeder {
     private FeederStates currentFeederState;
 
     public void feed() {
+
         switch (currentFeederState) {
             case NOT_MOVING:
                 if (Robot.intake.isIntaking() 
                         && !Robot.shooter.isShooting() 
-                        && (feederUpperLineBreak.get() || feederLowerLineBreak.get())) {
+                        //&& (feederUpperLineBreak.get() || feederLowerLineBreak.get())
+                        ) {
                     setIntaking();
 
                 } else if (Robot.intake.isOuttaking() 
@@ -53,7 +56,8 @@ public class Feeder {
             case INTAKING:
                 if(!Robot.intake.isIntaking() 
                         || Robot.shooter.isShooting() 
-                        || !(feederUpperLineBreak.get() || feederLowerLineBreak.get())) {
+                        //|| !(feederUpperLineBreak.get() || feederLowerLineBreak.get())
+                        ) {
                     setNotMoving();
                 }
                 break;

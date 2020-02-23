@@ -4,7 +4,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 public class Intake {
-    private static final double INTAKE_SPEED = 0.8;
+    private static final double INTAKE_SPEED = 0.75;
     
     private WPI_TalonSRX intakeMotor;
 
@@ -24,7 +24,6 @@ public class Intake {
     private IntakeStates currentIntakeState;
 
     public void intake(double intakeAxis) {
-        
         switch (currentIntakeState) {
             case NOT_MOVING:
                 if (intakeAxis >= Constants.DEADZONE 

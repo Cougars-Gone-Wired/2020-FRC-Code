@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Drive;
 import frc.robot.Robot;
@@ -19,6 +20,10 @@ public class DriveStraight extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return Robot.drive.getEncoders().getAvgEncoderMetersAvg() >= distance;
+        if (Robot.drive.getEncoders().getAvgEncoderMetersAvg() <= distance) {
+            Robot.drive.driveStraight(0);
+            return true;
+        }
+        return false;
     }
 }

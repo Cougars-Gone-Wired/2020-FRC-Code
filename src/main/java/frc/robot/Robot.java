@@ -45,14 +45,15 @@ public class Robot extends TimedRobot {
         drive = new Drive();
         limelight = new Limelight();
 
+        autoSelector = new AutoSelector();
+
         recorder = new StateRecorder();
         runner = new StateRunner();
-        GsonSmartDash.put();
+        // GsonSmartDash.put();
         limelight.dashboardInitialize();
-        // autoPrograms.initalizeChooser();
 
-        camera = new Camera();
-        new Thread(camera).start();
+        // camera = new Camera();
+        // new Thread(camera).start();
     }
 
     @Override
@@ -60,7 +61,7 @@ public class Robot extends TimedRobot {
         CommandScheduler.getInstance().run();
         limelight.dashboard();
 
-        camera.stop(controllers.getStopCameraButton());
+        // camera.stop(controllers.getStopCameraButton());
     }
 
     @Override
@@ -73,16 +74,13 @@ public class Robot extends TimedRobot {
         if (autonomousCommand != null) {
             autonomousCommand.schedule();
         }
-
-        // autoPrograms.initAuto();
     }
 
     @Override
     public void autonomousPeriodic() {
         feeder.feed();
         chomper.controlChomper();
-
-        // autoPrograms.runAuto();
+        drive.dashboard();
     }
 
     @Override
@@ -99,8 +97,8 @@ public class Robot extends TimedRobot {
         drive.initalize();
         limelight.initialize();
 
-        recorder.initialize();
-        runner.counterInitialize();
+        // recorder.initialize();
+        // runner.counterInitialize();
     }
 
     @Override
@@ -118,9 +116,10 @@ public class Robot extends TimedRobot {
         climber.controlClimb(controllers.getClimberUpTrigger(), controllers.getClimberDownTrigger());
         drive.robotDrive(controllers.getDriveSpeedAxis(), controllers.getDriveTurnAxis(),
                 controllers.getDriveSideToggle());
+        drive.dashboard();
         limelight.limelightDrive(controllers.getLimelightButton());
 
-        recorder.record();
+        // recorder.record();
     }
 
     @Override
@@ -128,25 +127,25 @@ public class Robot extends TimedRobot {
         setMotorsCoast();
         drive.resetSensors();
 
-        if (GsonSmartDash.shouldRecord) {
-            List<State> states = recorder.getStates();
-            try {
-                StatesWriter.writeStates(states, GsonSmartDash.gsonFileName);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        StateLister.getStateNames();
-        SmartDashboard.putBoolean("Should Record", false);
+        // if (GsonSmartDash.shouldRecord) {
+        //     List<State> states = recorder.getStates();
+        //     try {
+        //         StatesWriter.writeStates(states, GsonSmartDash.gsonFileName);
+        //     } catch (Exception e) {
+        //         e.printStackTrace();
+        //     }
+        // }
+        // StateLister.getStateNames();
+        // SmartDashboard.putBoolean("Should Record", false);
     }
 
     @Override
     public void disabledPeriodic() {
-        GsonSmartDash.set();
+        // GsonSmartDash.set();
 
-        if (!GsonSmartDash.shouldRecord) {
-            SmartDashboard.putString("Gson File Name", "");
-        }
+        // if (!GsonSmartDash.shouldRecord) {
+        //     SmartDashboard.putString("Gson File Name", "");
+        // }
     }
 
     @Override

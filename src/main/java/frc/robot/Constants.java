@@ -31,14 +31,14 @@ public class Constants {
     static final int INTAKE_ARM_SOLENOID_PORT_1 = 4;
     static final int INTAKE_ARM_SOLENOID_PORT_2 = 5;
     static final int CHOMPER_SOLENOID_PORT = 6;
+        //Sensors
+    static final int FEEDER_UPPER_LINEBREAK_PORT = 1;
+    static final int FEEDER_LOWER_LINEBREAK_PORT = 2;
         //Motors
     static final int INTAKE_MOTOR_ID = 0;
     static final int SHOOTER_MOTOR_ID = 1;
     static final int FEEDER_MOTOR_ID = 2;
     static final int CONTROL_PANEL_MOTOR_ID = 3;
-        //Sensors
-    static final int FEEDER_LOWER_LINEBREAK_PORT = 1;
-    static final int FEEDER_UPPER_LINEBREAK_PORT = 2;
 
     // Mobility Ids
     static final int CLIMBER_LEFT_MOTOR_ID = 4;
@@ -53,7 +53,7 @@ public class Constants {
     public class DriveConstants {
 
         public static final double AUTO_DRIVE_SPEED = 0.3;
-        public static final double DRIVE_OFF_LINE_DISTANCE = 4;
+        public static final double DRIVE_OFF_LINE_DISTANCE = 1;
 
         // Encoder Constants
         public static final int TICKS_PER_REVOLUTION = 2048; // standard for TalonFX
@@ -62,8 +62,8 @@ public class Constants {
         public static final double DISTANCE_PER_TICK = (Math.PI * WHEEL_DIAMETER) / (TICKS_PER_REVOLUTION * GEARING_CONVERSION);
         public static final double METER_PER_SECOND_CONSTANT = DISTANCE_PER_TICK / 10; // for converting units per 100ms to meters per second
 
-        public static final boolean areLeftEncodersReversed = false;
-        public static final boolean areRightEncodersReversed = true;
+        public static final boolean areLeftEncodersReversed = true;
+        public static final boolean areRightEncodersReversed = false;
         public static final boolean isGyroReversed = false;
 
         //Ramsete Constants

@@ -3,6 +3,7 @@ package frc.robot;
 import com.ctre.phoenix.motorcontrol.TalonFXSensorCollection;
 
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
 
 public class Encoders {
@@ -90,5 +91,13 @@ public class Encoders {
 
     public double ticksToMeters(double ticks) {
         return ticks * DriveConstants.DISTANCE_PER_TICK;
+    }
+
+    public void dashboard() {
+        SmartDashboard.putNumber("Left Encoder", getRawLeftEncoders());
+        SmartDashboard.putNumber("Right Encoder", getRawRightEncoders());
+        SmartDashboard.putNumber("Left Meters", getLeftEncodersMeters());
+        SmartDashboard.putNumber("Right Meters", getRightEncodersMeters());
+        SmartDashboard.putNumber("Encoders", getAvgEncoderMetersAvg());
     }
 }
