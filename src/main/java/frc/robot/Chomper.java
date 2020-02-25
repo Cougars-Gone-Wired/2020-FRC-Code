@@ -1,7 +1,6 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Chomper {
 
@@ -17,12 +16,12 @@ public class Chomper {
     }
 
     public enum ChomperStates {
-        IDLE, INTAKE_READY, SHOOTER_READY
+        IDLE, INTAKE_READY, SHOOTER_READY, OVERRIDE
     }
 
     private ChomperStates currentChomperState;
 
-    public void controlChomper() {
+    public void controlChomper(double overrideAxis) {
 
         switch (currentChomperState) {
             case IDLE:
@@ -30,6 +29,8 @@ public class Chomper {
                     setIntakeReady();
                 } else if (Robot.feeder.isFeedingShooter()) {
                     setShooterReady();
+                } else if (overrideAxis <= -Constants.DEADZONE) {
+                    setOverride();
                 }
                 break;
 
@@ -41,6 +42,12 @@ public class Chomper {
 
             case SHOOTER_READY:
                 if (Robot.feeder.isNotMoving()) {
+                    setIdle();
+                }
+                break;
+
+            case OVERRIDE:
+                if (overrideAxis > -Constants.DEADZONE) {
                     setIdle();
                 }
                 break;
@@ -60,7 +67,7 @@ public class Chomper {
     }
 
     public void setIdle() {
-        chompSolenoid.set(false);
+        chompSolenoid.set(true);
         currentChomperState = ChomperStates.IDLE;
     }
 
@@ -72,5 +79,10 @@ public class Chomper {
     public void setShooterReady() {
         chompSolenoid.set(false);
         currentChomperState = ChomperStates.SHOOTER_READY;
+    }
+
+    public void setOverride() {
+        chompSolenoid.set(false);
+        currentChomperState = ChomperStates.OVERRIDE;
     }
 }

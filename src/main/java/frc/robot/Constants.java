@@ -9,6 +9,7 @@ public class Constants {
     static final int INTAKE_ARM_TRIGGER = 2;
     static final int INTAKE_AXIS = 1;
     static final int SHOOTER_TRIGGER = 3;
+    static final int CHOMPER_OVERRIDE_AXIS = 5;
     static final int STOP_CAMERA_BUTTON = 8;
 
     // Mobility Controller

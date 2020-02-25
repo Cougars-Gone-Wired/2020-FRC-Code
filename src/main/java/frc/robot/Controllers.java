@@ -11,6 +11,7 @@ public class Controllers {
     private double intakeArmTrigger;
     private double intakeAxis;
     private double shooterTrigger;
+    private double chomperOverrideAxis;
     private boolean stopCameraButton;
 
     // Mobility
@@ -34,6 +35,7 @@ public class Controllers {
         intakeArmTrigger = manipulatorController.getRawAxis(Constants.INTAKE_ARM_TRIGGER);
         intakeAxis = -manipulatorController.getRawAxis(Constants.INTAKE_AXIS);
         shooterTrigger = manipulatorController.getRawAxis(Constants.SHOOTER_TRIGGER);
+        chomperOverrideAxis = -manipulatorController.getRawAxis(Constants.CHOMPER_OVERRIDE_AXIS);
         stopCameraButton = manipulatorController.getRawButtonPressed(Constants.STOP_CAMERA_BUTTON);
 
         // Mobility
@@ -64,6 +66,10 @@ public class Controllers {
 
     public double getShooterTrigger() {
         return shooterTrigger;
+    }
+
+    public double getChomperOverrideAxis() {
+        return chomperOverrideAxis;
     }
 
     public boolean getStopCameraButton() {

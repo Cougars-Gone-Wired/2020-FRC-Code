@@ -79,7 +79,7 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousPeriodic() {
         feeder.feed();
-        chomper.controlChomper();
+        chomper.controlChomper(0);
         drive.dashboard();
     }
 
@@ -111,7 +111,7 @@ public class Robot extends TimedRobot {
         shooter.shoot(controllers.getShooterTrigger());
         // shooter.pidShooter(controllers.getShooterTrigger());
         feeder.feed();
-        chomper.controlChomper();
+        chomper.controlChomper(controllers.getChomperOverrideAxis());
 
         climber.controlClimb(controllers.getClimberUpTrigger(), controllers.getClimberDownTrigger());
         drive.robotDrive(controllers.getDriveSpeedAxis(), controllers.getDriveTurnAxis(),
