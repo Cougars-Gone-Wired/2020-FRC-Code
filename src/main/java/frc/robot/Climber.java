@@ -7,11 +7,10 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Timer;
 
 public class Climber {
-
-    private static double startTime;
-
     private static double CLIMBER_UP_SPEED = 1.0;
     private static double CLIMBER_DOWN_SPEED = 0.7;
+
+    private static double startTime;
 
     private WPI_TalonSRX climberLeftMotor;
     private WPI_TalonSRX climberRightMotor;
@@ -40,7 +39,7 @@ public class Climber {
 
     private ClimberStates currentClimberState;
 
-    public void controlClimb(double climberUpTrigger, double climberDownTrigger) {
+    public void controlClimber(double climberUpTrigger, double climberDownTrigger) {
         climberUpTriggerBool = (climberUpTrigger >= Constants.DEADZONE);
         climberDownTriggerBool = (climberDownTrigger >= Constants.DEADZONE);
         

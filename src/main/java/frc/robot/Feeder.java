@@ -32,15 +32,14 @@ public class Feeder {
 
     private FeederStates currentFeederState;
 
-    public void feed() {
+    public void controlFeeder() {
         SmartDashboard.putBoolean("Upper Line Break", feederUpperLineBreak.get());
         SmartDashboard.putBoolean("Lower Line Break", feederLowerLineBreak.get());
         switch (currentFeederState) {
             case NOT_MOVING:
                 if (Robot.intake.isIntaking() 
                         && !Robot.shooter.isShooting() 
-                        && (feederUpperLineBreak.get() || feederLowerLineBreak.get())
-                        ) {
+                        && (feederUpperLineBreak.get() || feederLowerLineBreak.get())) {
                     setIntaking();
 
                 } else if (Robot.intake.isOuttaking() 
@@ -57,8 +56,7 @@ public class Feeder {
             case INTAKING:
                 if(!Robot.intake.isIntaking() 
                         || Robot.shooter.isShooting()
-                        || (!feederUpperLineBreak.get() && !feederLowerLineBreak.get())
-                        ) {
+                        || (!feederUpperLineBreak.get() && !feederLowerLineBreak.get())) {
                     setNotMoving();
                 } 
                 break;

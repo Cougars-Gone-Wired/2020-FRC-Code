@@ -81,7 +81,7 @@ public class Shooter {
 
     private ShooterStates currentShooterState;
 
-    public void shoot(double shooterTrigger) {
+    public void controlShooter(double shooterTrigger) {
         shooterDashboard();
         shooterTriggerBool = (shooterTrigger >= Constants.DEADZONE);
         velocity = -sensors.getIntegratedSensorVelocity();
@@ -104,7 +104,7 @@ public class Shooter {
         }
     }
 
-    public void pidShooter(double shooterTrigger) {
+    public void controlPIDShooter(double shooterTrigger) {
         shooterDashboard();
         shooterTriggerBool = (shooterTrigger >= Constants.DEADZONE);
         velocity = sensors.getIntegratedSensorVelocity();
@@ -112,14 +112,14 @@ public class Shooter {
 
         switch (currentShooterState) {
             case NOT_MOVING:
-                //if (shooterTriggerBool && !Robot.arms.isShooterClimbingPosition()) {
+                // if (shooterTriggerBool && !Robot.arms.isArmClimbingPosition()) {
                 if (shooterTriggerBool) {
                     setPIDShooting();
                 }
                 break;
             case SHOOTING:
                 setPIDShooting();
-                //if (!shooterTriggerBool || Robot.arms.isShooterClimbingPosition()) {
+                // if (!shooterTriggerBool || Robot.arms.isArmClimbingPosition()) {
                 if (!shooterTriggerBool) {
                     setNotMoving();
                 } 

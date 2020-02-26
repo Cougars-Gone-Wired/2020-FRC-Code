@@ -4,10 +4,10 @@ import edu.wpi.first.wpilibj.Solenoid;
 
 public class Chomper {
 
-    private Solenoid chompSolenoid;
+    private Solenoid chomperSolenoid;
 
     public Chomper() {
-        chompSolenoid = new Solenoid(Constants.CHOMPER_SOLENOID_PORT);
+        chomperSolenoid = new Solenoid(Constants.CHOMPER_SOLENOID_PORT);
         initialize();
     }
 
@@ -67,22 +67,22 @@ public class Chomper {
     }
 
     public void setIdle() {
-        chompSolenoid.set(true);
+        chomperSolenoid.set(true);
         currentChomperState = ChomperStates.IDLE;
     }
 
     public void setIntakeReady() {
-        chompSolenoid.set(true);
+        chomperSolenoid.set(true);
         currentChomperState = ChomperStates.INTAKE_READY;
     }
 
     public void setShooterReady() {
-        chompSolenoid.set(false);
+        chomperSolenoid.set(false);
         currentChomperState = ChomperStates.SHOOTER_READY;
     }
 
     public void setOverride() {
-        chompSolenoid.set(false);
+        chomperSolenoid.set(false);
         currentChomperState = ChomperStates.OVERRIDE;
     }
 }

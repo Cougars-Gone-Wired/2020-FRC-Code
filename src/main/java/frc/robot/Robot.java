@@ -66,8 +66,17 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
-        drive.initalize();
         setMotorsBrake();
+
+        arms.initialize();
+        intake.initialize();
+        shooter.initialize();
+        feeder.initialize();
+        chomper.initialize();
+
+        climber.initalize();
+        drive.initalize();
+        limelight.initialize();
 
         autoSelector.chooseAuto();
         autonomousCommand = autoSelector.getAutoCommand();
@@ -78,7 +87,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousPeriodic() {
-        feeder.feed();
+        feeder.controlFeeder();
         chomper.controlChomper(0);
         drive.dashboard();
     }
@@ -107,13 +116,13 @@ public class Robot extends TimedRobot {
 
         arms.controlArm(controllers.isArmUpButton(), controllers.isArmDownButton());
         arms.controlIntakeArm(controllers.getIntakeArmTrigger());
-        intake.intake(controllers.getIntakeAxis());
-        shooter.shoot(controllers.getShooterTrigger());
+        intake.controlIntake(controllers.getIntakeAxis());
+        shooter.controlShooter(controllers.getShooterTrigger());
         // shooter.pidShooter(controllers.getShooterTrigger());
-        feeder.feed();
+        feeder.controlFeeder();
         chomper.controlChomper(controllers.getChomperOverrideAxis());
 
-        climber.controlClimb(controllers.getClimberUpTrigger(), controllers.getClimberDownTrigger());
+        climber.controlClimber(controllers.getClimberUpTrigger(), controllers.getClimberDownTrigger());
         drive.robotDrive(controllers.getDriveSpeedAxis(), controllers.getDriveTurnAxis(),
                 controllers.getDriveSideToggle());
         drive.dashboard();
