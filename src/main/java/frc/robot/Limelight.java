@@ -27,8 +27,8 @@ public class Limelight {
     private double min = 0.4; //Minumum value to move motors
     private double aimKp = 0.07; //Aim multiplier
     private double driveKp = 0.50; //Drive multiplier
-    private double angle_error = 0.30; //Final value needs to be set later
-    private double desired_angle = 0.00;
+    private double angle_threshold = 0.30; //Final value needs to be set later
+    private double angle_offset = 0.00;
     private double distance_error = 5.00; //Distance error
     private double desired_distance = 260.00; //Needs to be set later
 
@@ -59,7 +59,7 @@ public class Limelight {
 
         switch (limelightDriveState) {
             case DO_NOTHING:
-                if (aimButton) {
+                if (aimButton && !(Math.abs(tx - angle_offset) < angle_threshold)) {
                     //turnlightsOn();
                      //What the limelight should do when the button is pressed
                      setDriveAim();
@@ -84,14 +84,14 @@ public class Limelight {
 
             case AIM_AND_DRIVE:
                 //A lot of copy and paste here that could be changed later but it's not necessary 
-                if (!aimButton) {
+                if (!aimButton || (Math.abs(tx - angle_offset) < angle_threshold)) {
                     setDriveDoNothing();
                 }
 
-                aim_adjust = aimKp * ((tx - desired_angle) / DEGREE_RANGE);
-                if (tx - desired_angle > angle_error) {
+                aim_adjust = aimKp * ((tx - angle_offset) / DEGREE_RANGE);
+                if (tx - angle_offset > angle_threshold) {
                     aim_adjust += min;
-                } else if (tx - desired_angle < -angle_error) {
+                } else if (tx - angle_offset < -angle_threshold) {
                     aim_adjust -= min;
                 } else {
                     aim_adjust = 0;
@@ -110,19 +110,20 @@ public class Limelight {
                 break;
 
             case AIM:
-                if (!aimButton) {
+                if (!aimButton || (Math.abs(tx - angle_offset) < angle_threshold)) {
                     setDriveDoNothing();
-                }
-
-                aim_adjust = aimKp * ((tx - desired_angle) / DEGREE_RANGE);
-                if (tx - desired_angle > angle_error) {
-                    aim_adjust += min;
-                } else if (tx - desired_angle < -angle_error) {
-                    aim_adjust -= min;
                 } else {
-                    aim_adjust = 0;
+                    aim_adjust = aimKp * ((tx - angle_offset) / DEGREE_RANGE);
+                    if (tx - angle_offset > angle_threshold) {
+                        aim_adjust += min;
+                    } else if (tx - angle_offset < -angle_threshold) {
+                        aim_adjust -= min;
+                    } else {
+                        aim_adjust = 0;
+                        setDriveDoNothing();
+                    }
+                    Robot.drive.limelightDrive(drive_adjust, aim_adjust);
                 }
-                Robot.drive.limelightDrive(drive_adjust, aim_adjust);
             break;
         }
     }
@@ -162,9 +163,9 @@ public class Limelight {
         ta = table.getEntry("ta").getDouble(0);
             
         aim_adjust = aimKp * (tx / DEGREE_RANGE);
-        if (tx - desired_angle > angle_error) {
+        if (tx - angle_offset > angle_threshold) {
             aim_adjust += min;
-        } else if (tx - desired_angle < -angle_error) {
+        } else if (tx - angle_offset < -angle_threshold) {
             aim_adjust -= min;
         } else {
             aim_adjust = 0;
@@ -183,9 +184,9 @@ public class Limelight {
         ta = table.getEntry("ta").getDouble(0);
 
         aim_adjust = aimKp * ((tx - unaimAngle) / DEGREE_RANGE);
-        if (tx - unaimAngle > angle_error) {
+        if (tx - unaimAngle > angle_threshold) {
             aim_adjust += min;
-        } else if (tx - unaimAngle < -angle_error) {
+        } else if (tx - unaimAngle < -angle_threshold) {
             aim_adjust -= min;
         } else {
             aim_adjust = 0;
@@ -198,7 +199,7 @@ public class Limelight {
     }
 
     public void setUnaimAngle() {
-        unaimAngle = tx - desired_angle;
+        unaimAngle = tx - angle_offset;
     }
 
     public void turnlightsOn() {
@@ -224,8 +225,8 @@ public class Limelight {
         SmartDashboard.putNumber("min", min);
         SmartDashboard.putNumber("aimKp", aimKp);
         SmartDashboard.putNumber("driveKp", driveKp);
-        SmartDashboard.putNumber("angle_error", angle_error);
-        SmartDashboard.putNumber("desiredAngle", desired_angle);
+        SmartDashboard.putNumber("angle_threshold", angle_threshold);
+        SmartDashboard.putNumber("angle_offset", angle_offset);
         SmartDashboard.putNumber("distance_error", distance_error);
         SmartDashboard.putNumber("desired_distance", desired_distance);
     }
@@ -250,8 +251,8 @@ public class Limelight {
         driveKp = SmartDashboard.getNumber("driveKp", 0);
         aim_adjust = SmartDashboard.getNumber("aim_adjust", 0);
         drive_adjust = SmartDashboard.getNumber("drive_adjust", 0);
-        angle_error = SmartDashboard.getNumber("angle_error", 0);
-        angle_error = SmartDashboard.getNumber("desired_angle", 0);
+        angle_threshold = SmartDashboard.getNumber("angle_threshold", 0);
+        angle_offset = SmartDashboard.getNumber("angle_offset", 0);
         distance_error = SmartDashboard.getNumber("distance_error", 0);
         desired_distance = SmartDashboard.getNumber("desired_distance", 0);
     }

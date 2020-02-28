@@ -32,50 +32,46 @@ public class Feeder {
 
     private FeederStates currentFeederState;
 
+    private double feederTrigger;
+
     public void controlFeeder() {
         SmartDashboard.putBoolean("Upper Line Break", feederUpperLineBreak.get());
         SmartDashboard.putBoolean("Lower Line Break", feederLowerLineBreak.get());
         switch (currentFeederState) {
             case NOT_MOVING:
-                if (Robot.intake.isIntaking() 
-                        && !Robot.shooter.isShooting() 
+                if (Robot.intake.isIntaking() && !Robot.shooter.isShooting()
                         && (feederUpperLineBreak.get() || feederLowerLineBreak.get())) {
                     setIntaking();
 
-                } else if (Robot.intake.isOuttaking() 
-                        && !Robot.shooter.isShooting()) {
+                } else if (Robot.intake.isOuttaking() && !Robot.shooter.isShooting()) {
                     setOuttaking();
 
-                } else if (Robot.intake.isNotMoving() 
-                        && Robot.shooter.isShooting() 
+                } else if (Robot.intake.isNotMoving() && Robot.shooter.isShooting()
                         && Robot.shooter.atDesiredVelocity()) {
                     setFeedingShooter();
                 }
                 break;
 
             case INTAKING:
-                if(!Robot.intake.isIntaking() 
-                        || Robot.shooter.isShooting()
+                if (!Robot.intake.isIntaking() || Robot.shooter.isShooting()
                         || (!feederUpperLineBreak.get() && !feederLowerLineBreak.get())) {
                     setNotMoving();
-                } 
+                }
                 break;
 
             case OUTTAKING:
-                if(!Robot.intake.isOuttaking() 
-                        || Robot.shooter.isShooting()) {
+                if (feederTrigger >= Constants.DEADZONE) {
+                    // || Robot.shooter.isShooting()) {
                     setNotMoving();
                 }
                 break;
-                
+
             case FEEDING_SHOOTER:
-                if (!Robot.intake.isNotMoving() 
-                        || !Robot.shooter.isShooting() 
-                        || !Robot.shooter.atDesiredVelocity()) {
+                if (!Robot.intake.isNotMoving() || !Robot.shooter.isShooting() || !Robot.shooter.atDesiredVelocity()) {
                     setNotMoving();
                 }
                 break;
-        }   
+        }
     }
 
     public boolean isNotMoving() {

@@ -18,8 +18,10 @@ public class Arms {
 
     public Arms() {
         armTopSolenoid = new DoubleSolenoid(Constants.ARM_TOP_SOLENOID_PORT_1, Constants.ARM_TOP_SOLENOID_PORT_2);
-        armBottomSolenoid = new DoubleSolenoid(Constants.ARM_BOTTOM_SOLENOID_PORT_1, Constants.ARM_BOTTOM_SOLENOID_PORT_2);
-        intakeArmSolenoid = new DoubleSolenoid(Constants.INTAKE_ARM_SOLENOID_PORT_1, Constants.INTAKE_ARM_SOLENOID_PORT_2);
+        armBottomSolenoid = new DoubleSolenoid(Constants.ARM_BOTTOM_SOLENOID_PORT_1,
+                Constants.ARM_BOTTOM_SOLENOID_PORT_2);
+        intakeArmSolenoid = new DoubleSolenoid(Constants.INTAKE_ARM_SOLENOID_PORT_1,
+                Constants.INTAKE_ARM_SOLENOID_PORT_2);
         initialize();
     }
 
@@ -63,7 +65,7 @@ public class Arms {
                     // armSwitchingStates = true;
                 }
                 // if (armSwitchingStates) {
-                //     setStartingPositionWithDelay();
+                // setStartingPositionWithDelay();
                 // }
                 break;
         }
@@ -91,9 +93,9 @@ public class Arms {
         armTopSolenoid.set(DoubleSolenoid.Value.kReverse);
         armBottomSolenoid.set(DoubleSolenoid.Value.kReverse);
         // if (armStateCounts / 500 >= ARM_STATE_DELAY) {
-        //     armStateCounts = 0;
-            // armSwitchingStates = false;
-            currentArmState = ArmStates.STARTING_POSITION;
+        // armStateCounts = 0;
+        // armSwitchingStates = false;
+        currentArmState = ArmStates.STARTING_POSITION;
         // }
         // armStateCounts++;
     }
@@ -116,22 +118,22 @@ public class Arms {
 
     private IntakeArmStates currentIntakeArmState;
 
-    public void controlIntakeArm(double intakeArmTrigger) {
+    public void controlIntakeArm(boolean intakeArmUpBumper, boolean intakeArmDownBumper) {
 
-        switch(currentIntakeArmState) {
+        switch (currentIntakeArmState) {
             case DOWN:
-                if (!toggleTrigger(intakeArmTrigger) && (currentArmState != ArmStates.CLIMBING_POSITION)) {
+                if ((!intakeArmDownBumper && intakeArmUpBumper) && (currentArmState != ArmStates.CLIMBING_POSITION)) {
                     setUpPosition();
                 }
                 break;
 
             case UP:
-                if (toggleTrigger(intakeArmTrigger)) {
+                if (!intakeArmUpBumper && intakeArmDownBumper) {
                     setDownPosition();
-                    //intakeArmSwitchingStates = true;
+                    // intakeArmSwitchingStates = true;
                 }
                 // if (intakeArmSwitchingStates) {
-                //     setDownPositionWithDelay();
+                // setDownPositionWithDelay();
                 // }
                 break;
         }
@@ -158,22 +160,22 @@ public class Arms {
     public void setDownPositionWithDelay() {
         intakeArmSolenoid.set(DoubleSolenoid.Value.kForward);
         // if (intakeArmStateCounts / 500 >= ARM_STATE_DELAY) {
-        //     intakeArmStateCounts = 0;
-            // intakeArmSwitchingStates = false;
-            currentIntakeArmState = IntakeArmStates.DOWN;
+        // intakeArmStateCounts = 0;
+        // intakeArmSwitchingStates = false;
+        currentIntakeArmState = IntakeArmStates.DOWN;
         // }
         // intakeArmStateCounts++;
     }
 
-    public boolean toggleTrigger(double intakeArmTrigger) {
-        if (intakeArmTrigger > Constants.DEADZONE) {
-            if (!triggerDownBool) {
-                toggleState = !toggleState;
-            }
-            triggerDownBool = true;
-        } else {
-            triggerDownBool = false;
-        }
-        return toggleState;
-    }
+    // public boolean toggleTrigger(double intakeArmTrigger) {
+    // if (intakeArmTrigger > Constants.DEADZONE) {
+    // if (!triggerDownBool) {
+    // toggleState = !toggleState;
+    // }
+    // triggerDownBool = true;
+    // } else {
+    // triggerDownBool = false;
+    // }
+    // return toggleState;
+    // }
 }

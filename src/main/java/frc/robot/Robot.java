@@ -3,6 +3,7 @@ package frc.robot;
 
 import java.util.List;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -33,6 +34,9 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotInit() {
+        Compressor c = new Compressor();
+        c.stop();
+        
         controllers = new Controllers();
 
         arms = new Arms();
