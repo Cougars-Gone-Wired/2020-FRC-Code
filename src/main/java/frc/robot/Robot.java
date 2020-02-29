@@ -27,6 +27,7 @@ public class Robot extends TimedRobot {
     // public static StateRunner runner;
 
     public static Camera camera;
+    public static CompressorController compressorController;
 
     private AutoSelector autoSelector;
     private Command autonomousCommand;
@@ -44,6 +45,8 @@ public class Robot extends TimedRobot {
         shooter = new Shooter();
         feeder = new Feeder();
         chomper = new Chomper();
+
+        compressorController = new CompressorController();
 
         autoSelector = new AutoSelector();
 
@@ -107,6 +110,8 @@ public class Robot extends TimedRobot {
         feeder.initialize();
         chomper.initialize();
 
+        compressorController.initialize();
+
         // recorder.initialize();
         // runner.counterInitialize();
     }
@@ -117,9 +122,9 @@ public class Robot extends TimedRobot {
 
         arms.controlArm(controllers.isArmUpBumper(), controllers.isArmDownBumper());
         climber.controlClimber(controllers.getClimberUpTrigger(), controllers.getClimberDownTrigger());
+        limelight.limelightDrive(controllers.getLimelightButton());
         drive.robotDrive(controllers.getDriveSpeedAxis(), controllers.getDriveTurnAxis(), controllers.getDriveSideToggle());
         drive.dashboard();
-        limelight.limelightDrive(controllers.getLimelightButton());
 
         arms.controlIntakeArm(controllers.isIntakeArmDownBumper(), controllers.isIntakeArmUpBumper());
         intake.controlIntake(controllers.getIntakeAxis());
@@ -127,6 +132,8 @@ public class Robot extends TimedRobot {
         // shooter.pidShooter(controllers.getShooterTrigger());
         feeder.controlFeeder(controllers.getFeederOuttakeTrigger());
         chomper.controlChomper(controllers.getChomperOverrideAxis());
+
+        compressorController.controlCompressor();
 
         // recorder.record();
     }
@@ -137,12 +144,12 @@ public class Robot extends TimedRobot {
         drive.resetSensors();
 
         // if (GsonSmartDash.shouldRecord) {
-        //     List<State> states = recorder.getStates();
-        //     try {
-        //         StatesWriter.writeStates(states, GsonSmartDash.gsonFileName);
-        //     } catch (Exception e) {
-        //         e.printStackTrace();
-        //     }
+        // List<State> states = recorder.getStates();
+        // try {
+        // StatesWriter.writeStates(states, GsonSmartDash.gsonFileName);
+        // } catch (Exception e) {
+        // e.printStackTrace();
+        // }
         // }
         // StateLister.getStateNames();
         // SmartDashboard.putBoolean("Should Record", false);
@@ -153,7 +160,7 @@ public class Robot extends TimedRobot {
         // GsonSmartDash.set();
 
         // if (!GsonSmartDash.shouldRecord) {
-        //     SmartDashboard.putString("Gson File Name", "");
+        // SmartDashboard.putString("Gson File Name", "");
         // }
     }
 
