@@ -83,6 +83,8 @@ public class Robot extends TimedRobot {
         feeder.initialize();
         chomper.initialize();
 
+        compressorController.setDisabled();
+
         autonomousCommand = autoSelector.getAutoCommand();
         if (autonomousCommand != null) {
             autonomousCommand.schedule();
