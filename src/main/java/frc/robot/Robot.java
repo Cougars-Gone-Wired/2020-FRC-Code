@@ -3,7 +3,6 @@ package frc.robot;
 
 import java.util.List;
 
-import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -28,15 +27,14 @@ public class Robot extends TimedRobot {
     public static StateRunner runner;
 
     public static Camera camera;
+    public static CompressorController compressorController;
 
     private AutoSelector autoSelector;
     private Command autonomousCommand;
 
     @Override
     public void robotInit() {
-        Compressor c = new Compressor();
-        c.stop();
-        
+
         controllers = new Controllers();
 
         arms = new Arms();
@@ -48,6 +46,8 @@ public class Robot extends TimedRobot {
         climber = new Climber();
         drive = new Drive();
         limelight = new Limelight();
+
+        compressorController = new CompressorController();
 
         autoSelector = new AutoSelector();
 
@@ -110,6 +110,8 @@ public class Robot extends TimedRobot {
         drive.initalize();
         limelight.initialize();
 
+        compressorController.initialize();
+
         // recorder.initialize();
         // runner.counterInitialize();
     }
@@ -132,6 +134,7 @@ public class Robot extends TimedRobot {
         drive.dashboard();
         limelight.limelightDrive(controllers.getLimelightButton());
 
+        compressorController.checkStates();
         // recorder.record();
     }
 
@@ -141,12 +144,12 @@ public class Robot extends TimedRobot {
         drive.resetSensors();
 
         // if (GsonSmartDash.shouldRecord) {
-        //     List<State> states = recorder.getStates();
-        //     try {
-        //         StatesWriter.writeStates(states, GsonSmartDash.gsonFileName);
-        //     } catch (Exception e) {
-        //         e.printStackTrace();
-        //     }
+        // List<State> states = recorder.getStates();
+        // try {
+        // StatesWriter.writeStates(states, GsonSmartDash.gsonFileName);
+        // } catch (Exception e) {
+        // e.printStackTrace();
+        // }
         // }
         // StateLister.getStateNames();
         // SmartDashboard.putBoolean("Should Record", false);
@@ -157,7 +160,7 @@ public class Robot extends TimedRobot {
         // GsonSmartDash.set();
 
         // if (!GsonSmartDash.shouldRecord) {
-        //     SmartDashboard.putString("Gson File Name", "");
+        // SmartDashboard.putString("Gson File Name", "");
         // }
     }
 
