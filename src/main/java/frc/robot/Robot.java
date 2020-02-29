@@ -134,7 +134,7 @@ public class Robot extends TimedRobot {
         drive.dashboard();
         limelight.limelightDrive(controllers.getLimelightButton());
 
-        compressorController.checkStates();
+        compressorController.controlCompressor();
         // recorder.record();
     }
 

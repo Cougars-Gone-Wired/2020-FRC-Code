@@ -20,7 +20,7 @@ public class CompressorController {
         setEnabled();
     }
 
-    public void checkStates() {
+    public void controlCompressor() {
 
         switch (currentState) {
             case ENABLED:
