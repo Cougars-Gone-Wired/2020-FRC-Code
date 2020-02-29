@@ -8,10 +8,10 @@ public class Constants {
     static final int ARM_DOWN_BUMPER = 5;
     static final int CLIMBER_UP_TRIGGER = 3;
     static final int CLIMBER_DOWN_TRIGGER = 2;
-    static final int LIMELIGHT_BUTTON = 2;
     static final int DRIVE_SPEED_AXIS = 1;
     static final int DRIVE_TURN_AXIS = 4;
     static final int SWITCH_SIDE_BUTTON = 1;
+    static final int LIMELIGHT_BUTTON = 2;
 
     // Manipulator Controller
     static final int MANIPULATOR_CONTROLLER_ID = 0;

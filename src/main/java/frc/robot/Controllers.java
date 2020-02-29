@@ -10,10 +10,10 @@ public class Controllers {
     private boolean armDownBumper;
     private double climberUpTrigger;
     private double climberDownTrigger;
-    private boolean limelightButton;
     private double driveSpeedAxis;
     private double driveTurnAxis;
     private boolean driveSideToggle;
+    private boolean limelightButton;
 
     // Manipulator
     private Joystick manipulatorController;
@@ -36,10 +36,10 @@ public class Controllers {
         armDownBumper = mobilityController.getRawButtonPressed(Constants.ARM_DOWN_BUMPER);
         climberUpTrigger = mobilityController.getRawAxis(Constants.CLIMBER_UP_TRIGGER);
         climberDownTrigger = mobilityController.getRawAxis(Constants.CLIMBER_DOWN_TRIGGER);
-        limelightButton = mobilityController.getRawButton(Constants.LIMELIGHT_BUTTON);
         driveSpeedAxis = mobilityController.getRawAxis(Constants.DRIVE_SPEED_AXIS);
         driveTurnAxis = mobilityController.getRawAxis(Constants.DRIVE_TURN_AXIS);
         driveSideToggle= mobilityController.getRawButtonPressed(Constants.SWITCH_SIDE_BUTTON);
+        limelightButton = mobilityController.getRawButton(Constants.LIMELIGHT_BUTTON);
 
         // Manipulator
         intakeArmDownBumper = manipulatorController.getRawButton(Constants.INTAKE_ARM_DOWN_BUMPER);
@@ -68,10 +68,6 @@ public class Controllers {
         return climberDownTrigger;
     }
     
-    public boolean getLimelightButton() {
-        return limelightButton;
-    }
-    
     public double getDriveSpeedAxis() {
         return driveSpeedAxis;
     }
@@ -82,6 +78,10 @@ public class Controllers {
 
     public boolean getDriveSideToggle() {
         return driveSideToggle;
+    }
+
+    public boolean getLimelightButton() {
+        return limelightButton;
     }
 
     // Manipulator

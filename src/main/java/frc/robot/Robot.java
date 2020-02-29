@@ -38,8 +38,8 @@ public class Robot extends TimedRobot {
 
         arms = new Arms();
         climber = new Climber();
-        limelight = new Limelight();
         drive = new Drive();
+        limelight = new Limelight();
 
         intake = new Intake();
         shooter = new Shooter();
@@ -124,9 +124,9 @@ public class Robot extends TimedRobot {
 
         arms.controlArm(controllers.isArmUpBumper(), controllers.isArmDownBumper());
         climber.controlClimber(controllers.getClimberUpTrigger(), controllers.getClimberDownTrigger());
-        limelight.limelightDrive(controllers.getLimelightButton());
         drive.robotDrive(controllers.getDriveSpeedAxis(), controllers.getDriveTurnAxis(), controllers.getDriveSideToggle());
         drive.dashboard();
+        limelight.limelightDrive(controllers.getLimelightButton());
 
         arms.controlIntakeArm(controllers.isIntakeArmDownBumper(), controllers.isIntakeArmUpBumper());
         intake.controlIntake(controllers.getIntakeAxis());
