@@ -14,13 +14,15 @@ import frc.robot.commands.autoPrograms.ShootFromTrench;
 
 public class AutoSelector {
 
+    private SendableChooser<Programs> autoChooser = new SendableChooser<>();
+
+    private Command autoCommand;
+
     public enum Programs {
         DRIVE_OFF_LINE, SHOOT_AND_OFF_LINE, SHOOT_FROM_TRENCH, INTAKE_THROUGH_TRENCH, DRIVE_STRAIGHT, DO_NOTHING
     }
 
-    private SendableChooser<Programs> autoChooser = new SendableChooser<>(); // sendable chooser to hold dead reckoning
-
-    private Programs autoPicker;
+    private Programs autoChoice;
 
     public AutoSelector() {
         initialize();
@@ -36,33 +38,35 @@ public class AutoSelector {
         SmartDashboard.putData("Auto", autoChooser);
     }
 
-    public void chooseAuto() {
-        autoPicker = autoChooser.getSelected();
-    }
-
     public Command getAutoCommand() {
+        autoChoice = autoChooser.getSelected();
 
-        switch (autoPicker) {
+        switch (autoChoice) {
             case SHOOT_AND_OFF_LINE:
-                return new OfflineAndShoot();
+                autoCommand = new OfflineAndShoot();
+                break;
 
             case SHOOT_FROM_TRENCH:
-                return new ShootFromTrench();
+                autoCommand = new ShootFromTrench();
+                break;
 
             case INTAKE_THROUGH_TRENCH:
-                return new IntakeThroughTrench();
+                autoCommand = new IntakeThroughTrench();
+                break;
 
             case DRIVE_OFF_LINE:
-                return new DriveStraight(DriveConstants.DRIVE_OFF_LINE_DISTANCE);
+                autoCommand = new DriveStraight(DriveConstants.DRIVE_OFF_LINE_DISTANCE);
+                break;
 
             case DRIVE_STRAIGHT:
-                return new ProfileDrive(Robot.drive).getProfilingCommand("paths/output/1MeterBack.wpilib.json");
+                autoCommand = new ProfileDrive(Robot.drive).getProfilingCommand("paths/output/1MeterBack.wpilib.json");
+                break;
 
             case DO_NOTHING:
-                return new DoNothing();
-
-            default:
-                return null;
+                autoCommand = new DoNothing();
+                break;
         }
+
+        return autoCommand;
     }
 }

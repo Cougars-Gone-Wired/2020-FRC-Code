@@ -13,8 +13,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 
 public class Drive extends SubsystemBase{
-    public static double DRIVE_SPEED = 0.8;
-    public static double TURN_SPEED = 0.6;
+    public static double DRIVE_SPEED = 0.9;
+    public static double TURN_SPEED = 0.7;
 
     private WPI_TalonFX frontLeftMotor;
     private WPI_TalonFX middleLeftMotor;
@@ -80,14 +80,9 @@ public class Drive extends SubsystemBase{
         frontRightMotor.set(0);
         backRightMotor.set(0);
 
-        resetSensors();
+        resetOdometry(new Pose2d());
 
         currentDriveState = DriveStates.SHOOTER_SIDE;
-    }
-
-    public void resetSensors() {
-        encoders.resetEncoders();
-        gyro.zeroHeading();
     }
 
     public enum DriveStates {
@@ -96,6 +91,7 @@ public class Drive extends SubsystemBase{
 
     private DriveStates currentDriveState;
 
+    // for teleop driving
     public void robotDrive(double driveSpeedAxis, double driveTurnAxis, boolean toggle) {
         if (!Robot.limelight.isDriveNotMoving()) {
             driveSpeedAxis = 0;
@@ -122,10 +118,6 @@ public class Drive extends SubsystemBase{
         }
     }
 
-    public void limelightDrive(double driveSpeedAxis, double driveTurnAxis) {
-        robotDrive.arcadeDrive(driveSpeedAxis, -driveTurnAxis);
-    }
-
     public boolean isShooterSide() {
         return currentDriveState == DriveStates.SHOOTER_SIDE;
     }
@@ -140,6 +132,38 @@ public class Drive extends SubsystemBase{
 
     public void setIntakeSide() {
         currentDriveState = DriveStates.INTAKE_SIDE;
+    }
+
+    // for aiming
+    public void limelightDrive(double driveSpeedAxis, double driveTurnAxis) {
+        robotDrive.arcadeDrive(driveSpeedAxis, -driveTurnAxis);
+    }
+
+    // for bang bang
+    public void driveStraight(double speed) {
+        robotDrive.curvatureDrive(speed, 0, false);
+    }
+
+    // for motion profiling
+    public void tankDriveVolts(double leftVolts, double rightVolts) {
+        leftMotors.setVoltage(leftVolts);
+        rightMotors.setVoltage(-rightVolts);
+    }
+
+    // for continually setting position of robot during auto
+    @Override
+    public void periodic() {
+        driveOdomentry.update(Rotation2d.fromDegrees(gyro.getHeading()), encoders.getLeftEncodersMeters(), encoders.getRightEncodersMeters());
+    }
+
+    public void resetOdometry(Pose2d position) {
+        resetSensors();
+        driveOdomentry.resetPosition(position, Rotation2d.fromDegrees(gyro.getHeading()));
+    }
+
+    public void resetSensors() {
+        encoders.resetEncoders();
+        gyro.zeroHeading();
     }
 
     public void setMotorsBrake() {
@@ -179,21 +203,6 @@ public class Drive extends SubsystemBase{
         return backRightMotor;
     }
 
-     @Override
-    public void periodic() {
-        driveOdomentry.update(Rotation2d.fromDegrees(gyro.getHeading()), encoders.getLeftEncodersMeters(), encoders.getRightEncodersMeters());
-    }
-
-    public void tankDriveVolts(double leftVolts, double rightVolts) {
-        leftMotors.setVoltage(leftVolts);
-        rightMotors.setVoltage(-rightVolts);
-    }
-
-    public void resetOdometry(Pose2d position) {
-        resetSensors();
-        driveOdomentry.resetPosition(position, Rotation2d.fromDegrees(gyro.getHeading()));
-    }
-
     // returns estimated x and y position of robot in meters
     public Pose2d getPosition() {
         return driveOdomentry.getPoseMeters();
@@ -205,10 +214,6 @@ public class Drive extends SubsystemBase{
 
     public Encoders getEncoders() {
         return encoders;
-    }
-
-    public void driveStraight(double speed) {
-        robotDrive.curvatureDrive(speed, 0, false);
     }
 
     public void dashboard() {

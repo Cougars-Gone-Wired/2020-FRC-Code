@@ -22,9 +22,7 @@ public class Climber {
     public Climber() {
         climberLeftMotor = new WPI_TalonSRX(Constants.CLIMBER_LEFT_MOTOR_ID);
         climberRightMotor = new WPI_TalonSRX(Constants.CLIMBER_RIGHT_MOTOR_ID);
-
         climberMotors = new SpeedControllerGroup(climberLeftMotor, climberRightMotor);
-
         initalize();
     }
 

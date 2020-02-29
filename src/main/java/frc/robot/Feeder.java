@@ -15,6 +15,8 @@ public class Feeder {
     private DigitalInput feederUpperLineBreak;
     private DigitalInput feederLowerLineBreak;
 
+    private boolean feederTriggerBool;
+
     public Feeder() {
         feederMotor = new WPI_TalonSRX(Constants.FEEDER_MOTOR_ID);
         feederUpperLineBreak = new DigitalInput(Constants.FEEDER_UPPER_LINEBREAK_PORT);
@@ -32,18 +34,19 @@ public class Feeder {
 
     private FeederStates currentFeederState;
 
-    private double feederTrigger;
-
-    public void controlFeeder() {
+    public void controlFeeder(double feederOuttakeTrigger) {
         SmartDashboard.putBoolean("Upper Line Break", feederUpperLineBreak.get());
         SmartDashboard.putBoolean("Lower Line Break", feederLowerLineBreak.get());
+
+        feederTriggerBool = (feederOuttakeTrigger >= Constants.DEADZONE);
+
         switch (currentFeederState) {
             case NOT_MOVING:
                 if (Robot.intake.isIntaking() && !Robot.shooter.isShooting()
                         && (feederUpperLineBreak.get() || feederLowerLineBreak.get())) {
                     setIntaking();
 
-                } else if (Robot.intake.isOuttaking() && !Robot.shooter.isShooting()) {
+                } else if (feederTriggerBool && !Robot.shooter.isShooting()) {
                     setOuttaking();
 
                 } else if (Robot.intake.isNotMoving() && Robot.shooter.isShooting()
@@ -60,8 +63,7 @@ public class Feeder {
                 break;
 
             case OUTTAKING:
-                if (feederTrigger >= Constants.DEADZONE) {
-                    // || Robot.shooter.isShooting()) {
+                if (!feederTriggerBool || Robot.shooter.isShooting()) {
                     setNotMoving();
                 }
                 break;

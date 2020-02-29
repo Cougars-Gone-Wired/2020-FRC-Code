@@ -16,7 +16,7 @@ public class Chomper {
     }
 
     public enum ChomperStates {
-        IDLE, INTAKE_READY, SHOOTER_READY, OVERRIDE
+        IDLE, SHOOTER_READY, OVERRIDE
     }
 
     private ChomperStates currentChomperState;
@@ -25,23 +25,15 @@ public class Chomper {
 
         switch (currentChomperState) {
             case IDLE:
-                if (Robot.feeder.isIntaking() || Robot.feeder.isOuttaking()) {
-                    setIntakeReady();
-                } else if (Robot.feeder.isFeedingShooter()) {
+                if (Robot.shooter.isShooting()) {
                     setShooterReady();
                 } else if (overrideAxis <= -Constants.DEADZONE) {
                     setOverride();
                 }
                 break;
 
-            case INTAKE_READY:
-                if (Robot.feeder.isNotMoving()) {
-                    setIdle();
-                }
-                break;
-
             case SHOOTER_READY:
-                if (Robot.feeder.isNotMoving()) {
+                if (Robot.shooter.isNotMoving()) {
                     setIdle();
                 }
                 break;
@@ -58,10 +50,6 @@ public class Chomper {
         return currentChomperState == ChomperStates.IDLE;
     }
 
-    public boolean isIntakeReady() {
-        return currentChomperState == ChomperStates.INTAKE_READY;
-    }
-
     public boolean isShooterReady() {
         return currentChomperState == ChomperStates.SHOOTER_READY;
     }
@@ -69,11 +57,6 @@ public class Chomper {
     public void setIdle() {
         chomperSolenoid.set(true);
         currentChomperState = ChomperStates.IDLE;
-    }
-
-    public void setIntakeReady() {
-        chomperSolenoid.set(true);
-        currentChomperState = ChomperStates.INTAKE_READY;
     }
 
     public void setShooterReady() {

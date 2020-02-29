@@ -10,6 +10,8 @@ public class Gyro {
 
     private AHRS navX;
 
+    private int gyroInvert = DriveConstants.isGyroReversed ? -1 : 1;
+
     public Gyro() {
         navX = new AHRS(SPI.Port.kMXP);
     }
@@ -20,11 +22,11 @@ public class Gyro {
 
     // ensures angle from gyro read from -180 to 180
     public double getHeading() {
-        return Math.IEEEremainder(navX.getAngle(), 360) * (DriveConstants.isGyroReversed ? -1.0 : 1.0);
+        return Math.IEEEremainder(navX.getAngle(), 360) * gyroInvert;
     }
 
     public double getTurnRate() {
-        return navX.getRate() * (DriveConstants.isGyroReversed ? -1.0 : 1.0);
+        return navX.getRate() * gyroInvert;
     }
 
     public void dashboard() {

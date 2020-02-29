@@ -3,7 +3,6 @@ package frc.robot;
 
 import java.util.List;
 
-import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -24,8 +23,8 @@ public class Robot extends TimedRobot {
     public static Drive drive;
     public static Limelight limelight;
 
-    public static StateRecorder recorder;
-    public static StateRunner runner;
+    // public static StateRecorder recorder;
+    // public static StateRunner runner;
 
     public static Camera camera;
 
@@ -34,27 +33,26 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotInit() {
-        Compressor c = new Compressor();
-        c.stop();
-        
         controllers = new Controllers();
 
         arms = new Arms();
+        climber = new Climber();
+        limelight = new Limelight();
+        drive = new Drive();
+
         intake = new Intake();
         shooter = new Shooter();
         feeder = new Feeder();
         chomper = new Chomper();
 
-        climber = new Climber();
-        drive = new Drive();
-        limelight = new Limelight();
-
         autoSelector = new AutoSelector();
 
-        recorder = new StateRecorder();
-        runner = new StateRunner();
-        // GsonSmartDash.put();
         limelight.dashboardInitialize();
+
+        // recorder = new StateRecorder();
+        // runner = new StateRunner();
+
+        // GsonSmartDash.put();
 
         // camera = new Camera();
         // new Thread(camera).start();
@@ -71,18 +69,17 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
         setMotorsBrake();
-
+        
         arms.initialize();
+        climber.initalize();
+        drive.initalize();
+        limelight.initialize();
+
         intake.initialize();
         shooter.initialize();
         feeder.initialize();
         chomper.initialize();
 
-        climber.initalize();
-        drive.initalize();
-        limelight.initialize();
-
-        autoSelector.chooseAuto();
         autonomousCommand = autoSelector.getAutoCommand();
         if (autonomousCommand != null) {
             autonomousCommand.schedule();
@@ -91,9 +88,9 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousPeriodic() {
-        feeder.controlFeeder();
-        chomper.controlChomper(0);
         drive.dashboard();
+        feeder.controlFeeder(0);
+        chomper.controlChomper(0);
     }
 
     @Override
@@ -101,14 +98,14 @@ public class Robot extends TimedRobot {
         setMotorsBrake();
 
         arms.initialize();
+        climber.initalize();
+        drive.initalize();
+        limelight.initialize();
+
         intake.initialize();
         shooter.initialize();
         feeder.initialize();
         chomper.initialize();
-
-        climber.initalize();
-        drive.initalize();
-        limelight.initialize();
 
         // recorder.initialize();
         // runner.counterInitialize();
@@ -118,19 +115,18 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
         controllers.updateControllerValues();
 
-        arms.controlArm(controllers.isArmUpButton(), controllers.isArmDownButton());
-        arms.controlIntakeArm(controllers.getIntakeArmTrigger());
+        arms.controlArm(controllers.isArmUpBumper(), controllers.isArmDownBumper());
+        climber.controlClimber(controllers.getClimberUpTrigger(), controllers.getClimberDownTrigger());
+        drive.robotDrive(controllers.getDriveSpeedAxis(), controllers.getDriveTurnAxis(), controllers.getDriveSideToggle());
+        drive.dashboard();
+        limelight.limelightDrive(controllers.getLimelightButton());
+
+        arms.controlIntakeArm(controllers.isIntakeArmDownBumper(), controllers.isIntakeArmUpBumper());
         intake.controlIntake(controllers.getIntakeAxis());
         shooter.controlShooter(controllers.getShooterTrigger());
         // shooter.pidShooter(controllers.getShooterTrigger());
-        feeder.controlFeeder();
+        feeder.controlFeeder(controllers.getFeederOuttakeTrigger());
         chomper.controlChomper(controllers.getChomperOverrideAxis());
-
-        climber.controlClimber(controllers.getClimberUpTrigger(), controllers.getClimberDownTrigger());
-        drive.robotDrive(controllers.getDriveSpeedAxis(), controllers.getDriveTurnAxis(),
-                controllers.getDriveSideToggle());
-        drive.dashboard();
-        limelight.limelightDrive(controllers.getLimelightButton());
 
         // recorder.record();
     }
@@ -161,22 +157,17 @@ public class Robot extends TimedRobot {
         // }
     }
 
-    @Override
-    public void testPeriodic() {
-        limelight.dashboardInitialize();
-    }
-
     public void setMotorsBrake() {
         climber.setMotorsBrake();
         drive.setMotorsBrake();
-        feeder.setMotorsBrake();
         intake.setMotorsBrake();
+        feeder.setMotorsBrake();
     }
 
     public void setMotorsCoast() {
         climber.setMotorsCoast();
         drive.setMotorsCoast();
-        feeder.setMotorsCoast();
         intake.setMotorsCoast();
+        feeder.setMotorsCoast();
     }
 }

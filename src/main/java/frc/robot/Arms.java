@@ -3,35 +3,30 @@ package frc.robot;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 public class Arms {
-    static final int ARM_STATE_DELAY = 2; // in seconds
+    // static final int ARM_STATE_DELAY = 1; // in seconds
 
     private DoubleSolenoid armTopSolenoid;
     private DoubleSolenoid armBottomSolenoid;
     private DoubleSolenoid intakeArmSolenoid;
 
-    private int armStateCounts;
-    private int intakeArmStateCounts;
-    private boolean triggerDownBool;
-    private boolean toggleState;
-    private boolean armSwitchingStates;
-    private boolean intakeArmSwitchingStates;
+    // private int armStateCounts;
+    // private int intakeArmStateCounts;
+    // private boolean armSwitchingStates;
+    // private boolean intakeArmSwitchingStates;
 
     public Arms() {
         armTopSolenoid = new DoubleSolenoid(Constants.ARM_TOP_SOLENOID_PORT_1, Constants.ARM_TOP_SOLENOID_PORT_2);
-        armBottomSolenoid = new DoubleSolenoid(Constants.ARM_BOTTOM_SOLENOID_PORT_1,
-                Constants.ARM_BOTTOM_SOLENOID_PORT_2);
-        intakeArmSolenoid = new DoubleSolenoid(Constants.INTAKE_ARM_SOLENOID_PORT_1,
-                Constants.INTAKE_ARM_SOLENOID_PORT_2);
+        armBottomSolenoid = new DoubleSolenoid(Constants.ARM_BOTTOM_SOLENOID_PORT_1, Constants.ARM_BOTTOM_SOLENOID_PORT_2);
+        intakeArmSolenoid = new DoubleSolenoid(Constants.INTAKE_ARM_SOLENOID_PORT_1, Constants.INTAKE_ARM_SOLENOID_PORT_2);
         initialize();
     }
 
     public void initialize() {
-        armStateCounts = 0;
-        intakeArmStateCounts = 0;
-        triggerDownBool = false;
-        toggleState = false;
-        armSwitchingStates = false;
-        intakeArmSwitchingStates = false;
+        // armStateCounts = 0;
+        // intakeArmStateCounts = 0;
+        // armSwitchingStates = false;
+        // intakeArmSwitchingStates = false;
+
         setStartingPosition();
         setUpPosition();
     }
@@ -89,16 +84,16 @@ public class Arms {
         currentArmState = ArmStates.STARTING_POSITION;
     }
 
-    public void setStartingPositionWithDelay() {
-        armTopSolenoid.set(DoubleSolenoid.Value.kReverse);
-        armBottomSolenoid.set(DoubleSolenoid.Value.kReverse);
-        // if (armStateCounts / 500 >= ARM_STATE_DELAY) {
-        // armStateCounts = 0;
-        // armSwitchingStates = false;
-        currentArmState = ArmStates.STARTING_POSITION;
-        // }
-        // armStateCounts++;
-    }
+    // public void setStartingPositionWithDelay() {
+    //     armTopSolenoid.set(DoubleSolenoid.Value.kReverse);
+    //     armBottomSolenoid.set(DoubleSolenoid.Value.kReverse);
+    //     if (armStateCounts / 500 >= ARM_STATE_DELAY) {
+    //     armStateCounts = 0;
+    //     armSwitchingStates = false;
+    //     currentArmState = ArmStates.STARTING_POSITION;
+    //     }
+    //     armStateCounts++;
+    // }
 
     public void setShootingPostion() {
         armTopSolenoid.set(DoubleSolenoid.Value.kForward);
@@ -128,7 +123,7 @@ public class Arms {
                 break;
 
             case UP:
-                if (!intakeArmUpBumper && intakeArmDownBumper) {
+                if (intakeArmDownBumper && !intakeArmUpBumper) {
                     setDownPosition();
                     // intakeArmSwitchingStates = true;
                 }
@@ -157,25 +152,14 @@ public class Arms {
         currentIntakeArmState = IntakeArmStates.DOWN;
     }
 
-    public void setDownPositionWithDelay() {
-        intakeArmSolenoid.set(DoubleSolenoid.Value.kForward);
-        // if (intakeArmStateCounts / 500 >= ARM_STATE_DELAY) {
-        // intakeArmStateCounts = 0;
-        // intakeArmSwitchingStates = false;
-        currentIntakeArmState = IntakeArmStates.DOWN;
-        // }
-        // intakeArmStateCounts++;
-    }
-
-    // public boolean toggleTrigger(double intakeArmTrigger) {
-    // if (intakeArmTrigger > Constants.DEADZONE) {
-    // if (!triggerDownBool) {
-    // toggleState = !toggleState;
+    // public void setDownPositionWithDelay() {
+    //     intakeArmSolenoid.set(DoubleSolenoid.Value.kForward);
+    //     if (intakeArmStateCounts / 500 >= ARM_STATE_DELAY) {
+    //     intakeArmStateCounts = 0;
+    //     intakeArmSwitchingStates = false;
+    //     currentIntakeArmState = IntakeArmStates.DOWN;
+    //     }
+    //     intakeArmStateCounts++;
     // }
-    // triggerDownBool = true;
-    // } else {
-    // triggerDownBool = false;
-    // }
-    // return toggleState;
-    // }
+    
 }
