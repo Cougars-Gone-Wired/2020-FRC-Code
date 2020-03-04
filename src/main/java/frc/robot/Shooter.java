@@ -7,12 +7,12 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Shooter {
-    private static final double SHOOTER_SPEED = 0.65;
+    static double SHOOTER_SPEED = 0.65;
+    static double F = 0.044;
     static double P = 0.9;
     static double I = 0.001;
     static int IZONE = 1400;
     static double D = 11;
-    static double F = 0.044;
     static double DESIRED_VELOCITY = 13000;
     static double INITIAL_VELOCITY_THRESHOLD = 5;
     static double VELOCITY_THRESHOLD = 70;
@@ -42,31 +42,33 @@ public class Shooter {
 
     public void initShooterMotor() {
         shooterMotor.setInverted(true);
+        shooterMotor.config_kF(0, F, 10);
         shooterMotor.config_kP(0, P, 10);
         shooterMotor.config_kI(0, I, 10);
         shooterMotor.config_IntegralZone(0, IZONE, 10);
         shooterMotor.config_kD(0, D, 10);
-        shooterMotor.config_kF(0, F, 10);
     }
 
     public void setShooterDashboard() {
         SmartDashboard.putBoolean("Set Constants", setConstants);
+        SmartDashboard.putNumber("Shooter Voltage", SHOOTER_SPEED);
+        SmartDashboard.putNumber("F", F);
         SmartDashboard.putNumber("P", P);
         SmartDashboard.putNumber("I", I);
         SmartDashboard.putNumber("I Zone", IZONE);
         SmartDashboard.putNumber("D", D);
-        SmartDashboard.putNumber("F", F);
         SmartDashboard.putNumber("Desired Velocity", DESIRED_VELOCITY);
     }
 
     public void shooterDashboard() {
         setConstants = SmartDashboard.getBoolean("Set Constants", false);
         if (setConstants) {
+            SHOOTER_SPEED = SmartDashboard.getNumber("Shooter Voltage", 0);
+            F = SmartDashboard.getNumber("F", 0);
             P = SmartDashboard.getNumber("P", 0);
             I = SmartDashboard.getNumber("I", 0);
             IZONE = (int)SmartDashboard.getNumber("I Zone", 0);
             D = SmartDashboard.getNumber("D", 0);
-            F = SmartDashboard.getNumber("F", 0);
             DESIRED_VELOCITY = SmartDashboard.getNumber("Desired Velocity", 0);
             initShooterMotor();
         }
