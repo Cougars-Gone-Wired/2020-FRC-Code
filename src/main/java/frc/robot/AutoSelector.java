@@ -3,9 +3,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.DoNothing;
-import frc.robot.commands.DriveStraight;
+import frc.robot.commands.DriveStraightBack;
 import frc.robot.commands.ProfileDrive;
 import frc.robot.commands.autoPrograms.IntakeThroughTrench;
 import frc.robot.commands.autoPrograms.OfflineAndShoot;
@@ -55,11 +54,11 @@ public class AutoSelector {
                 break;
 
             case DRIVE_OFF_LINE:
-                autoCommand = new DriveStraight(DriveConstants.DRIVE_OFF_LINE_DISTANCE);
+                autoCommand = new DriveStraightBack(1);
                 break;
 
             case DRIVE_STRAIGHT:
-                autoCommand = new ProfileDrive(Robot.drive).getProfilingCommand("paths/output/1MeterBack.wpilib.json");
+                autoCommand = new ProfileDrive(Robot.drive).getProfilingCommand("paths/output/1Meter.wpilib.json");
                 break;
 
             case DO_NOTHING:

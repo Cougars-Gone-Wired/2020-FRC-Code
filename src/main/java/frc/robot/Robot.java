@@ -64,7 +64,7 @@ public class Robot extends TimedRobot {
     @Override
     public void robotPeriodic() {
         CommandScheduler.getInstance().run();
-        limelight.dashboard();
+        // limelight.dashboard();
 
         // camera.stop(controllers.getStopCameraButton());
     }
@@ -125,13 +125,13 @@ public class Robot extends TimedRobot {
         arms.controlArm(controllers.isArmUpBumper(), controllers.isArmDownBumper());
         climber.controlClimber(controllers.getClimberUpTrigger(), controllers.getClimberDownTrigger());
         drive.robotDrive(controllers.getDriveSpeedAxis(), controllers.getDriveTurnAxis(), controllers.getDriveSideToggle());
-        drive.dashboard();
+        // drive.dashboard();
         limelight.limelightDrive(controllers.getLimelightButton());
 
         arms.controlIntakeArm(controllers.isIntakeArmDownBumper(), controllers.isIntakeArmUpBumper());
         intake.controlIntake(controllers.getIntakeAxis());
-        shooter.controlShooter(controllers.getShooterTrigger());
-        // shooter.pidShooter(controllers.getShooterTrigger());
+        // shooter.controlShooter(controllers.getShooterTrigger());
+        shooter.controlPIDShooter(controllers.getShooterTrigger());
         feeder.controlFeeder(controllers.getFeederOuttakeTrigger());
         chomper.controlChomper(controllers.getChomperOverrideAxis());
 

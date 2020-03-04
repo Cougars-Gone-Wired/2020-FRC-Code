@@ -13,7 +13,8 @@ public class CompressorController {
     private CompressorStates currentState;
 
     public CompressorController() {
-        Compressor c = new Compressor();
+        c = new Compressor();
+        initialize();
     }
 
     public void initialize() {

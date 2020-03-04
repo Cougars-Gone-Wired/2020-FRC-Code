@@ -8,13 +8,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Shooter {
     private static final double SHOOTER_SPEED = 0.65;
-    static double P = 0.4; // 0.46
-    static double I = 0.001; // 0.001
-    static int IZONE = 80; // 180
-    static double D = 10; // 15
-    static double F = 0.0465; // 0.048
-    static double DESIRED_VELOCITY = 9500; // 9225
-    static double VELOCITY_THRESHOLD = 100;
+    static double P = 0.9;
+    static double I = 0.001;
+    static int IZONE = 1400;
+    static double D = 11;
+    static double F = 0.044;
+    static double DESIRED_VELOCITY = 13000;
+    static double INITIAL_VELOCITY_THRESHOLD = 5;
+    static double VELOCITY_THRESHOLD = 70;
 
     private WPI_TalonFX shooterMotor;
     private TalonFXSensorCollection sensors;
@@ -84,7 +85,7 @@ public class Shooter {
     public void controlShooter(double shooterTrigger) {
         shooterDashboard();
         shooterTriggerBool = (shooterTrigger >= Constants.DEADZONE);
-        velocity = -sensors.getIntegratedSensorVelocity();
+        updateVelocity();
 
         switch (currentShooterState) {
         case NOT_MOVING:
@@ -107,20 +108,21 @@ public class Shooter {
     public void controlPIDShooter(double shooterTrigger) {
         shooterDashboard();
         shooterTriggerBool = (shooterTrigger >= Constants.DEADZONE);
-        velocity = sensors.getIntegratedSensorVelocity();
-        error = DESIRED_VELOCITY - velocity;
+        updateVelocity();
 
         switch (currentShooterState) {
             case NOT_MOVING:
-                // if (shooterTriggerBool && !Robot.arms.isArmClimbingPosition()) {
-                if (shooterTriggerBool) {
+                if (shooterTriggerBool 
+                        && !Robot.arms.isArmClimbingPosition()
+                        && !Robot.intake.isIntaking()) {
                     setPIDShooting();
                 }
                 break;
             case SHOOTING:
                 setPIDShooting();
-                // if (!shooterTriggerBool || Robot.arms.isArmClimbingPosition()) {
-                if (!shooterTriggerBool) {
+                if (!shooterTriggerBool 
+                        || Robot.arms.isArmClimbingPosition()
+                        || Robot.intake.isIntaking()) {
                     setNotMoving();
                 } 
                 break;
@@ -146,11 +148,22 @@ public class Shooter {
     }
 
     public void setPIDShooting() {
+        updateVelocity();
+        shooterDashboard();
         shooterMotor.set(ControlMode.Velocity, DESIRED_VELOCITY);
         currentShooterState = ShooterStates.SHOOTING;
     }
 
+    public void updateVelocity() {
+        velocity = -sensors.getIntegratedSensorVelocity();
+        error = DESIRED_VELOCITY - velocity;
+    }
+
+    public boolean atInitialDesiredVelocity() {
+        return error <= INITIAL_VELOCITY_THRESHOLD;
+    }
+
     public boolean atDesiredVelocity() {
-        return Math.abs(velocity - DESIRED_VELOCITY) <= VELOCITY_THRESHOLD;
+        return error <= VELOCITY_THRESHOLD;
     }
 }

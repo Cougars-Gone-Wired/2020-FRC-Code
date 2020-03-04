@@ -1,25 +1,25 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Drive;
 import frc.robot.Robot;
+import frc.robot.Constants.DriveConstants;
 
-public class DriveStraight extends CommandBase {
+public class DriveStraightBack extends CommandBase {
 
     private double distance;
 
-    public DriveStraight(double distance) {
+    public DriveStraightBack(double distance) {
         this.distance = distance;
     }
 
     @Override
     public void execute() {
-        Robot.drive.driveStraight(Drive.DRIVE_SPEED);
+        Robot.drive.driveStraight(DriveConstants.AUTO_DRIVE_SPEED);
     }
 
     @Override
     public boolean isFinished() {
-        if (Robot.drive.getEncoders().getAvgEncoderMetersAvg() <= distance) {
+        if (Robot.drive.getEncoders().getAvgEncoderMetersAvg() >= distance) {
             Robot.drive.driveStraight(0);
             return true;
         }

@@ -42,10 +42,10 @@ public class Constants {
     static final int FEEDER_MOTOR_ID = 2;
     static final int CONTROL_PANEL_MOTOR_ID = 3;
         //Solenoids
-    static final int ARM_TOP_SOLENOID_PORT_1 = 0;
-    static final int ARM_TOP_SOLENOID_PORT_2 = 1;
-    static final int ARM_BOTTOM_SOLENOID_PORT_1 = 2;
-    static final int ARM_BOTTOM_SOLENOID_PORT_2 = 3;
+    static final int ARM_TOP_SOLENOID_PORT_1 = 2;
+    static final int ARM_TOP_SOLENOID_PORT_2 = 3;
+    static final int ARM_BOTTOM_SOLENOID_PORT_1 = 0;
+    static final int ARM_BOTTOM_SOLENOID_PORT_2 = 1;
     static final int INTAKE_ARM_SOLENOID_PORT_1 = 4;
     static final int INTAKE_ARM_SOLENOID_PORT_2 = 5;
     static final int CHOMPER_SOLENOID_PORT = 6;
@@ -55,7 +55,7 @@ public class Constants {
     
     public class DriveConstants {
 
-        public static final double AUTO_DRIVE_SPEED = 0.3;
+        public static final double AUTO_DRIVE_SPEED = 0.4;
         public static final double DRIVE_OFF_LINE_DISTANCE = 1;
 
         // Encoder Constants
@@ -65,22 +65,22 @@ public class Constants {
         public static final double DISTANCE_PER_TICK = (Math.PI * WHEEL_DIAMETER) / (TICKS_PER_REVOLUTION * GEARING_CONVERSION);
         public static final double METER_PER_SECOND_CONSTANT = DISTANCE_PER_TICK / 10; // for converting units per 100ms to meters per second
 
-        public static final boolean areLeftEncodersReversed = true;
-        public static final boolean areRightEncodersReversed = false;
+        public static final boolean areLeftEncodersReversed = false;
+        public static final boolean areRightEncodersReversed = true;
         public static final boolean isGyroReversed = false;
 
         //Ramsete Constants
         // all constants in meters and seconds
-        public static final double TRACK_WIDTH = 0.6133; // width bewteen each side of drive train in meters
+        public static final double TRACK_WIDTH = 0.5714; // width bewteen each side of drive train in meters
 
-        public static final double ks = 0.394;
-        public static final double kv = 1.21;
-        public static final double ka = 0.0457;
+        public static final double ks = 0.236;
+        public static final double kv = 1.22;
+        public static final double ka = 0.268;
 
-        public static final double DriveP = 0;
+        public static final double DriveP = 6;
 
-        public static final double maxVelocity = .3;
-        public static final double maxAcceleration = .3;
+        public static final double maxVelocity = 10;
+        public static final double maxAcceleration = 7;
 
         public static final double B = 2; // constant tuned for meters
         public static final double Zeta = 0.7; // ↑ ↑ ↑

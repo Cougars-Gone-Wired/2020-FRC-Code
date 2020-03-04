@@ -51,7 +51,6 @@ public class Drive extends SubsystemBase{
         gyro = new Gyro();
 
         initMotors();
-        initalize();
 
         robotDrive = new DifferentialDrive(leftMotors, rightMotors);
         robotDrive.setDeadband(Constants.DEADZONE);
@@ -59,6 +58,8 @@ public class Drive extends SubsystemBase{
 
         driveKinematics = new DifferentialDriveKinematics(DriveConstants.TRACK_WIDTH);
         driveOdomentry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(gyro.getHeading()));
+
+        initalize();
     }
 
     public void initMotors() {

@@ -79,7 +79,7 @@ public class Arms {
     }
 
     public void setStartingPosition() {
-        armTopSolenoid.set(DoubleSolenoid.Value.kReverse);
+        armTopSolenoid.set(DoubleSolenoid.Value.kForward);
         armBottomSolenoid.set(DoubleSolenoid.Value.kReverse);
         currentArmState = ArmStates.STARTING_POSITION;
     }
@@ -96,13 +96,13 @@ public class Arms {
     // }
 
     public void setShootingPostion() {
-        armTopSolenoid.set(DoubleSolenoid.Value.kForward);
+        armTopSolenoid.set(DoubleSolenoid.Value.kReverse);
         armBottomSolenoid.set(DoubleSolenoid.Value.kReverse);
         currentArmState = ArmStates.SHOOTING_POSITION;
     }
 
     public void setClimbingPostion() {
-        armTopSolenoid.set(DoubleSolenoid.Value.kReverse);
+        armTopSolenoid.set(DoubleSolenoid.Value.kForward);
         armBottomSolenoid.set(DoubleSolenoid.Value.kForward);
         currentArmState = ArmStates.CLIMBING_POSITION;
     }
@@ -113,11 +113,11 @@ public class Arms {
 
     private IntakeArmStates currentIntakeArmState;
 
-    public void controlIntakeArm(boolean intakeArmUpBumper, boolean intakeArmDownBumper) {
+    public void controlIntakeArm(boolean intakeArmDownBumper, boolean intakeArmUpBumper) {
 
         switch (currentIntakeArmState) {
             case DOWN:
-                if ((!intakeArmDownBumper && intakeArmUpBumper) && (currentArmState != ArmStates.CLIMBING_POSITION)) {
+                if (!intakeArmDownBumper && intakeArmUpBumper && currentArmState != ArmStates.CLIMBING_POSITION) {
                     setUpPosition();
                 }
                 break;

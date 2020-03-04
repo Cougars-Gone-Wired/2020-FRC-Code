@@ -43,21 +43,23 @@ public class Feeder {
         switch (currentFeederState) {
             case NOT_MOVING:
                 if (Robot.intake.isIntaking() && !Robot.shooter.isShooting()
-                        && (feederUpperLineBreak.get() || feederLowerLineBreak.get())) {
+                        // && (feederUpperLineBreak.get() || feederLowerLineBreak.get())
+                        ) {
                     setIntaking();
 
                 } else if (feederTriggerBool && !Robot.shooter.isShooting()) {
                     setOuttaking();
 
                 } else if (Robot.intake.isNotMoving() && Robot.shooter.isShooting()
-                        && Robot.shooter.atDesiredVelocity()) {
+                        && Robot.shooter.atInitialDesiredVelocity()) {
                     setFeedingShooter();
                 }
                 break;
 
             case INTAKING:
                 if (!Robot.intake.isIntaking() || Robot.shooter.isShooting()
-                        || (!feederUpperLineBreak.get() && !feederLowerLineBreak.get())) {
+                        // || (!feederUpperLineBreak.get() && !feederLowerLineBreak.get())
+                        ) {
                     setNotMoving();
                 }
                 break;
@@ -69,7 +71,12 @@ public class Feeder {
                 break;
 
             case FEEDING_SHOOTER:
-                if (!Robot.intake.isNotMoving() || !Robot.shooter.isShooting() || !Robot.shooter.atDesiredVelocity()) {
+                if (!Robot.shooter.atDesiredVelocity()) {
+                    setStop();
+                } else {
+                    setFeedingShooter();
+                }
+                if (!Robot.intake.isNotMoving() || !Robot.shooter.isShooting()) {
                     setNotMoving();
                 }
                 break;
@@ -110,6 +117,10 @@ public class Feeder {
     public void setFeedingShooter() {
         feederMotor.set(FEED_SHOOTER_SPEED);
         currentFeederState = FeederStates.FEEDING_SHOOTER;
+    }
+
+    public void setStop() {
+        feederMotor.set(0);
     }
 
     public void setMotorsBrake() {

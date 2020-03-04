@@ -6,6 +6,8 @@ public class Chomper {
 
     private Solenoid chomperSolenoid;
 
+    private boolean chomperAxisBool;
+
     public Chomper() {
         chomperSolenoid = new Solenoid(Constants.CHOMPER_SOLENOID_PORT);
         initialize();
@@ -22,12 +24,13 @@ public class Chomper {
     private ChomperStates currentChomperState;
 
     public void controlChomper(double overrideAxis) {
+        chomperAxisBool = overrideAxis <= -Constants.DEADZONE;
 
         switch (currentChomperState) {
             case IDLE:
                 if (Robot.shooter.isShooting()) {
                     setShooterReady();
-                } else if (overrideAxis <= -Constants.DEADZONE) {
+                } else if (chomperAxisBool) {
                     setOverride();
                 }
                 break;
@@ -39,7 +42,7 @@ public class Chomper {
                 break;
 
             case OVERRIDE:
-                if (overrideAxis > -Constants.DEADZONE) {
+                if (!chomperAxisBool) {
                     setIdle();
                 }
                 break;
