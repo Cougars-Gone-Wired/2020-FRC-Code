@@ -124,14 +124,13 @@ public class Robot extends TimedRobot {
 
         arms.controlArm(controllers.isArmUpBumper(), controllers.isArmDownBumper());
         climber.controlClimber(controllers.getClimberUpTrigger(), controllers.getClimberDownTrigger());
-        drive.robotDrive(controllers.getDriveSpeedAxis(), controllers.getDriveTurnAxis(), controllers.getDriveSideToggle());
+        drive.robotDrive(controllers.getDriveSpeedAxis(), controllers.getDriveTurnAxis(), controllers.isDriveSideToggle());
         // drive.dashboard();
-        limelight.limelightDrive(controllers.getLimelightButton());
+        limelight.limelightDrive(controllers.isLimelightButton());
 
         arms.controlIntakeArm(controllers.isIntakeArmDownBumper(), controllers.isIntakeArmUpBumper());
         intake.controlIntake(controllers.getIntakeAxis());
-        // shooter.controlShooter(controllers.getShooterTrigger());
-        shooter.controlPIDShooter(controllers.getShooterTrigger());
+        shooter.controlShooter(controllers.getShooterTrigger(), controllers.isShooterModeToggle());
         feeder.controlFeeder(controllers.getFeederOuttakeTrigger());
         chomper.controlChomper(controllers.getChomperOverrideAxis());
 

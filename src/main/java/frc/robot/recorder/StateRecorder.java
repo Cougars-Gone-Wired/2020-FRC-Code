@@ -18,8 +18,8 @@ public class StateRecorder {
 
         s.setDriveSpeedAxisState(Robot.controllers.getDriveSpeedAxis());
         s.setDriveTurnAxisState(Robot.controllers.getDriveTurnAxis());
-        s.setSwitchSideState(Robot.controllers.getDriveSideToggle());
-        s.setLimelightState(Robot.controllers.getLimelightButton());
+        s.setSwitchSideState(Robot.controllers.isDriveSideToggle());
+        s.setLimelightState(Robot.controllers.isLimelightButton());
 
         states.add(s);
     }

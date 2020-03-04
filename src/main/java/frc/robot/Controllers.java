@@ -14,6 +14,7 @@ public class Controllers {
     private double driveTurnAxis;
     private boolean driveSideToggle;
     private boolean limelightButton;
+    private boolean stopCameraButton;
 
     // Manipulator
     private Joystick manipulatorController;
@@ -21,9 +22,9 @@ public class Controllers {
     private boolean intakeArmUpBumper;
     private double intakeAxis;
     private double shooterTrigger;
+    private boolean shooterModeToggle;
     private double feederOuttakeTrigger;
     private double chomperOverrideAxis;
-    private boolean stopCameraButton;
 
     public Controllers() {
         mobilityController = new Joystick(Constants.MOBILITY_CONTROLLER_ID);
@@ -38,17 +39,18 @@ public class Controllers {
         climberDownTrigger = mobilityController.getRawAxis(Constants.CLIMBER_DOWN_TRIGGER);
         driveSpeedAxis = mobilityController.getRawAxis(Constants.DRIVE_SPEED_AXIS);
         driveTurnAxis = mobilityController.getRawAxis(Constants.DRIVE_TURN_AXIS);
-        driveSideToggle= mobilityController.getRawButtonPressed(Constants.SWITCH_SIDE_BUTTON);
+        driveSideToggle= mobilityController.getRawButtonPressed(Constants.DRIVE_SIDE_TOGGLE);
         limelightButton = mobilityController.getRawButton(Constants.LIMELIGHT_BUTTON);
+        stopCameraButton = mobilityController.getRawButtonPressed(Constants.STOP_CAMERA_BUTTON);
 
         // Manipulator
         intakeArmDownBumper = manipulatorController.getRawButton(Constants.INTAKE_ARM_DOWN_BUMPER);
         intakeArmUpBumper = manipulatorController.getRawButton(Constants.INTAKE_ARM_UP_BUMPER);
         intakeAxis = -manipulatorController.getRawAxis(Constants.INTAKE_AXIS);
         shooterTrigger = manipulatorController.getRawAxis(Constants.SHOOTER_TRIGGER);
+        shooterModeToggle = manipulatorController.getRawButtonPressed(Constants.SHOOTER_MODE_TOGGLE);
         feederOuttakeTrigger = manipulatorController.getRawAxis(Constants.FEEDER_OUTTAKE_TRIGGER);
         chomperOverrideAxis = -manipulatorController.getRawAxis(Constants.CHOMPER_OVERRIDE_AXIS);
-        stopCameraButton = manipulatorController.getRawButtonPressed(Constants.STOP_CAMERA_BUTTON);
     }
 
     // Mobilty
@@ -76,12 +78,16 @@ public class Controllers {
         return driveTurnAxis;
     }
 
-    public boolean getDriveSideToggle() {
+    public boolean isDriveSideToggle() {
         return driveSideToggle;
     }
 
-    public boolean getLimelightButton() {
+    public boolean isLimelightButton() {
         return limelightButton;
+    }
+
+    public boolean isStopCameraButton() {
+        return stopCameraButton;
     }
 
     // Manipulator
@@ -101,15 +107,15 @@ public class Controllers {
         return shooterTrigger;
     }
 
+    public boolean isShooterModeToggle() {
+        return shooterModeToggle;
+    }
+
     public double getFeederOuttakeTrigger() {
         return feederOuttakeTrigger;
     }
 
     public double getChomperOverrideAxis() {
         return chomperOverrideAxis;
-    }
-
-    public boolean getStopCameraButton() {
-        return stopCameraButton;
-    }
+    } 
 }

@@ -33,6 +33,8 @@ public class Shooter {
     }
 
     public void initialize() {
+        currentShooterMode = ShooterModes.PID;
+
         initShooterMotor();
         setShooterDashboard();
         setNotMoving();
@@ -76,13 +78,38 @@ public class Shooter {
         SmartDashboard.putNumber("Temp", shooterMotor.getTemperature());
     }
 
+    public enum ShooterModes {
+        VOLTAGE, PID
+    }
+
+    ShooterModes currentShooterMode;
+
+    public void controlShooter(double shooterTrigger, boolean shooterToggle) {
+        
+        switch(currentShooterMode) {
+            case VOLTAGE:
+                controlVoltageShooter(shooterTrigger);
+                if(shooterToggle) {
+                    currentShooterMode = ShooterModes.PID;
+                }
+                break;
+
+            case PID:
+                controlPIDShooter(shooterTrigger);
+                if(shooterToggle) {
+                    currentShooterMode = ShooterModes.VOLTAGE;
+                }
+                break;
+        }
+    }
+
     public enum ShooterStates {
         NOT_MOVING, SHOOTING
     }
 
     private ShooterStates currentShooterState;
 
-    public void controlShooter(double shooterTrigger) {
+    public void controlVoltageShooter(double shooterTrigger) {
         shooterDashboard();
         shooterTriggerBool = (shooterTrigger >= Constants.DEADZONE);
         updateVelocity();
@@ -95,6 +122,7 @@ public class Shooter {
                 setShooting();
             }
             break;
+
         case SHOOTING:
             if (!shooterTriggerBool 
                     || Robot.arms.isArmClimbingPosition()
@@ -118,6 +146,7 @@ public class Shooter {
                     setPIDShooting();
                 }
                 break;
+
             case SHOOTING:
                 setPIDShooting();
                 if (!shooterTriggerBool 

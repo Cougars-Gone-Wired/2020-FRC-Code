@@ -10,8 +10,9 @@ public class Constants {
     static final int CLIMBER_DOWN_TRIGGER = 2;
     static final int DRIVE_SPEED_AXIS = 1;
     static final int DRIVE_TURN_AXIS = 4;
-    static final int SWITCH_SIDE_BUTTON = 1;
+    static final int DRIVE_SIDE_TOGGLE = 1;
     static final int LIMELIGHT_BUTTON = 2;
+    static final int STOP_CAMERA_BUTTON = 8;
 
     // Manipulator Controller
     static final int MANIPULATOR_CONTROLLER_ID = 0;
@@ -19,9 +20,9 @@ public class Constants {
     static final int INTAKE_ARM_UP_BUMPER = 5;
     static final int INTAKE_AXIS = 1;
     static final int SHOOTER_TRIGGER = 3;
+    static final int SHOOTER_MODE_TOGGLE = 8;
     static final int FEEDER_OUTTAKE_TRIGGER = 2;
     static final int CHOMPER_OVERRIDE_AXIS = 5;
-    static final int STOP_CAMERA_BUTTON = 8;
 
     static final double DEADZONE = 0.15;
 
