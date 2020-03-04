@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.DoNothing;
 import frc.robot.commands.DriveStraightBack;
 import frc.robot.commands.ProfileDrive;
+import frc.robot.commands.autoPrograms.FiveBallAuto;
 import frc.robot.commands.autoPrograms.IntakeThroughTrench;
 import frc.robot.commands.autoPrograms.OfflineAndShoot;
 import frc.robot.commands.autoPrograms.ShootAndOffLine;
@@ -18,7 +19,7 @@ public class AutoSelector {
     private Command autoCommand;
 
     public enum Programs {
-        DRIVE_OFF_LINE, SHOOT_AND_OFF_LINE, SHOOT_FROM_TRENCH, INTAKE_THROUGH_TRENCH, DRIVE_STRAIGHT, DO_NOTHING
+        DRIVE_OFF_LINE, OFFLINE_AND_SHOOT, SHOOT_FROM_TRENCH, FIVE_BALL, INTAKE_THROUGH_TRENCH, DRIVE_STRAIGHT, DO_NOTHING
     }
 
     private Programs autoChoice;
@@ -29,8 +30,9 @@ public class AutoSelector {
 
     public void initialize() {
         autoChooser.addOption("Drive off line", Programs.DRIVE_OFF_LINE);
-        autoChooser.addOption("Shoot and off line", Programs.SHOOT_AND_OFF_LINE);
+        autoChooser.addOption("Shoot and off line", Programs.OFFLINE_AND_SHOOT);
         autoChooser.addOption("Shoot from trench", Programs.SHOOT_FROM_TRENCH);
+        autoChooser.addOption("Five Ball", Programs.FIVE_BALL);
         autoChooser.addOption("Intake Through Trench", Programs.INTAKE_THROUGH_TRENCH);
         autoChooser.addOption("Drive Straight", Programs.DRIVE_STRAIGHT);
         autoChooser.addOption("Do Nothing", Programs.DO_NOTHING);
@@ -41,12 +43,16 @@ public class AutoSelector {
         autoChoice = autoChooser.getSelected();
 
         switch (autoChoice) {
-            case SHOOT_AND_OFF_LINE:
+            case OFFLINE_AND_SHOOT:
                 autoCommand = new OfflineAndShoot();
                 break;
 
             case SHOOT_FROM_TRENCH:
                 autoCommand = new ShootFromTrench();
+                break;
+
+            case FIVE_BALL:
+                autoCommand = new FiveBallAuto();
                 break;
 
             case INTAKE_THROUGH_TRENCH:
