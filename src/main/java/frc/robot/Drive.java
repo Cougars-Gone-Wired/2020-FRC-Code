@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 
@@ -220,5 +221,7 @@ public class Drive extends SubsystemBase{
     public void dashboard() {
         encoders.dashboard();
         gyro.dashboard();
+        SmartDashboard.putNumber("Odometry X", driveOdomentry.getPoseMeters().getTranslation().getX());
+        SmartDashboard.putNumber("Odometry Y", driveOdomentry.getPoseMeters().getTranslation().getY());
     }
 }

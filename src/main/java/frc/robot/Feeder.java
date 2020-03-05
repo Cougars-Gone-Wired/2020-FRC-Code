@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Feeder {
-    private static final double FEED_SHOOTER_SPEED = 0.82;
+    private static final double FEED_SHOOTER_SPEED = 0.7;//.82
     private static final double FEED_INTAKE_SPEED = 0.6;
 
     private WPI_TalonSRX feederMotor;

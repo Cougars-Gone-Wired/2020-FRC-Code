@@ -7,15 +7,15 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Shooter {
-    static double SHOOTER_SPEED = 0.65;
-    static double F = 0.044;
-    static double P = 0.9;
-    static double I = 0.001;
-    static int IZONE = 1400;
-    static double D = 11;
-    static double DESIRED_VELOCITY = 13000;
-    static double INITIAL_VELOCITY_THRESHOLD = 5;
-    static double VELOCITY_THRESHOLD = 70;
+    public static double SHOOTER_SPEED = 0.65; //.32 arm up bumper back of bumper on line
+    public static double F = 0.044;
+    public static double P = 0.9;
+    public static double I = 0.001;
+    public static int IZONE = 1400;
+    public static double D = 11;
+    public static double DESIRED_VELOCITY = 10000;
+    public static double INITIAL_VELOCITY_THRESHOLD = 5;
+    public static double VELOCITY_THRESHOLD = 70;
 
     private WPI_TalonFX shooterMotor;
     private TalonFXSensorCollection sensors;
@@ -57,6 +57,8 @@ public class Shooter {
         SmartDashboard.putNumber("I", I);
         SmartDashboard.putNumber("I Zone", IZONE);
         SmartDashboard.putNumber("D", D);
+        SmartDashboard.putNumber("Inital Velocity Thresh", INITIAL_VELOCITY_THRESHOLD);
+        SmartDashboard.putNumber("Velocity Thresh", VELOCITY_THRESHOLD);
         SmartDashboard.putNumber("Desired Velocity", DESIRED_VELOCITY);
     }
 
@@ -69,6 +71,8 @@ public class Shooter {
             I = SmartDashboard.getNumber("I", 0);
             IZONE = (int)SmartDashboard.getNumber("I Zone", 0);
             D = SmartDashboard.getNumber("D", 0);
+            INITIAL_VELOCITY_THRESHOLD = SmartDashboard.getNumber("Inital Velocity Thresh", 0);
+            VELOCITY_THRESHOLD= SmartDashboard.getNumber("Velocity Thresh", 0);
             DESIRED_VELOCITY = SmartDashboard.getNumber("Desired Velocity", 0);
             initShooterMotor();
         }
@@ -121,7 +125,7 @@ public class Shooter {
             if (shooterTriggerBool 
                     && !Robot.arms.isArmClimbingPosition()
                     && !Robot.intake.isIntaking()) {
-                setShooting();
+                setVoltageShooting();
             }
             break;
 
@@ -173,16 +177,24 @@ public class Shooter {
         currentShooterState = ShooterStates.NOT_MOVING;
     }
 
-    public void setShooting() {
-        shooterMotor.set(SHOOTER_SPEED);
+    public void setVoltageShooting(double shooterSpeed) {
+        shooterMotor.set(shooterSpeed);
+        currentShooterState = ShooterStates.SHOOTING;
+    }
+
+    public void setVoltageShooting() {
+        setVoltageShooting(SHOOTER_SPEED);
+    }
+
+    public void setPIDShooting(double desiredVelocity) {
+        updateVelocity();
+        shooterDashboard();
+        shooterMotor.set(ControlMode.Velocity, desiredVelocity);
         currentShooterState = ShooterStates.SHOOTING;
     }
 
     public void setPIDShooting() {
-        updateVelocity();
-        shooterDashboard();
-        shooterMotor.set(ControlMode.Velocity, DESIRED_VELOCITY);
-        currentShooterState = ShooterStates.SHOOTING;
+        setPIDShooting(DESIRED_VELOCITY);
     }
 
     public void updateVelocity() {
@@ -191,10 +203,10 @@ public class Shooter {
     }
 
     public boolean atInitialDesiredVelocity() {
-        return error <= INITIAL_VELOCITY_THRESHOLD;
+        return Math.abs(error) <= INITIAL_VELOCITY_THRESHOLD;
     }
 
     public boolean atDesiredVelocity() {
-        return error <= VELOCITY_THRESHOLD;
+        return Math.abs(error) <= VELOCITY_THRESHOLD;
     }
 }

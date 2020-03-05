@@ -125,7 +125,7 @@ public class Robot extends TimedRobot {
         arms.controlArm(controllers.isArmUpBumper(), controllers.isArmDownBumper());
         climber.controlClimber(controllers.getClimberUpTrigger(), controllers.getClimberDownTrigger());
         drive.robotDrive(controllers.getDriveSpeedAxis(), controllers.getDriveTurnAxis(), controllers.isDriveSideToggle());
-        // drive.dashboard();
+        drive.dashboard();
         limelight.limelightDrive(controllers.isLimelightButton());
 
         arms.controlIntakeArm(controllers.isIntakeArmDownBumper(), controllers.isIntakeArmUpBumper());

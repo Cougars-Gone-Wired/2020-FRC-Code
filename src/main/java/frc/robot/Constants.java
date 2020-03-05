@@ -57,7 +57,7 @@ public class Constants {
     public class DriveConstants {
 
         public static final double AUTO_DRIVE_SPEED = 0.4;
-        public static final double DRIVE_OFF_LINE_DISTANCE = 1;
+        public static final double DRIVE_OFF_LINE_DISTANCE = 1; // 3.71 meters back to shoot
 
         // Encoder Constants
         public static final int TICKS_PER_REVOLUTION = 2048; // standard for TalonFX
@@ -78,10 +78,10 @@ public class Constants {
         public static final double kv = 1.22;
         public static final double ka = 0.268;
 
-        public static final double DriveP = 6;
+        public static final double DriveP = 1.6;
 
-        public static final double maxVelocity = 10;
-        public static final double maxAcceleration = 7;
+        public static final double maxVelocity = 7;
+        public static final double maxAcceleration = 11;
 
         public static final double B = 2; // constant tuned for meters
         public static final double Zeta = 0.7; // ↑ ↑ ↑
