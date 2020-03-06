@@ -41,8 +41,12 @@ public class Intake {
                 break;
 
             case INTAKING:
-                if (intakeAxis < Constants.DEADZONE 
-                        || Robot.arms.isIntakeUpPositon() 
+                if (Robot.arms.isIntakeUpPositon()) {
+                    setStop();
+                } else {
+                    setIntaking();
+                }
+                if (intakeAxis < Constants.DEADZONE  
                         || !Robot.arms.isArmShootingPosition()
                         || Robot.arms.isArmClimbingPosition()) {
                     setNotMoving();
@@ -85,6 +89,10 @@ public class Intake {
     public void setOuttaking() {
         intakeMotor.set(-INTAKE_SPEED);
         currentIntakeState = IntakeStates.OUTTAKING;
+    }
+
+    public void setStop() {
+        intakeMotor.set(0);
     }
 
     public void setMotorsBrake() {
