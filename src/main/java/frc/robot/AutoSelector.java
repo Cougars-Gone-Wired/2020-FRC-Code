@@ -9,7 +9,6 @@ import frc.robot.commands.DoNothing;
 import frc.robot.commands.DriveBack;
 import frc.robot.commands.DriveForward;
 import frc.robot.commands.ProfileDrive;
-import frc.robot.commands.ShootVoltage;
 import frc.robot.commands.Unaim;
 import frc.robot.commands.autoPrograms.OfflineAndShoot;
 import frc.robot.commands.autoPrograms.ShootFromLine;
