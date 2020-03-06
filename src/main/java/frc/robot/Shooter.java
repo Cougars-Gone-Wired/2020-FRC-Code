@@ -7,21 +7,26 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Shooter {
-    public static double SHOOTER_SPEED = 0.65; //.32 arm up bumper back of bumper on line
+    public static double SHOOTER_SPEED = 0.5;
     public static double F = 0.044;
     public static double P = 0.9;
     public static double I = 0.001;
     public static int IZONE = 1400;
     public static double D = 11;
-    public static double DESIRED_VELOCITY = 10000;
-    public static double INITIAL_VELOCITY_THRESHOLD = 5;
-    public static double VELOCITY_THRESHOLD = 70;
+    public static double DESIRED_VELOCITY = SHOOTER_SPEED * 20000; //10000
+    public static double VOLTAGE_INITIAL_VELOCITY_THRESHOLD = 100;
+    public static double PID_INITIAL_VELOCITY_THRESHOLD = 5;
+    public static double VOLTAGE_VELOCITY_THRESHOLD = 100;
+    public static double PID_VELOCITY_THRESHOLD = 70;
 
     private WPI_TalonFX shooterMotor;
     private TalonFXSensorCollection sensors;
 
     private boolean shooterTriggerBool;
     private boolean setConstants;
+
+    private double initialVelocityThreshold;
+    private double velocityThreshold;
 
     private double velocity;
     private double error;
@@ -33,8 +38,7 @@ public class Shooter {
     }
 
     public void initialize() {
-        currentShooterMode = ShooterModes.PID;
-
+        setPID();
         initShooterMotor();
         setShooterDashboard();
         setNotMoving();
@@ -57,8 +61,8 @@ public class Shooter {
         SmartDashboard.putNumber("I", I);
         SmartDashboard.putNumber("I Zone", IZONE);
         SmartDashboard.putNumber("D", D);
-        SmartDashboard.putNumber("Inital Velocity Thresh", INITIAL_VELOCITY_THRESHOLD);
-        SmartDashboard.putNumber("Velocity Thresh", VELOCITY_THRESHOLD);
+        SmartDashboard.putNumber("Inital Velocity Thresh", PID_INITIAL_VELOCITY_THRESHOLD);
+        SmartDashboard.putNumber("Velocity Thresh", PID_VELOCITY_THRESHOLD);
         SmartDashboard.putNumber("Desired Velocity", DESIRED_VELOCITY);
     }
 
@@ -71,8 +75,8 @@ public class Shooter {
             I = SmartDashboard.getNumber("I", 0);
             IZONE = (int)SmartDashboard.getNumber("I Zone", 0);
             D = SmartDashboard.getNumber("D", 0);
-            INITIAL_VELOCITY_THRESHOLD = SmartDashboard.getNumber("Inital Velocity Thresh", 0);
-            VELOCITY_THRESHOLD= SmartDashboard.getNumber("Velocity Thresh", 0);
+            PID_INITIAL_VELOCITY_THRESHOLD = SmartDashboard.getNumber("Inital Velocity Thresh", 0);
+            PID_VELOCITY_THRESHOLD= SmartDashboard.getNumber("Velocity Thresh", 0);
             DESIRED_VELOCITY = SmartDashboard.getNumber("Desired Velocity", 0);
             initShooterMotor();
         }
@@ -96,17 +100,27 @@ public class Shooter {
             case VOLTAGE:
                 controlVoltageShooter(shooterTrigger);
                 if(shooterToggle) {
-                    currentShooterMode = ShooterModes.PID;
+                    setPID();
                 }
                 break;
 
             case PID:
                 controlPIDShooter(shooterTrigger);
                 if(shooterToggle) {
-                    currentShooterMode = ShooterModes.VOLTAGE;
+                    setVoltage();
                 }
                 break;
         }
+    }
+
+    public void setVoltage() {
+        setVelocityThresholds(VOLTAGE_INITIAL_VELOCITY_THRESHOLD, VOLTAGE_VELOCITY_THRESHOLD);
+        currentShooterMode = ShooterModes.VOLTAGE;
+    }
+
+    public void setPID() {
+        setVelocityThresholds(PID_INITIAL_VELOCITY_THRESHOLD, PID_VELOCITY_THRESHOLD);
+        currentShooterMode = ShooterModes.PID;
     }
 
     public enum ShooterStates {
@@ -178,6 +192,7 @@ public class Shooter {
     }
 
     public void setVoltageShooting(double shooterSpeed) {
+        setVoltage();
         shooterMotor.set(shooterSpeed);
         currentShooterState = ShooterStates.SHOOTING;
     }
@@ -187,6 +202,7 @@ public class Shooter {
     }
 
     public void setPIDShooting(double desiredVelocity) {
+        setPID();
         updateVelocity();
         shooterDashboard();
         shooterMotor.set(ControlMode.Velocity, desiredVelocity);
@@ -197,16 +213,21 @@ public class Shooter {
         setPIDShooting(DESIRED_VELOCITY);
     }
 
+    public void setVelocityThresholds(double initialVelocityThreshold, double velocityThreshold) {
+        this.initialVelocityThreshold = initialVelocityThreshold;
+        this.velocityThreshold = velocityThreshold;
+    }
+
     public void updateVelocity() {
         velocity = -sensors.getIntegratedSensorVelocity();
         error = DESIRED_VELOCITY - velocity;
     }
 
     public boolean atInitialDesiredVelocity() {
-        return Math.abs(error) <= INITIAL_VELOCITY_THRESHOLD;
+        return Math.abs(error) <= initialVelocityThreshold;
     }
 
     public boolean atDesiredVelocity() {
-        return Math.abs(error) <= VELOCITY_THRESHOLD;
+        return Math.abs(error) <= velocityThreshold;
     }
 }
