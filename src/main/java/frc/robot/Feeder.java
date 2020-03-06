@@ -7,7 +7,8 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Feeder {
-    private static final double FEED_SHOOTER_SPEED = 0.7;//.82
+    private static final double FEED_SHOOTER_SPEED = 0.82;
+    private static final double AUTO_FEED_SHOOTER_SPEED = 0.7;
     private static final double FEED_INTAKE_SPEED = 0.6;
 
     private WPI_TalonSRX feederMotor;
@@ -16,6 +17,7 @@ public class Feeder {
     private DigitalInput feederLowerLineBreak;
 
     private boolean feederTriggerBool;
+    private double feedShooterSpeed;
 
     public Feeder() {
         feederMotor = new WPI_TalonSRX(Constants.FEEDER_MOTOR_ID);
@@ -71,7 +73,9 @@ public class Feeder {
                 break;
 
             case FEEDING_SHOOTER:
-                if (!Robot.shooter.atDesiredVelocity()) {
+                if (!Robot.shooter.atDesiredVelocity() 
+                    // && feederUpperLineBreak.get()
+                    ) {
                     setStop();
                 } else {
                     setFeedingShooter();
@@ -81,6 +85,16 @@ public class Feeder {
                 }
                 break;
         }
+    }
+
+    public void controlFeederAuto() {
+        setFeedShooterSpeed(AUTO_FEED_SHOOTER_SPEED);
+        controlFeeder(0);
+    }
+
+    public void controlFeederTeleop(double feederOuttakeTrigger) {
+        setFeedShooterSpeed(FEED_SHOOTER_SPEED);
+        controlFeeder(feederOuttakeTrigger);
     }
 
     public boolean isNotMoving() {
@@ -115,12 +129,16 @@ public class Feeder {
     }
 
     public void setFeedingShooter() {
-        feederMotor.set(FEED_SHOOTER_SPEED);
+        feederMotor.set(feedShooterSpeed);
         currentFeederState = FeederStates.FEEDING_SHOOTER;
     }
 
     public void setStop() {
         feederMotor.set(0);
+    }
+
+    public void setFeedShooterSpeed(double feedShooterSpeed) {
+        this.feedShooterSpeed = feedShooterSpeed;
     }
 
     public void setMotorsBrake() {

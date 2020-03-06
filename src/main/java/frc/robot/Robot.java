@@ -94,14 +94,13 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousPeriodic() {
         drive.dashboard();
-        feeder.controlFeeder(0);
+        feeder.controlFeederAuto();
         chomper.controlChomper(0);
     }
 
     @Override
     public void teleopInit() {
         setMotorsBrake();
-
         arms.initialize();
         climber.initalize();
         drive.initalize();
@@ -131,7 +130,7 @@ public class Robot extends TimedRobot {
         arms.controlIntakeArm(controllers.isIntakeArmDownBumper(), controllers.isIntakeArmUpBumper());
         intake.controlIntake(controllers.getIntakeAxis());
         shooter.controlShooter(controllers.getShooterTrigger(), controllers.isShooterModeToggle());
-        feeder.controlFeeder(controllers.getFeederOuttakeTrigger());
+        feeder.controlFeederTeleop(controllers.getFeederOuttakeTrigger());
         chomper.controlChomper(controllers.getChomperOverrideAxis());
 
         compressorController.controlCompressor();
