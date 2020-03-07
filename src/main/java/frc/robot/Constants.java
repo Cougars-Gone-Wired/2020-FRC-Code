@@ -6,7 +6,8 @@ public class Constants {
     static final int MANIPULATOR_CONTROLLER_ID = 0;
     static final int ARM_UP_BUTTON = 5;
     static final int ARM_DOWN_BUTTON = 6;
-    static final int INTAKE_ARM_TRIGGER = 2;
+    static final int INTAKE_ARM_DOWN_BUMPER = 6;
+    static final int INTAKE_ARM_UP_BUMPER = 5;
     static final int INTAKE_AXIS = 1;
     static final int SHOOTER_TRIGGER = 3;
     static final int STOP_CAMERA_BUTTON = 8;
@@ -27,10 +28,10 @@ public class Constants {
 
     // Manipulator Ids
         //Solenoids
-    static final int ARM_TOP_SOLENOID_PORT_1 = 0;
-    static final int ARM_TOP_SOLENOID_PORT_2 = 1;
-    static final int ARM_BOTTOM_SOLENOID_PORT_1 = 2;
-    static final int ARM_BOTTOM_SOLENOID_PORT_2 = 3;
+    static final int ARM_TOP_SOLENOID_PORT_1 = 2;
+    static final int ARM_TOP_SOLENOID_PORT_2 = 3;
+    static final int ARM_BOTTOM_SOLENOID_PORT_1 = 0;
+    static final int ARM_BOTTOM_SOLENOID_PORT_2 = 1;
     static final int INTAKE_ARM_SOLENOID_PORT_1 = 4;
     static final int INTAKE_ARM_SOLENOID_PORT_2 = 5;
     static final int CHOMPER_SOLENOID_PORT = 6;
@@ -44,11 +45,13 @@ public class Constants {
     static final int FEEDER_UPPER_LINEBREAK_PORT = 2;
 
     // Mobility Ids
-    static final int CLIMBER_MOTOR_ID = 4;
-    static final int FRONT_LEFT_MOTOR_ID = 5;
-    static final int MIDDLE_LEFT_MOTOR_ID = 6;
-    static final int BACK_LEFT_MOTOR_ID = 7;
-    static final int FRONT_RIGHT_MOTOR_ID = 8;
-    static final int MIDDLE_RIGHT_MOTOR_ID = 9;
-    static final int BACK_RIGHT_MOTOR_ID = 10;
+    static final int CLIMBER_LEFT_MOTOR_ID = 4;
+    static final int CLIMBER_RIGHT_MOTOR_ID = 5;
+    static final int FRONT_LEFT_MOTOR_ID = 6;
+    static final int MIDDLE_LEFT_MOTOR_ID = 7;
+    static final int BACK_LEFT_MOTOR_ID = 8;
+    static final int FRONT_RIGHT_MOTOR_ID = 9;
+    static final int MIDDLE_RIGHT_MOTOR_ID = 10;
+    static final int BACK_RIGHT_MOTOR_ID = 11;
+
 }

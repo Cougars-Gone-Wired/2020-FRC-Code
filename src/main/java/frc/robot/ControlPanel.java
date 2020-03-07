@@ -56,17 +56,17 @@ public class ControlPanel {
   public void spin(boolean manualSpinButton, boolean rotateButton, boolean positionButton) {
     switch (panelState) {
       case NOT_MOVING:
-        if (manualSpinButton && Robot.arms.isShooterStartingPosition()) {
+        if (manualSpinButton && Robot.arms.isArmStartingPosition()) {
           setManuallySpinning();
-        } else if (rotateButton && Robot.arms.isShooterStartingPosition()) {
+        } else if (rotateButton && Robot.arms.isArmStartingPosition()) {
           setRotating();
-        } else if (positionButton && Robot.arms.isShooterStartingPosition()) {
+        } else if (positionButton && Robot.arms.isArmStartingPosition()) {
           setPostitioning();
         }
         break;
 
       case MANUALLY_SPINNING:
-        if (manualSpinButton || !Robot.arms.isShooterStartingPosition()) {
+        if (manualSpinButton || !Robot.arms.isArmStartingPosition()) {
           setNotMoving();
         }
         break;
@@ -83,14 +83,14 @@ public class ControlPanel {
         if (changedColor && trueColor == targetColor) {
           timesTargetSeen++;
         }
-        if (timesTargetSeen >= 7 || rotateButton || !Robot.arms.isShooterStartingPosition()) {
+        if (timesTargetSeen >= 7 || rotateButton || !Robot.arms.isArmStartingPosition()) {
           setNotMoving();
         }
         break;
 
       case POSITIONING:
         trackColor();
-        if ((changedColor && trueColor == targetColor) || positionButton || !Robot.arms.isShooterStartingPosition()) {
+        if ((changedColor && trueColor == targetColor) || positionButton || !Robot.arms.isArmStartingPosition()) {
           panelMotor.setInverted(false);
           setNotMoving();
         }

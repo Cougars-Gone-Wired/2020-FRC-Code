@@ -8,11 +8,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.recorder.*;
 
 public class Robot extends TimedRobot {
-
-    private AutoPrograms autoPrograms;
-
-    public static int ticks = 0;
-
     public static Controllers controllers;
 
     public static Arms arms;
@@ -43,7 +38,6 @@ public class Robot extends TimedRobot {
         climber = new Climber();
         drive = new Drive();
         limelight = new Limelight();
-        autoPrograms = new AutoPrograms();
 
 
         recorder = new StateRecorder();
@@ -58,8 +52,6 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotPeriodic() {
-        ticks++;
-        autoPrograms.autoDashboard();
         drive.dashboard();
         limelight.dashboard();
 
@@ -70,12 +62,11 @@ public class Robot extends TimedRobot {
     public void autonomousInit() {
         setMotorsBrake();
 
-        autoPrograms.initAuto();
     }
 
     @Override
     public void autonomousPeriodic() {
-        autoPrograms.runAuto();
+
     }
 
     @Override
@@ -101,14 +92,14 @@ public class Robot extends TimedRobot {
         controllers.updateControllerValues();
 
         arms.controlArm(controllers.isArmUpButton(), controllers.isArmDownButton());
-        arms.controlIntakeArm(controllers.getIntakeAxis());
-        intake.intake(controllers.getIntakeArmTrigger());
+        arms.controlIntakeArm(controllers.isIntakeArmDownBumper(), controllers.isIntakeArmUpBumper());
+        intake.intake(controllers.getIntakeAxis());
         shooter.shoot(controllers.getShooterTrigger());
         // shooter.pidShooter(controllers.getShooterTrigger());
         feeder.feed(controllers.getFeederAxis());
         chomper.controlChomper(controllers.getChomperUpButton(), controllers.getChomperDownButton());
 
-        climber.controlClimb(controllers.getClimberUpTrigger(), controllers.getClimberDownTrigger());
+        climber.controlClimber(controllers.getClimberUpTrigger(), controllers.getClimberDownTrigger());
         drive.robotDrive(controllers.getDriveSpeedAxis(), controllers.getDriveTurnAxis(), controllers.getDriveSideToggle());
         limelight.limelightDrive(controllers.getLimelightButton());
 

@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Feeder {
     private static final double FEED_INTAKE_SPEED = 0.6;
@@ -31,6 +32,9 @@ public class Feeder {
     private FeederStates currentFeederState;
 
     public void feed(double feederAxis) {
+        SmartDashboard.putBoolean("UpperLineBreak", feederUpperLineBreak.get());
+        SmartDashboard.putBoolean("LowerLineBreak", feederLowerLineBreak.get());
+
         switch(currentFeederState) {
             case NOT_MOVING:
                 if (feederAxis >= Constants.DEADZONE && (feederUpperLineBreak.get() || feederLowerLineBreak.get())) {

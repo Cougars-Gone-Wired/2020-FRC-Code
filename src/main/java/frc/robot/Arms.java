@@ -20,8 +20,10 @@ public class Arms {
 
     public void initialize() {
         triggerDownBool = false;
-        setStartingPosition();
-        setUpPosition();
+        // setStartingPosition();
+        // setUpPosition();
+        setShootingPostion();
+        setDownPosition();
     }
 
     public enum ArmStates {
@@ -55,15 +57,15 @@ public class Arms {
         }
     }
 
-    public boolean isShooterStartingPosition() {
+    public boolean isArmStartingPosition() {
         return currentArmState == ArmStates.STARTING_POSITION;
     }
 
-    public boolean isShooterShootingPosition() {
+    public boolean isArmShootingPosition() {
         return currentArmState == ArmStates.SHOOTING_POSITION;
     }
 
-    public boolean isShooterClimbingPosition() {
+    public boolean isArmClimbingPosition() {
         return currentArmState == ArmStates.CLIMBING_POSITION;
     }
 
@@ -92,19 +94,23 @@ public class Arms {
 
     private IntakeArmStates currentIntakeArmState;
 
-    public void controlIntakeArm(double intakeArmTrigger) {
-        
-        switch(currentIntakeArmState) {
+    public void controlIntakeArm(boolean intakeArmDownBumper, boolean intakeArmUpBumper) {
+
+        switch (currentIntakeArmState) {
             case DOWN:
-                if (toggleTrigger(intakeArmTrigger)) {
+                if (!intakeArmDownBumper && intakeArmUpBumper) {
                     setUpPosition();
                 }
                 break;
 
             case UP:
-                if (toggleTrigger(intakeArmTrigger)) {
+                if (intakeArmDownBumper && !intakeArmUpBumper) {
                     setDownPosition();
+                    // intakeArmSwitchingStates = true;
                 }
+                // if (intakeArmSwitchingStates) {
+                // setDownPositionWithDelay();
+                // }
                 break;
         }
     }

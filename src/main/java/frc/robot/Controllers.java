@@ -8,7 +8,8 @@ public class Controllers {
     private Joystick manipulatorController;
     private boolean armUpButton;
     private boolean armDownButton;
-    private double intakeArmTrigger;
+    private boolean intakeArmDownBumper;
+    private boolean intakeArmUpBumper;
     private double intakeAxis;
     private double shooterTrigger;
     private boolean stopCameraButton;
@@ -34,8 +35,8 @@ public class Controllers {
         // Manipulator
         armUpButton = manipulatorController.getRawButtonPressed(Constants.ARM_UP_BUTTON);
         armDownButton = manipulatorController.getRawButtonPressed(Constants.ARM_DOWN_BUTTON);
-        intakeArmTrigger = manipulatorController.getRawAxis(Constants.INTAKE_ARM_TRIGGER);
-        intakeAxis = manipulatorController.getRawAxis(Constants.INTAKE_AXIS);
+        intakeArmDownBumper = manipulatorController.getRawButton(Constants.INTAKE_ARM_DOWN_BUMPER);
+        intakeArmUpBumper = manipulatorController.getRawButton(Constants.INTAKE_ARM_UP_BUMPER);        intakeAxis = manipulatorController.getRawAxis(Constants.INTAKE_AXIS);
         shooterTrigger = manipulatorController.getRawAxis(Constants.SHOOTER_TRIGGER);
         stopCameraButton = manipulatorController.getRawButtonPressed(Constants.STOP_CAMERA_BUTTON);
         feederAxis = manipulatorController.getRawAxis(Constants.FEEDER_AXIS);
@@ -60,8 +61,12 @@ public class Controllers {
         return armDownButton;
     }
 
-    public double getIntakeArmTrigger() {
-        return intakeArmTrigger;
+    public boolean isIntakeArmDownBumper() {
+        return intakeArmDownBumper;
+    }
+
+    public boolean isIntakeArmUpBumper() {
+        return intakeArmUpBumper;
     }
 
     public double getIntakeAxis() {
