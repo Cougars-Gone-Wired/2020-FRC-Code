@@ -32,7 +32,7 @@ public class Climber {
     }
 
     private enum ClimberStates {
-        NOT_MOVING, MOVING_UP, MOVING_DOWN
+        NOT_MOVING, MOVING_UP, TOP, MOVING_DOWN
     }
 
     private ClimberStates currentClimberState;
@@ -44,17 +44,24 @@ public class Climber {
         switch (currentClimberState) {
             case NOT_MOVING:
                 if (climberUpTriggerBool && !climberDownTriggerBool 
-                        && Robot.arms.isArmClimbingPosition()
-                        && isClimbTime()) {
+                        && Robot.arms.isArmClimbingPosition()) {
                     setMovingUp();
-                } else if (climberDownTriggerBool && !climberUpTriggerBool) {
-                    setMovingDown();   
                 }
                 break;
 
             case MOVING_UP:
                 if (!climberUpTriggerBool || climberDownTriggerBool) {
-                    setNotMoving();
+                    setTop();
+                }
+                break;
+
+            case TOP:
+                if (climberUpTriggerBool && !climberDownTriggerBool 
+                        && Robot.arms.isArmClimbingPosition()) {
+                    setMovingUp();
+                } else if (climberDownTriggerBool && !climberUpTriggerBool
+                        && Robot.arms.isArmClimbingPosition()) {
+                    setMovingDown();   
                 }
                 break;
         
@@ -86,6 +93,11 @@ public class Climber {
     public void setMovingUp() {
         climberMotors.set(CLIMBER_UP_SPEED);
         currentClimberState = ClimberStates.MOVING_UP;
+    }
+
+    public void setTop() {
+        climberMotors.set(0);
+        currentClimberState = ClimberStates.TOP;
     }
 
     public void setMovingDown() {
