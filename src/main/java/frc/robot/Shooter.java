@@ -1,23 +1,24 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXSensorCollection;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Shooter {
-    public static double SHOOTER_SPEED = 0.5;
+    public static double SHOOTER_SPEED = 0.5;//.47
     public static double F = 0.044;
-    public static double P = 0.9;
+    public static double P = 0.9;//.6
     public static double I = 0.001;
     public static int IZONE = 1400;
     public static double D = 11;
     public static double VOLTAGE_TO_VELOCITY = 20000;
     public static double DESIRED_VELOCITY = SHOOTER_SPEED * VOLTAGE_TO_VELOCITY;
-    public static double VOLTAGE_INITIAL_VELOCITY_THRESHOLD = 5;
+    public static double VOLTAGE_INITIAL_VELOCITY_THRESHOLD = 5;//250
     public static double PID_INITIAL_VELOCITY_THRESHOLD = 5;
-    public static double VOLTAGE_VELOCITY_THRESHOLD = 50;
+    public static double VOLTAGE_VELOCITY_THRESHOLD = 50;//500
     public static double PID_VELOCITY_THRESHOLD = 70;
 
     private WPI_TalonFX shooterMotor;
@@ -25,6 +26,9 @@ public class Shooter {
 
     private boolean shooterTriggerBool;
     private boolean setConstants;
+
+    private double shooterSpeed;
+    private double desiredVelocity;
 
     private double initialVelocityThreshold;
     private double velocityThreshold;
@@ -39,14 +43,18 @@ public class Shooter {
     }
 
     public void initialize() {
+        // setVoltage();
         setPID();
         initShooterMotor();
         setShooterDashboard();
         setNotMoving();
+        shooterSpeed = SHOOTER_SPEED;
+        desiredVelocity = DESIRED_VELOCITY;
     }
 
     public void initShooterMotor() {
         shooterMotor.setInverted(true);
+        shooterMotor.setNeutralMode(NeutralMode.Coast);
         shooterMotor.config_kF(0, F, 10);
         shooterMotor.config_kP(0, P, 10);
         shooterMotor.config_kI(0, I, 10);
@@ -193,17 +201,18 @@ public class Shooter {
     }
 
     public void setVoltageShooting(double shooterSpeed) {
-        SHOOTER_SPEED = shooterSpeed;
+        this.shooterSpeed = shooterSpeed;
         shooterMotor.set(shooterSpeed);
         currentShooterState = ShooterStates.SHOOTING;
     }
 
     public void setVoltageShooting() {
-        setVoltageShooting(SHOOTER_SPEED);
+        shooterSpeed = SHOOTER_SPEED;
+        setVoltageShooting(shooterSpeed);
     }
 
     public void setPIDShooting(double desiredVelocity) {
-        DESIRED_VELOCITY = desiredVelocity;
+        this.desiredVelocity = desiredVelocity;
         updateVelocity();
         shooterDashboard();
         shooterMotor.set(ControlMode.Velocity, desiredVelocity);
@@ -211,7 +220,8 @@ public class Shooter {
     }
 
     public void setPIDShooting() {
-        setPIDShooting(DESIRED_VELOCITY);
+        desiredVelocity = DESIRED_VELOCITY;
+        setPIDShooting(desiredVelocity);
     }
 
     public void setVelocityThresholds(double initialVelocityThreshold, double velocityThreshold) {
