@@ -223,5 +223,6 @@ public class Drive extends SubsystemBase{
         gyro.dashboard();
         SmartDashboard.putNumber("Odometry X", driveOdomentry.getPoseMeters().getTranslation().getX());
         SmartDashboard.putNumber("Odometry Y", driveOdomentry.getPoseMeters().getTranslation().getY());
+        SmartDashboard.putNumber("Left Voltage", middleLeftMotor.getMotorOutputVoltage());
     }
 }

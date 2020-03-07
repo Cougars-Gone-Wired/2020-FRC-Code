@@ -18,6 +18,7 @@ public class ShootVoltage extends CommandBase {
 
     @Override
     public void execute() {
+        Robot.shooter.setVelocityThresholds(5, 50);
         Robot.shooter.setVoltageShooting(shooterSpeed);
     }
 

@@ -80,8 +80,8 @@ public class Constants {
 
         public static final double DriveP = 1.6;
 
-        public static final double maxVelocity = 7;
-        public static final double maxAcceleration = 11;
+        public static final double maxVelocity = 1;
+        public static final double maxAcceleration = 0.3;
 
         public static final double B = 2; // constant tuned for meters
         public static final double Zeta = 0.7; // ↑ ↑ ↑

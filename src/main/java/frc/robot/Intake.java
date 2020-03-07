@@ -27,8 +27,7 @@ public class Intake {
         
         switch (currentIntakeState) {
             case NOT_MOVING:
-                if (intakeAxis >= Constants.DEADZONE 
-                        && !Robot.arms.isIntakeUpPositon() 
+                if (intakeAxis >= Constants.DEADZONE
                         && Robot.arms.isArmShootingPosition() 
                         && !Robot.arms.isArmClimbingPosition()) {
                     setIntaking();

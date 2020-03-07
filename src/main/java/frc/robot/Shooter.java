@@ -13,10 +13,11 @@ public class Shooter {
     public static double I = 0.001;
     public static int IZONE = 1400;
     public static double D = 11;
-    public static double DESIRED_VELOCITY = SHOOTER_SPEED * 20000; //10000
-    public static double VOLTAGE_INITIAL_VELOCITY_THRESHOLD = 100;
+    public static double VOLTAGE_TO_VELOCITY = 20000;
+    public static double DESIRED_VELOCITY = SHOOTER_SPEED * VOLTAGE_TO_VELOCITY;
+    public static double VOLTAGE_INITIAL_VELOCITY_THRESHOLD = 5;
     public static double PID_INITIAL_VELOCITY_THRESHOLD = 5;
-    public static double VOLTAGE_VELOCITY_THRESHOLD = 100;
+    public static double VOLTAGE_VELOCITY_THRESHOLD = 50;
     public static double PID_VELOCITY_THRESHOLD = 70;
 
     private WPI_TalonFX shooterMotor;
@@ -63,7 +64,6 @@ public class Shooter {
         SmartDashboard.putNumber("D", D);
         SmartDashboard.putNumber("Inital Velocity Thresh", PID_INITIAL_VELOCITY_THRESHOLD);
         SmartDashboard.putNumber("Velocity Thresh", PID_VELOCITY_THRESHOLD);
-        SmartDashboard.putNumber("Desired Velocity", DESIRED_VELOCITY);
     }
 
     public void shooterDashboard() {
@@ -77,10 +77,11 @@ public class Shooter {
             D = SmartDashboard.getNumber("D", 0);
             PID_INITIAL_VELOCITY_THRESHOLD = SmartDashboard.getNumber("Inital Velocity Thresh", 0);
             PID_VELOCITY_THRESHOLD= SmartDashboard.getNumber("Velocity Thresh", 0);
-            DESIRED_VELOCITY = SmartDashboard.getNumber("Desired Velocity", 0);
+            DESIRED_VELOCITY = SmartDashboard.getNumber("Shooter Voltage", 0) * 20000;
             initShooterMotor();
         }
 
+        SmartDashboard.putNumber("Desired Velocity", DESIRED_VELOCITY);
         SmartDashboard.putNumber("Velocity", velocity);
         SmartDashboard.putNumber("Velocity Plot", velocity);
         SmartDashboard.putNumber("Velocity Error", error);
@@ -192,7 +193,7 @@ public class Shooter {
     }
 
     public void setVoltageShooting(double shooterSpeed) {
-        setVoltage();
+        SHOOTER_SPEED = shooterSpeed;
         shooterMotor.set(shooterSpeed);
         currentShooterState = ShooterStates.SHOOTING;
     }
@@ -202,7 +203,7 @@ public class Shooter {
     }
 
     public void setPIDShooting(double desiredVelocity) {
-        setPID();
+        DESIRED_VELOCITY = desiredVelocity;
         updateVelocity();
         shooterDashboard();
         shooterMotor.set(ControlMode.Velocity, desiredVelocity);

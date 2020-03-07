@@ -8,7 +8,7 @@ public class ShootFromLine extends SequentialCommandGroup {
 
     public ShootFromLine() {
         addCommands(
-            new ShootVoltage(.32).withTimeout(5),
+            new ShootVoltage(.35).withTimeout(5),
             new DriveForward(.25)
         );
     }

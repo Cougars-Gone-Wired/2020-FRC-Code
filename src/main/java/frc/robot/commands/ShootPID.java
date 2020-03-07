@@ -12,12 +12,13 @@ public class ShootPID extends CommandBase {
         desiredVelocity = Shooter.DESIRED_VELOCITY;
     }
 
-    public ShootPID(double desiredVelocity) {
-        this.desiredVelocity = desiredVelocity;
+    public ShootPID(double desiredVelocityPercent) {
+        desiredVelocity = desiredVelocityPercent * Shooter.VOLTAGE_TO_VELOCITY;
     }
 
     @Override
     public void execute() {
+        Robot.shooter.setVelocityThresholds(5, 300);
         Robot.shooter.setPIDShooting(desiredVelocity);
     }
 
