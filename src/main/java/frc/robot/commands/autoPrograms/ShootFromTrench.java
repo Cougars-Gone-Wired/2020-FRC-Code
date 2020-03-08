@@ -6,17 +6,15 @@ import frc.robot.commands.Aim;
 import frc.robot.commands.ArmDown;
 import frc.robot.commands.ProfileDrive;
 import frc.robot.commands.ShootPID;
-import frc.robot.commands.Unaim;
 
 public class ShootFromTrench extends SequentialCommandGroup {
 
     public ShootFromTrench() {
         addCommands(
             new ArmDown(),
-            new ProfileDrive(Robot.drive).getProfilingCommand("paths/output/3Meters.wpilib.json"),
+            new ProfileDrive(Robot.drive).getProfilingCommand("paths/output/TrenchShootingPose.wpilib.json"),
             new Aim(),
-            new ShootPID().withTimeout(5),
-            new Unaim()
+            new ShootPID().withTimeout(5)
         );
     }
 }

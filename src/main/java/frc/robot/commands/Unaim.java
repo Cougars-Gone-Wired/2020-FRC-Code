@@ -8,7 +8,7 @@ public class Unaim extends CommandBase {
     
     @Override
     public void execute() {
-        isUnaimed = Robot.limelight.limelightAutoAim();
+        isUnaimed = Robot.limelight.limelightAutoUnaim();
     }
 
     @Override

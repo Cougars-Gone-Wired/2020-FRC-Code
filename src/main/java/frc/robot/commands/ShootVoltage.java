@@ -12,13 +12,15 @@ public class ShootVoltage extends CommandBase {
         shooterSpeed = Shooter.SHOOTER_SPEED;
     }
 
-    public ShootVoltage(double shooterSpeed) {
+    public ShootVoltage(double shooterSpeed, boolean changeThresholds) {
+        if(changeThresholds) {
+            Robot.shooter.setVelocityThresholds(5, 50);
+        }
         this.shooterSpeed = shooterSpeed;
     }
 
     @Override
     public void execute() {
-        Robot.shooter.setVelocityThresholds(5, 50);
         Robot.shooter.setVoltageShooting(shooterSpeed);
     }
 

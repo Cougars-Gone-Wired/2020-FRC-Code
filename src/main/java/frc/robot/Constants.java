@@ -74,14 +74,14 @@ public class Constants {
         // all constants in meters and seconds
         public static final double TRACK_WIDTH = 0.5714; // width bewteen each side of drive train in meters
 
-        public static final double ks = 0.236;
-        public static final double kv = 1.22;
-        public static final double ka = 0.268;
+        public static final double ks = 0.23;
+        public static final double kv = 1.2;
+        public static final double ka = 0.326;
 
-        public static final double DriveP = 1.6;
+        public static final double DriveP = 6;
 
         public static final double maxVelocity = 1;
-        public static final double maxAcceleration = 0.3;
+        public static final double maxAcceleration = 0.6;
 
         public static final double B = 2; // constant tuned for meters
         public static final double Zeta = 0.7; // ↑ ↑ ↑

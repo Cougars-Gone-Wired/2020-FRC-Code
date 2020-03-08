@@ -24,10 +24,10 @@ public class Limelight {
     private double distance; //Calculated from the above values
 
     //kp = 0.1 min = 0.3 degree = 2.0
-    private double min = 0.4; //Minumum value to move motors
-    private double aimKp = 0.07; //Aim multiplier
+    private double min = 0.39; //Minumum value to move motors
+    private double aimKp = 0.021; //Aim multiplier
     private double driveKp = 0.50; //Drive multiplier
-    private double angle_threshold = 0.30; //Final value needs to be set later
+    private double angle_threshold = 0.50; //Final value needs to be set later
     private double angle_offset = 0.00;
     private double distance_error = 5.00; //Distance error
     private double desired_distance = 260.00; //Needs to be set later
@@ -59,10 +59,15 @@ public class Limelight {
 
         switch (limelightDriveState) {
             case DO_NOTHING:
-                if (aimButton && !(Math.abs(tx - angle_offset) < angle_threshold)) {
-                    //turnlightsOn();
+            turnlightsOff();
+                if (aimButton
+                // && !(Math.abs(tx - angle_offset) < angle_threshold)
+                ) {
+                    turnlightsOn();
+                    if(!(Math.abs(tx - angle_offset) < angle_threshold)){
                      //What the limelight should do when the button is pressed
                      setDriveAim();
+                    }
                 }
             break;
 
@@ -137,7 +142,6 @@ public class Limelight {
     }
 
     public void setDriveDoNothing() {
-        //turnlightsOff();
         aim_adjust = 0; 
         drive_adjust = 0;
         Robot.drive.limelightDrive(drive_adjust, aim_adjust);
@@ -161,6 +165,7 @@ public class Limelight {
         tx = table.getEntry("tx").getDouble(0);
         ty = table.getEntry("ty").getDouble(0);
         ta = table.getEntry("ta").getDouble(0);
+        setUnaimAngle();
             
         aim_adjust = aimKp * (tx / DEGREE_RANGE);
         if (tx - angle_offset > angle_threshold) {
@@ -169,6 +174,7 @@ public class Limelight {
             aim_adjust -= min;
         } else {
             aim_adjust = 0;
+            Robot.drive.limelightDrive(0, 0);
             return true;
         }
 
@@ -190,6 +196,7 @@ public class Limelight {
             aim_adjust -= min;
         } else {
             aim_adjust = 0;
+            Robot.drive.limelightDrive(0, 0);
             return true;
         }
 

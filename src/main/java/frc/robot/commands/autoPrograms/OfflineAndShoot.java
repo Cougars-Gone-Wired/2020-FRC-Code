@@ -13,10 +13,10 @@ public class OfflineAndShoot extends SequentialCommandGroup {
     public OfflineAndShoot() {
         addCommands(
             new ArmDown(),
-            new ParallelRaceGroup(new ProfileDrive(Robot.drive).getProfilingCommand(3),
-            new ShootVoltage(.4)
-            ),
-            new ShootPID(10000).withTimeout(5)
+            new ParallelRaceGroup(
+                new ProfileDrive(Robot.drive).getProfilingCommand("paths/output/OfflineShootingPose.wpilib.json"),
+                new ShootVoltage(.35, false)),
+            new ShootPID(.5).withTimeout(5)
         );
     }
 }

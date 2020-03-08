@@ -5,13 +5,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.Aim;
+import frc.robot.commands.ArmDown;
 import frc.robot.commands.DoNothing;
 import frc.robot.commands.DriveBack;
 import frc.robot.commands.DriveForward;
 import frc.robot.commands.ProfileDrive;
 import frc.robot.commands.Unaim;
 import frc.robot.commands.autoPrograms.OfflineAndShoot;
-import frc.robot.commands.autoPrograms.ShootFromLine;
+import frc.robot.commands.autoPrograms.ShootFromLineBackBumper;
+import frc.robot.commands.autoPrograms.ShootFromLineFrontBumper;
 import frc.robot.commands.autoPrograms.ShootFromTrench;
 import frc.robot.commands.autoPrograms.SixBallAuto;
 
@@ -22,7 +24,7 @@ public class AutoSelector {
     private Command autoCommand;
 
     public enum Programs {
-        DO_NOTHING, SHOOT_FROM_LINE, OFFLINE_AND_SHOOT, SHOOT_FROM_TRENCH, SIX_BALL_AUTO, DRIVE_RECKONING, DRIVE_PROFILING, AIM, AIM_AND_UNAIM
+        DO_NOTHING, SHOOT_FROM_LINE_BACK_BUMPER, SHOOT_FROM_LINE_FRONT_BUMPER, OFFLINE_AND_SHOOT, SHOOT_FROM_TRENCH, SIX_BALL_AUTO, DRIVE_RECKONING, DRIVE_PROFILING, AIM, AIM_AND_UNAIM
     }
 
     private Programs autoChoice;
@@ -33,7 +35,7 @@ public class AutoSelector {
 
     public void initialize() {
         autoChooser.addOption("Do Nothing", Programs.DO_NOTHING);
-        autoChooser.addOption("Shoot From Line", Programs.SHOOT_FROM_LINE);
+        autoChooser.addOption("Shoot From Line", Programs.SHOOT_FROM_LINE_BACK_BUMPER);
         autoChooser.addOption("Offline and Shoot", Programs.OFFLINE_AND_SHOOT);
         autoChooser.addOption("Shoot From Trench", Programs.SHOOT_FROM_TRENCH);
         autoChooser.addOption("Six Ball Auto", Programs.SIX_BALL_AUTO);
@@ -52,9 +54,12 @@ public class AutoSelector {
                 autoCommand = new DoNothing();
                 break;
 
-            case SHOOT_FROM_LINE:
-                autoCommand = new ShootFromLine();
+            case SHOOT_FROM_LINE_BACK_BUMPER:
+                autoCommand = new ShootFromLineBackBumper();
                 break;
+
+            case SHOOT_FROM_LINE_FRONT_BUMPER:
+                autoCommand = new ShootFromLineFrontBumper();
 
             case OFFLINE_AND_SHOOT:
                 autoCommand = new OfflineAndShoot();
@@ -73,15 +78,15 @@ public class AutoSelector {
                 break;
 
             case DRIVE_PROFILING:
-                autoCommand = new ProfileDrive(Robot.drive).getProfilingCommand("paths/output/1Meter.wpilib.json");
+                autoCommand = new ProfileDrive(Robot.drive).getProfilingCommand("paths/output/TrenchShootingPose.wpilib.json");
                 break;
 
             case AIM:
-                autoCommand = new Aim();
+                autoCommand = new SequentialCommandGroup(new ArmDown().withTimeout(5), new Aim());
                 break;
 
             case AIM_AND_UNAIM:
-                autoCommand = new SequentialCommandGroup(new Aim(), new Unaim());
+                autoCommand = new SequentialCommandGroup(new ArmDown().withTimeout(5), new Aim().withTimeout(5), new Unaim());
                 break;
         }
 

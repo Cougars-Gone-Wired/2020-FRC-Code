@@ -4,12 +4,12 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.DriveForward;
 import frc.robot.commands.ShootVoltage;
 
-public class ShootFromLine extends SequentialCommandGroup {
+public class ShootFromLineBackBumper extends SequentialCommandGroup {
 
-    public ShootFromLine() {
+    public ShootFromLineBackBumper() {
         addCommands(
-            new ShootVoltage(.35).withTimeout(5),
-            new DriveForward(.25)
+            new ShootVoltage(.35, true).withTimeout(5),
+            new DriveForward(.1)
         );
     }
 }

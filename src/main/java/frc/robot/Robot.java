@@ -77,6 +77,7 @@ public class Robot extends TimedRobot {
         climber.initalize();
         drive.initalize();
         limelight.initialize();
+        limelight.turnlightsOn();
 
         intake.initialize();
         shooter.initialize();
@@ -105,6 +106,7 @@ public class Robot extends TimedRobot {
         climber.initalize();
         drive.initalize();
         limelight.initialize();
+        limelight.turnlightsOff();
 
         intake.initialize();
         shooter.initialize();
