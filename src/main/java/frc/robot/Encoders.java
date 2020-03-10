@@ -1,58 +1,45 @@
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.TalonFXSensorCollection;
-
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
 
 public class Encoders {
 
-    private TalonFXSensorCollection frontLeftSensors;
-    private TalonFXSensorCollection middleLeftSensors;
-    private TalonFXSensorCollection backLeftSensors;
-
-    private TalonFXSensorCollection frontRightSensors;
-    private TalonFXSensorCollection middleRightSensors;
-    private TalonFXSensorCollection backRightSensors;
+    private Drive drive;
 
     public Encoders(Drive drive) {
-        frontLeftSensors = new TalonFXSensorCollection(drive.getFrontLeftMotor());
-        middleLeftSensors = new TalonFXSensorCollection(drive.getMiddleLeftMotor());
-        backLeftSensors = new TalonFXSensorCollection(drive.getBackLeftMotor());
-
-        frontRightSensors = new TalonFXSensorCollection(drive.getFrontRightMotor());
-        middleRightSensors = new TalonFXSensorCollection(drive.getMiddleRightMotor());
-        backRightSensors = new TalonFXSensorCollection(drive.getBackRightMotor());
+        this.drive = drive;
     }
 
     public void resetEncoders() {
-        frontLeftSensors.setIntegratedSensorPosition(0, 10);
-        middleLeftSensors.setIntegratedSensorPosition(0, 10);
-        backLeftSensors.setIntegratedSensorPosition(0, 10);
+        drive.getFrontLeftMotor().setSelectedSensorPosition(0);
+        drive.getMiddleLeftMotor().setSelectedSensorPosition(0);
+        drive.getBackLeftMotor().setSelectedSensorPosition(0);
 
-        frontRightSensors.setIntegratedSensorPosition(0, 10);
-        middleRightSensors.setIntegratedSensorPosition(0, 10);
-        backRightSensors.setIntegratedSensorPosition(0, 10);
+        drive.getFrontRightMotor().setSelectedSensorPosition(0);
+        drive.getMiddleRightMotor().setSelectedSensorPosition(0);
+        drive.getBackRightMotor().setSelectedSensorPosition(0);
+
     }
 
     public double getFrontLeftEncoder() {
-        return frontLeftSensors.getIntegratedSensorPosition();
+        return drive.getFrontLeftMotor().getSelectedSensorPosition();
     }
     public double getMidLeftEncoder() {
-        return middleLeftSensors.getIntegratedSensorPosition();
+        return drive.getMiddleLeftMotor().getSelectedSensorPosition();
     }
     public double getBackLeftEncoder() {
-        return backLeftSensors.getIntegratedSensorPosition();
+        return drive.getBackLeftMotor().getSelectedSensorPosition();
     }
     public double getFrontRightEncoder() {
-        return frontRightSensors.getIntegratedSensorPosition();
+        return drive.getFrontRightMotor().getSelectedSensorPosition();
     }
     public double getMidRightEncoder() {
-        return middleRightSensors.getIntegratedSensorPosition();
+        return drive.getMiddleRightMotor().getSelectedSensorPosition();
     }
     public double getBackRightEncoder() {
-        return backRightSensors.getIntegratedSensorPosition();
+        return drive.getBackRightMotor().getSelectedSensorPosition();
     }
 
     public double getRawLeftEncoders() {
@@ -76,10 +63,20 @@ public class Encoders {
     }
 
     public double getLeftSpeed() {
-        return avgSensors(frontLeftSensors.getIntegratedSensorVelocity(), middleLeftSensors.getIntegratedSensorVelocity(), backLeftSensors.getIntegratedSensorVelocity()) * DriveConstants.METER_PER_SECOND_CONSTANT;
+        return avgSensors(
+            drive.getFrontLeftMotor().getSelectedSensorVelocity(), 
+            drive.getMiddleLeftMotor().getSelectedSensorVelocity(), 
+            drive.getBackLeftMotor().getSelectedSensorVelocity()) 
+            * DriveConstants.METER_PER_SECOND_CONSTANT 
+            * (DriveConstants.areLeftEncodersReversed ? -1.0 : 1.0);
     }
     public double getRightSpeed() {
-        return avgSensors(frontRightSensors.getIntegratedSensorVelocity(), middleRightSensors.getIntegratedSensorVelocity(), backRightSensors.getIntegratedSensorVelocity()) * DriveConstants.METER_PER_SECOND_CONSTANT;
+        return avgSensors(
+            drive.getFrontLeftMotor().getSelectedSensorVelocity(), 
+            drive.getMiddleLeftMotor().getSelectedSensorVelocity(), 
+            drive.getBackLeftMotor().getSelectedSensorVelocity()) 
+            * DriveConstants.METER_PER_SECOND_CONSTANT 
+            * (DriveConstants.areRightEncodersReversed ? -1.0 : 1.0);
     }
     public DifferentialDriveWheelSpeeds getWheelSpeeds() {
         return new DifferentialDriveWheelSpeeds(getLeftSpeed(), getRightSpeed());
@@ -94,10 +91,29 @@ public class Encoders {
     }
 
     public void dashboard() {
-        SmartDashboard.putNumber("Left Encoder", getRawLeftEncoders());
-        SmartDashboard.putNumber("Right Encoder", getRawRightEncoders());
-        SmartDashboard.putNumber("Left Meters", getLeftEncodersMeters());
-        SmartDashboard.putNumber("Right Meters", getRightEncodersMeters());
-        SmartDashboard.putNumber("Encoders", getAvgEncoderMetersAvg());
+        // SmartDashboard.putNumber("Front Left Encoder", getFrontLeftEncoder());
+        // SmartDashboard.putNumber("Middle Left Encoder", getMidLeftEncoder());
+        // SmartDashboard.putNumber("Back Left Encoder", getBackLeftEncoder());
+
+        // SmartDashboard.putNumber("Front Right Encoder", getFrontRightEncoder());
+        // SmartDashboard.putNumber("Middle Right Encoder", getMidRightEncoder());
+        // SmartDashboard.putNumber("Back Right Encoder", getBackRightEncoder());
+
+        // SmartDashboard.putNumber("Left Speed", getLeftSpeed());
+        // SmartDashboard.putNumber("RightSpeed", getRightSpeed());
+
+        // SmartDashboard.putNumber("Left Encoder", getRawLeftEncoders());
+        // SmartDashboard.putNumber("Right Encoder", getRawRightEncoders());
+        // SmartDashboard.putNumber("Left Meters", getLeftEncodersMeters());
+        // SmartDashboard.putNumber("Right Meters", getRightEncodersMeters());
+        // SmartDashboard.putNumber("Encoders", getAvgEncoderMetersAvg());
+
+        // SmartDashboard.putNumber("Front Left Speed", frontLeftSensors.getIntegratedSensorVelocity() * DriveConstants.METER_PER_SECOND_CONSTANT);
+        // SmartDashboard.putNumber("Middle Left Speed", middleLeftSensors.getIntegratedSensorVelocity() * DriveConstants.METER_PER_SECOND_CONSTANT);
+        // SmartDashboard.putNumber("Back Left Speed", backLeftSensors.getIntegratedSensorVelocity() * DriveConstants.METER_PER_SECOND_CONSTANT);
+
+        // SmartDashboard.putNumber("Front Right Speed", frontRightSensors.getIntegratedSensorVelocity() * DriveConstants.METER_PER_SECOND_CONSTANT);
+        // SmartDashboard.putNumber("Middle Right Speed", middleRightSensors.getIntegratedSensorVelocity() * DriveConstants.METER_PER_SECOND_CONSTANT);
+        // SmartDashboard.putNumber("Back Right Speed", backRightSensors.getIntegratedSensorVelocity() * DriveConstants.METER_PER_SECOND_CONSTANT);
     }
 }

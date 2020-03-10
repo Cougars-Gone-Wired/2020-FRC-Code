@@ -74,9 +74,9 @@ public class Constants {
         // all constants in meters and seconds
         public static final double TRACK_WIDTH = 0.5714; // width bewteen each side of drive train in meters
 
-        public static final double ks = 0.23;
-        public static final double kv = 1.2;
-        public static final double ka = 0.326;
+        public static final double ks = 0.218;//.23
+        public static final double kv = 1.24;//1.2
+        public static final double ka = 0.23;//.326
 
         public static final double DriveP = 6;
 
