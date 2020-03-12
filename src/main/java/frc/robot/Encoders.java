@@ -49,7 +49,7 @@ public class Encoders {
         return avgSensors(getFrontRightEncoder(), getMidRightEncoder(), getBackRightEncoder());
     }
     public double getAvgRawEncoders() {
-        return (Math.abs(getRawLeftEncoders()) + Math.abs(getRawRightEncoders())) / 2;
+        return (Math.abs(getRawLeftEncoders()) + Math.abs(getRawRightEncoders())) / 2.0;
     }
 
     public double getLeftEncodersMeters() {
@@ -67,15 +67,15 @@ public class Encoders {
             drive.getFrontLeftMotor().getSelectedSensorVelocity(), 
             drive.getMiddleLeftMotor().getSelectedSensorVelocity(), 
             drive.getBackLeftMotor().getSelectedSensorVelocity()) 
-            * DriveConstants.METER_PER_SECOND_CONSTANT 
+            * DriveConstants.METER_PER_SECOND_CONSTANT
             * (DriveConstants.areLeftEncodersReversed ? -1.0 : 1.0);
     }
     public double getRightSpeed() {
         return avgSensors(
-            drive.getFrontLeftMotor().getSelectedSensorVelocity(), 
-            drive.getMiddleLeftMotor().getSelectedSensorVelocity(), 
-            drive.getBackLeftMotor().getSelectedSensorVelocity()) 
-            * DriveConstants.METER_PER_SECOND_CONSTANT 
+            drive.getFrontRightMotor().getSelectedSensorVelocity(), 
+            drive.getMiddleRightMotor().getSelectedSensorVelocity(), 
+            drive.getBackRightMotor().getSelectedSensorVelocity()) 
+            * DriveConstants.METER_PER_SECOND_CONSTANT
             * (DriveConstants.areRightEncodersReversed ? -1.0 : 1.0);
     }
     public DifferentialDriveWheelSpeeds getWheelSpeeds() {
@@ -83,7 +83,7 @@ public class Encoders {
     }
 
     public double avgSensors(double sensor1, double sensor2, double sensor3) {
-        return (sensor1 + sensor2 + sensor3)/3;
+        return (sensor1 + sensor2 + sensor3) / 3.0;
     }
 
     public double ticksToMeters(double ticks) {
@@ -100,20 +100,20 @@ public class Encoders {
         // SmartDashboard.putNumber("Back Right Encoder", getBackRightEncoder());
 
         // SmartDashboard.putNumber("Left Speed", getLeftSpeed());
-        // SmartDashboard.putNumber("RightSpeed", getRightSpeed());
+        // SmartDashboard.putNumber("Right Speed", getRightSpeed());
 
         // SmartDashboard.putNumber("Left Encoder", getRawLeftEncoders());
         // SmartDashboard.putNumber("Right Encoder", getRawRightEncoders());
-        // SmartDashboard.putNumber("Left Meters", getLeftEncodersMeters());
-        // SmartDashboard.putNumber("Right Meters", getRightEncodersMeters());
-        // SmartDashboard.putNumber("Encoders", getAvgEncoderMetersAvg());
+        SmartDashboard.putNumber("Left Meters", getLeftEncodersMeters());
+        SmartDashboard.putNumber("Right Meters", getRightEncodersMeters());
+        SmartDashboard.putNumber("Encoders", getAvgEncoderMetersAvg());
 
-        // SmartDashboard.putNumber("Front Left Speed", frontLeftSensors.getIntegratedSensorVelocity() * DriveConstants.METER_PER_SECOND_CONSTANT);
-        // SmartDashboard.putNumber("Middle Left Speed", middleLeftSensors.getIntegratedSensorVelocity() * DriveConstants.METER_PER_SECOND_CONSTANT);
-        // SmartDashboard.putNumber("Back Left Speed", backLeftSensors.getIntegratedSensorVelocity() * DriveConstants.METER_PER_SECOND_CONSTANT);
+        // SmartDashboard.putNumber("Front Left Speed", drive.getFrontLeftMotor().getSelectedSensorVelocity() * DriveConstants.METER_PER_SECOND_CONSTANT);
+        // SmartDashboard.putNumber("Middle Left Speed", drive.getMiddleLeftMotor().getSelectedSensorVelocity() * DriveConstants.METER_PER_SECOND_CONSTANT);
+        // SmartDashboard.putNumber("Back Left Speed", drive.getBackLeftMotor().getSelectedSensorVelocity() * DriveConstants.METER_PER_SECOND_CONSTANT);
 
-        // SmartDashboard.putNumber("Front Right Speed", frontRightSensors.getIntegratedSensorVelocity() * DriveConstants.METER_PER_SECOND_CONSTANT);
-        // SmartDashboard.putNumber("Middle Right Speed", middleRightSensors.getIntegratedSensorVelocity() * DriveConstants.METER_PER_SECOND_CONSTANT);
-        // SmartDashboard.putNumber("Back Right Speed", backRightSensors.getIntegratedSensorVelocity() * DriveConstants.METER_PER_SECOND_CONSTANT);
+        // SmartDashboard.putNumber("Front Right Speed", drive.getFrontRightMotor().getSelectedSensorVelocity() * DriveConstants.METER_PER_SECOND_CONSTANT);
+        // SmartDashboard.putNumber("Middle Right Speed", drive.getMiddleRightMotor().getSelectedSensorVelocity() * DriveConstants.METER_PER_SECOND_CONSTANT);
+        // SmartDashboard.putNumber("Back Right Speed", drive.getBackRightMotor().getSelectedSensorVelocity() * DriveConstants.METER_PER_SECOND_CONSTANT);
     }
 }

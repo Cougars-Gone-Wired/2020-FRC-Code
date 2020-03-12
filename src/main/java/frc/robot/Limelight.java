@@ -188,6 +188,8 @@ public class Limelight {
         ty = table.getEntry("ty").getDouble(0);
         ta = table.getEntry("ta").getDouble(0);
 
+        SmartDashboard.putNumber("UnaimAngle", unaimAngle);
+
         aim_adjust = aimKp * ((tx - unaimAngle) / DEGREE_RANGE);
         if (tx - unaimAngle > angle_threshold) {
             aim_adjust += min;
@@ -205,6 +207,7 @@ public class Limelight {
     }
 
     public void setUnaimAngle() {
+        tx = table.getEntry("tx").getDouble(0);
         unaimAngle = tx - angle_offset;
     }
 

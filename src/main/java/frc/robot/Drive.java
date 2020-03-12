@@ -71,6 +71,14 @@ public class Drive extends SubsystemBase{
         frontRightMotor.configOpenloopRamp(0);
         middleRightMotor.configOpenloopRamp(0);
         backRightMotor.configOpenloopRamp(0);
+
+        frontLeftMotor.configClosedloopRamp(.1);
+        middleLeftMotor.configClosedloopRamp(.1);
+        backLeftMotor.configClosedloopRamp(.1);
+
+        frontRightMotor.configClosedloopRamp(.1);
+        middleRightMotor.configClosedloopRamp(.1);
+        backRightMotor.configClosedloopRamp(.1);
     }
 
     public void initalize() {
@@ -220,9 +228,16 @@ public class Drive extends SubsystemBase{
 
     public void dashboard() {
         encoders.dashboard();
-        gyro.dashboard();
+        // gyro.dashboard();
         SmartDashboard.putNumber("Odometry X", driveOdomentry.getPoseMeters().getTranslation().getX());
-        SmartDashboard.putNumber("Odometry Y", driveOdomentry.getPoseMeters().getTranslation().getY());
-        SmartDashboard.putNumber("Left Voltage", middleLeftMotor.getMotorOutputVoltage());
+        // SmartDashboard.putNumber("Odometry Y", driveOdomentry.getPoseMeters().getTranslation().getY());
+
+        // SmartDashboard.putNumber("Front Left Voltage", frontLeftMotor.getMotorOutputVoltage());
+        // SmartDashboard.putNumber("Middle Left Voltage", middleLeftMotor.getMotorOutputVoltage());
+        // SmartDashboard.putNumber("Back Left Voltage", backLeftMotor.getMotorOutputVoltage());
+
+        // SmartDashboard.putNumber("Front Right Voltage", frontRightMotor.getMotorOutputVoltage());
+        // SmartDashboard.putNumber("Middle Right Voltage", middleRightMotor.getMotorOutputVoltage());
+        // SmartDashboard.putNumber("Back Right Voltage", backRightMotor.getMotorOutputVoltage());
     }
 }
