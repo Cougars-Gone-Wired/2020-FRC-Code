@@ -67,7 +67,7 @@ public class Climber {
         
             case MOVING_DOWN:
                 if (!climberDownTriggerBool || climberUpTriggerBool) {
-                    setNotMoving();
+                    setTop();
                 }
                 break;
         }
