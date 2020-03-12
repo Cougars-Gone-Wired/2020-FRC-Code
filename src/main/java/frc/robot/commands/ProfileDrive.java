@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.Constants;
 import frc.robot.Drive;
+import frc.robot.TrajectoryBuilder;
 import frc.robot.Constants.DriveConstants;
 
 public class ProfileDrive extends CommandBase{
@@ -70,6 +71,10 @@ public class ProfileDrive extends CommandBase{
             config
         );
         return getProfilingCommand(trajectory);
+    }
+
+    public Command getProfilingCommand(TrajectoryBuilder.Paths path) {
+        return getProfilingCommand(TrajectoryBuilder.getTrajectory(path));
     }
 
     public Command getProfilingCommand(Trajectory trajectory) {

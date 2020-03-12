@@ -71,6 +71,7 @@ public class AutoSelector {
 
             case SIX_BALL_AUTO:
                 autoCommand = new SixBallAuto();
+                break;
 
             case DRIVE_RECKONING:
                 autoCommand = new DriveBack(1);
@@ -78,15 +79,15 @@ public class AutoSelector {
                 break;
 
             case DRIVE_PROFILING:
-                autoCommand = new ProfileDrive(Robot.drive).getProfilingCommand("paths/output/TrenchShootingPose.wpilib.json");
+                autoCommand = new ProfileDrive(Robot.drive).getProfilingCommand(TrajectoryBuilder.Paths.TRENCH_SHOOTING_POSE);
                 break;
 
             case AIM:
-                autoCommand = new SequentialCommandGroup(new ArmDown().withTimeout(5), new Aim());
+                autoCommand = new SequentialCommandGroup(new ArmDown().withTimeout(1), new Aim());
                 break;
 
             case AIM_AND_UNAIM:
-                autoCommand = new SequentialCommandGroup(new ArmDown().withTimeout(5), new Aim().withTimeout(5), new Unaim());
+                autoCommand = new SequentialCommandGroup(new ArmDown().withTimeout(1), new Aim(), new Unaim());
                 break;
         }
 

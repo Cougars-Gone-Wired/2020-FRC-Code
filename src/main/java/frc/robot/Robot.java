@@ -48,6 +48,7 @@ public class Robot extends TimedRobot {
 
         compressorController = new CompressorController();
 
+        TrajectoryBuilder.buildTrajectories();
         autoSelector = new AutoSelector();
 
         limelight.dashboardInitialize();
