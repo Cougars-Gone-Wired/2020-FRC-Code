@@ -165,7 +165,6 @@ public class Limelight {
         tx = table.getEntry("tx").getDouble(0);
         ty = table.getEntry("ty").getDouble(0);
         ta = table.getEntry("ta").getDouble(0);
-        setUnaimAngle();
             
         aim_adjust = aimKp * (tx / DEGREE_RANGE);
         if (tx - angle_offset > angle_threshold) {

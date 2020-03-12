@@ -5,6 +5,11 @@ import frc.robot.Robot;
 
 public class Aim extends CommandBase {
     boolean isAimed;
+
+    @Override
+    public void initialize() {
+        Robot.limelight.setUnaimAngle();
+    }
     
     @Override
     public void execute() {
