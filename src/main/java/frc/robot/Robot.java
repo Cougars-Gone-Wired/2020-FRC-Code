@@ -64,7 +64,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotPeriodic() {
-        CommandScheduler.getInstance().run();
+        CommandScheduler.getInstance().run(); // used to trigger a selected auto command to run during autonomous
         // limelight.dashboard();
 
         // camera.stop(controllers.getStopCameraButton());
@@ -87,6 +87,8 @@ public class Robot extends TimedRobot {
 
         compressorController.setDisabled();
 
+        // autonomous implimentation of commands
+        // all that's needed to run any command once selected from dashboard
         autonomousCommand = autoSelector.getAutoCommand();
         if (autonomousCommand != null) {
             autonomousCommand.schedule();
@@ -96,6 +98,8 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousPeriodic() {
         drive.dashboard();
+
+        // run methods so systems can be auto controlled from auto commands
         feeder.controlFeederAuto();
         chomper.controlChomper(0);
     }
@@ -124,12 +128,14 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
         controllers.updateControllerValues();
 
+        // mobility controls
         arms.controlArm(controllers.isArmUpBumper(), controllers.isArmDownBumper());
         climber.controlClimber(controllers.getClimberUpTrigger(), controllers.getClimberDownTrigger());
         drive.robotDrive(controllers.getDriveSpeedAxis(), controllers.getDriveTurnAxis(), controllers.isDriveSideToggle());
         drive.dashboard();
         limelight.limelightDrive(controllers.isLimelightButton());
 
+        // manipulator controls
         arms.controlIntakeArm(controllers.isIntakeArmDownBumper(), controllers.isIntakeArmUpBumper());
         intake.controlIntake(controllers.getIntakeAxis());
         shooter.controlShooter(controllers.getShooterTrigger(), controllers.isShooterModeToggle());

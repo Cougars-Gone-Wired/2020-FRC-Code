@@ -17,7 +17,7 @@ public class Feeder {
     private DigitalInput feederLowerLineBreak;
 
     private boolean feederTriggerBool;
-    private double feedShooterSpeed;
+    private double feedShooterSpeed; // the speed at which the feeder feeds balls into the shooter when shooting
 
     public Feeder() {
         feederMotor = new WPI_TalonSRX(Constants.FEEDER_MOTOR_ID);
@@ -87,11 +87,13 @@ public class Feeder {
         }
     }
 
+    // makes feeder controlled soley by other systems in commands rather than a trigger
     public void controlFeederAuto() {
         setFeedShooterSpeed(AUTO_FEED_SHOOTER_SPEED);
         controlFeeder(0);
     }
 
+    // gives driver some control over the feeder in teleop
     public void controlFeederTeleop(double feederOuttakeTrigger) {
         setFeedShooterSpeed(FEED_SHOOTER_SPEED);
         controlFeeder(feederOuttakeTrigger);

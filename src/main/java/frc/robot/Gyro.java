@@ -10,7 +10,7 @@ public class Gyro {
 
     private AHRS navX;
 
-    private int gyroInvert = DriveConstants.isGyroReversed ? -1 : 1;
+    private int gyroInvert = DriveConstants.isGyroReversed ? -1 : 1; // set to -1 if constant true, set to 1 if constant false
 
     public Gyro() {
         navX = new AHRS(SPI.Port.kMXP);
@@ -25,6 +25,7 @@ public class Gyro {
         return Math.IEEEremainder(navX.getAngle(), 360) * gyroInvert;
     }
 
+    // returns turning velocity
     public double getTurnRate() {
         return navX.getRate() * gyroInvert;
     }

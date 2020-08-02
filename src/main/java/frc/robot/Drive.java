@@ -34,7 +34,7 @@ public class Drive extends SubsystemBase{
     private Gyro gyro;
 
     private DifferentialDriveKinematics driveKinematics; // used to convert single velocity to velocity compenents for left and right side
-    private DifferentialDriveOdometry driveOdomentry;
+    private DifferentialDriveOdometry driveOdomentry; // used to store and update complete location info (2 dimensional position and rotation)
 
     public Drive() {
         frontLeftMotor = new WPI_TalonFX(Constants.FRONT_LEFT_MOTOR_ID);
@@ -55,7 +55,7 @@ public class Drive extends SubsystemBase{
 
         robotDrive = new DifferentialDrive(leftMotors, rightMotors);
         robotDrive.setDeadband(Constants.DEADZONE);
-        robotDrive.setSafetyEnabled(false);
+        robotDrive.setSafetyEnabled(false); // to get rid of pesky warnings
 
         driveKinematics = new DifferentialDriveKinematics(DriveConstants.TRACK_WIDTH);
         driveOdomentry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(gyro.getHeading()));
@@ -72,6 +72,7 @@ public class Drive extends SubsystemBase{
         middleRightMotor.configOpenloopRamp(0);
         backRightMotor.configOpenloopRamp(0);
 
+        // ramping parameter nonzero so that wheels don't slip and screw up position data
         frontLeftMotor.configClosedloopRamp(.1);
         middleLeftMotor.configClosedloopRamp(.1);
         backLeftMotor.configClosedloopRamp(.1);
@@ -95,6 +96,7 @@ public class Drive extends SubsystemBase{
         currentDriveState = DriveStates.SHOOTER_SIDE;
     }
 
+    // variable front of the robot, with a push of a button the "forward" direction switches sides
     public enum DriveStates {
         SHOOTER_SIDE, INTAKE_SIDE
     }
@@ -103,7 +105,7 @@ public class Drive extends SubsystemBase{
 
     // for teleop driving
     public void robotDrive(double driveSpeedAxis, double driveTurnAxis, boolean toggle) {
-        if (!Robot.limelight.isDriveNotMoving()) {
+        if (!Robot.limelight.isDriveNotMoving()) { // if vision is positioning the robot, axis data isn't given to the drive train
             driveSpeedAxis = 0;
             driveTurnAxis = 0;
         } else {
@@ -113,7 +115,7 @@ public class Drive extends SubsystemBase{
 
         switch (currentDriveState) {
             case SHOOTER_SIDE:
-                robotDrive.arcadeDrive(driveSpeedAxis, -driveTurnAxis);
+                robotDrive.arcadeDrive(driveSpeedAxis, -driveTurnAxis); // turn axis always inverted for arcade drive
                 if (toggle) {
                     setIntakeSide();
                 }
@@ -160,7 +162,7 @@ public class Drive extends SubsystemBase{
         rightMotors.setVoltage(-rightVolts);
     }
 
-    // for continually setting position of robot during auto
+    // for continually updating position of robot during auto
     @Override
     public void periodic() {
         driveOdomentry.update(Rotation2d.fromDegrees(gyro.getHeading()), encoders.getLeftEncodersMeters(), encoders.getRightEncodersMeters());
@@ -226,6 +228,7 @@ public class Drive extends SubsystemBase{
         return encoders;
     }
 
+    // used for testing purposes
     public void dashboard() {
         encoders.dashboard();
         // gyro.dashboard();

@@ -5,7 +5,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
 
 public class Encoders {
-
+    /* 
+    *  very important to implement encoders as done in this class instead of using sensor collections if using motion profiling,
+    *  sensor collections update at a slower rate than required by the profiling code, so encoder positions should be found directly 
+    *  off of motor controllers
+    */ 
+    
     private Drive drive;
 
     public Encoders(Drive drive) {
@@ -23,6 +28,7 @@ public class Encoders {
 
     }
 
+    // methods that get raw values from each encoder
     public double getFrontLeftEncoder() {
         return drive.getFrontLeftMotor().getSelectedSensorPosition();
     }
@@ -42,6 +48,7 @@ public class Encoders {
         return drive.getBackRightMotor().getSelectedSensorPosition();
     }
 
+    // methods that average the raw valies from the encoders
     public double getRawLeftEncoders() {
         return avgSensors(getFrontLeftEncoder(), getMidLeftEncoder(), getBackLeftEncoder());
     }
@@ -52,6 +59,7 @@ public class Encoders {
         return (Math.abs(getRawLeftEncoders()) + Math.abs(getRawRightEncoders())) / 2.0;
     }
 
+    // methods that convert avergaed encoder values to meters
     public double getLeftEncodersMeters() {
         return ticksToMeters(getRawLeftEncoders()) * (DriveConstants.areLeftEncodersReversed ? -1.0 : 1.0);
     }
@@ -62,6 +70,7 @@ public class Encoders {
         return (getLeftEncodersMeters() + getRightEncodersMeters()) / 2;
     }
 
+    // methods that return the average motor velocity in meters per second for each side
     public double getLeftSpeed() {
         return avgSensors(
             drive.getFrontLeftMotor().getSelectedSensorVelocity(), 
@@ -86,10 +95,12 @@ public class Encoders {
         return (sensor1 + sensor2 + sensor3) / 3.0;
     }
 
+    // converts raw encoder ticks to meters
     public double ticksToMeters(double ticks) {
         return ticks * DriveConstants.DISTANCE_PER_TICK;
     }
 
+    // used for testing purposes to ensure encoders and conversions are working properly
     public void dashboard() {
         // SmartDashboard.putNumber("Front Left Encoder", getFrontLeftEncoder());
         // SmartDashboard.putNumber("Middle Left Encoder", getMidLeftEncoder());
