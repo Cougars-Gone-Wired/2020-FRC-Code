@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.DriveForward;
 import frc.robot.commands.ShootVoltage;
 
+// starting pose - directly in front of port with back bumper on line
 public class ShootFromLineBackBumper extends SequentialCommandGroup {
 
     public ShootFromLineBackBumper() {

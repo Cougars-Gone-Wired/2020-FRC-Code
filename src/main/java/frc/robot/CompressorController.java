@@ -3,6 +3,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Compressor;
 
 public class CompressorController {
+    // purpose of class is to stop the compressor while shooting so that that compressor doesn't suck up battery and affect PID
 
     private Compressor c;
 

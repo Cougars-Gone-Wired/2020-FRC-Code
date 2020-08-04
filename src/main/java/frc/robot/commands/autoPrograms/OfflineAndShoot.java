@@ -9,6 +9,7 @@ import frc.robot.commands.IdleShooterSpin;
 import frc.robot.commands.ProfileDrive;
 import frc.robot.commands.ShootPID;
 
+// starting pose - directly in front of port with front bumper on line
 public class OfflineAndShoot extends SequentialCommandGroup {
 
     public OfflineAndShoot() {

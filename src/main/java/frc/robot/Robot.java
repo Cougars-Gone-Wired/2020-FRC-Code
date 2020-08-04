@@ -180,6 +180,7 @@ public class Robot extends TimedRobot {
         feeder.setMotorsBrake();
     }
 
+    // used when robot disabled so systems can move freely
     public void setMotorsCoast() {
         climber.setMotorsCoast();
         drive.setMotorsCoast();

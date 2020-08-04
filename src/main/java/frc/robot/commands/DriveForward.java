@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 import frc.robot.Constants.DriveConstants;
 
+// command for bang bang forward driving
 public class DriveForward extends CommandBase {
 
     private double distance;

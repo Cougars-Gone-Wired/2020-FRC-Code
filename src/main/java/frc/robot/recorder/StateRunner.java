@@ -3,6 +3,7 @@ package frc.robot.recorder;
 import java.util.List;
 import frc.robot.Robot; 
 
+// class to run recorded states back on the robot once they have been read from a file
 public class StateRunner {
 
     List<State> states;

@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 import frc.robot.Shooter;
 
+// command for shooting with a constant speed
 public class ShootVoltage extends CommandBase {
 
     private double shooterSpeed;

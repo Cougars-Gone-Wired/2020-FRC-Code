@@ -55,6 +55,8 @@ public class Climber {
                 }
                 break;
 
+            // top state necessary so that climber can only go down once it has already gone up 
+            // so climber doesn' break robot when first activated
             case TOP:
                 if (climberUpTriggerBool && !climberDownTriggerBool 
                         && Robot.arms.isArmClimbingPosition()) {
@@ -115,6 +117,7 @@ public class Climber {
         climberRightMotor.setNeutralMode(NeutralMode.Coast);
     }
 
+    // so that the climber won't be able to be activated until the last 30 seconds of match
     public static boolean isClimbTime() {
         return Timer.getFPGATimestamp() - startTime > 120;
     }

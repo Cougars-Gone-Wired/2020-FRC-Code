@@ -5,6 +5,7 @@ import java.util.List;
 
 import frc.robot.Robot;
 
+// class for recording a list of robot states while recording
 public class StateRecorder {
 
     List<State> states;

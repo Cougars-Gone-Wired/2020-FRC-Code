@@ -1,5 +1,7 @@
 package frc.robot.recorder;
 
+// class provides methods for getting robot states while recording, and setting robot states when running recordings 
+// easier to use the states of controllers not subsystems
 public class State {
 
     private double driveSpeedAxisState;

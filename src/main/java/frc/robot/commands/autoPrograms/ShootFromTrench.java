@@ -11,6 +11,7 @@ import frc.robot.commands.ProfileDrive;
 import frc.robot.commands.ShootPID;
 import frc.robot.commands.Unaim;
 
+// starting pose - directly in front of trench, shooter facing wall, front bumper on line
 public class ShootFromTrench extends SequentialCommandGroup {
 
     public ShootFromTrench() {

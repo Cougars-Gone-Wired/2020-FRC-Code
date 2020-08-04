@@ -56,7 +56,7 @@ public class Constants {
     
     public class DriveConstants {
 
-        public static final double AUTO_DRIVE_SPEED = 0.4;
+        public static final double AUTO_DRIVE_SPEED = 0.4; // only used for bang bang contol
         public static final double DRIVE_OFF_LINE_DISTANCE = 1; // 3.71 meters back to shoot
 
         // Encoder Constants
@@ -74,15 +74,19 @@ public class Constants {
         // all constants in meters and seconds
         public static final double TRACK_WIDTH = 0.5714; // width bewteen each side of drive train in meters
 
+        // constants from robot characterization tool
         public static final double ks = 0.218;//.23
         public static final double kv = 1.24;//1.2
         public static final double ka = 0.23;//.326
 
+        // tuned constant
         public static final double DriveP = .6;//6
 
+        // adjust to change speed when following path
         public static final double maxVelocity = 1;
         public static final double maxAcceleration = 0.6;
 
+        // don't change, given by documentation
         public static final double B = 2; // constant tuned for meters
         public static final double Zeta = 0.7; // ↑ ↑ ↑
     }

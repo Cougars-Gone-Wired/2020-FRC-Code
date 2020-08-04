@@ -5,6 +5,7 @@ import java.io.File;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+// class creates a drop down on shuffleboard so a recording to be run can be selected
 public class StateLister {
 
     public static SendableChooser<String> gsonChooser = new SendableChooser<>();

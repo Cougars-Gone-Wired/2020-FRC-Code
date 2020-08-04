@@ -7,6 +7,7 @@ import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+// class reads a list of states from a recording file to be run back on to robot
 public class StateReader {
 
     public static List<State> read(String fileName) throws Exception {

@@ -3,10 +3,17 @@ package frc.robot;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 public class Arms {
+    /* 
+    * original purpose of delays was to ensure that the big arm and the intake arm would never intersect,
+    * putting a delay after the big arm is told to go down from the climbing position so the intake arm couldn't be told
+    * to go up until the big arm was actuallly down, with a similar delay for when the intake arm was told to go down from the 
+    * up position. These delay may really not be necessary, but we never were able to do enough testing to verify this, hence why
+    * the code still exists
+    */ 
     // static final int ARM_STATE_DELAY = 1; // in seconds
 
-    private DoubleSolenoid armTopSolenoid;
-    private DoubleSolenoid armBottomSolenoid;
+    private DoubleSolenoid armTopSolenoid; // Reverse - in, Forward - out
+    private DoubleSolenoid armBottomSolenoid; // Reverse - in, Forward - out
     private DoubleSolenoid intakeArmSolenoid;
 
     // private int armStateCounts;

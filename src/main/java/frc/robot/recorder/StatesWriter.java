@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+// class writes a list of recorded states to a file
 public class StatesWriter {
 
     public static void writeStates(List<State> states, String fileName) throws Exception {

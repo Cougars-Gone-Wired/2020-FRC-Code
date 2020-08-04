@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 
 public class Chomper {
 
-    private Solenoid chomperSolenoid;
+    private Solenoid chomperSolenoid; // false - down, true - up
 
     private boolean chomperAxisBool;
 
