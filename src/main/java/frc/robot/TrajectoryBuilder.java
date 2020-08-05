@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 
+// Purpose of class is to import JSON files from PathWeaver and make them easily accessable by other classes
 public class TrajectoryBuilder {
 
     public enum Paths {

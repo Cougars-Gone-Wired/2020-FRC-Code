@@ -79,10 +79,11 @@ public class Constants {
         public static final double kv = 1.24;//1.2
         public static final double ka = 0.23;//.326
 
-        // tuned constant
+        // tuned constant, tuned like an P value, look for oscillation 
         public static final double DriveP = .6;//6
 
         // adjust to change speed when following path
+        // Important that these constants are the same as in the setting of PathWeaver project
         public static final double maxVelocity = 1;
         public static final double maxAcceleration = 0.6;
 
