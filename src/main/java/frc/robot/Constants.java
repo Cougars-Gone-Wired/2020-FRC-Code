@@ -1,5 +1,6 @@
 package frc.robot;
 
+// stores all constants (except speed constants) used on the robot
 public class Constants {
 
     // Mobility Controller
@@ -54,6 +55,7 @@ public class Constants {
     static final int FEEDER_UPPER_LINEBREAK_PORT = 1;
     static final int FEEDER_LOWER_LINEBREAK_PORT = 2;
     
+    // all drive train specific constants (including constants for motion profiling)
     public class DriveConstants {
 
         public static final double AUTO_DRIVE_SPEED = 0.4; // only used for bang bang contol

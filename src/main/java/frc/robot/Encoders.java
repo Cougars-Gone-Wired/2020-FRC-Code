@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
 
+// class used for all drive encoder related data
 public class Encoders {
     /* 
     *  very important to implement encoders as done in this class instead of using sensor collections if using motion profiling,
@@ -91,6 +92,7 @@ public class Encoders {
         return new DifferentialDriveWheelSpeeds(getLeftSpeed(), getRightSpeed());
     }
 
+    // takes the average of three values
     public double avgSensors(double sensor1, double sensor2, double sensor3) {
         return (sensor1 + sensor2 + sensor3) / 3.0;
     }

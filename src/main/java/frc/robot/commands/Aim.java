@@ -9,7 +9,7 @@ public class Aim extends CommandBase {
 
     @Override
     public void initialize() {
-        Robot.limelight.setUnaimAngle();
+        Robot.limelight.setUnaimAngle(); // stores the intial error angle before aiming so that the robot know how far to go back when unaiming
     }
     
     @Override

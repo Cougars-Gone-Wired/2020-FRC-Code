@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Solenoid;
 
+// the system that "chomps" down on the balls so that they can be shot
 public class Chomper {
 
     private Solenoid chomperSolenoid; // false - down, true - up

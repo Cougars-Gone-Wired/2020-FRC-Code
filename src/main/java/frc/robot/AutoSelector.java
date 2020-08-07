@@ -17,6 +17,7 @@ import frc.robot.commands.autoPrograms.ShootFromLineFrontBumper;
 import frc.robot.commands.autoPrograms.ShootFromTrench;
 import frc.robot.commands.autoPrograms.SixBallAuto;
 
+// class creates a drop down on shuffleboard to select an auto command to be run
 public class AutoSelector {
 
     private SendableChooser<Programs> autoChooser = new SendableChooser<>();
@@ -46,6 +47,7 @@ public class AutoSelector {
         SmartDashboard.putData("Auto", autoChooser);
     }
 
+    // returns the selected command to be run
     public Command getAutoCommand() {
         autoChoice = autoChooser.getSelected();
 

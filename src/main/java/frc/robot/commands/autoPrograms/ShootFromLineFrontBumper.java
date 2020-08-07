@@ -8,6 +8,7 @@ import frc.robot.commands.ShootPID;
 // starting pose - directly in front of port with front bumper on line
 public class ShootFromLineFrontBumper extends SequentialCommandGroup {
 
+    // puts shooter arm down and shoots from start line
     public ShootFromLineFrontBumper() {
         addCommands(
             new ArmDown(),

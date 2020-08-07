@@ -24,7 +24,7 @@ public class ShootPID extends CommandBase {
     }
 
     @Override
-    public void end(boolean interrupted) {
+    public void end(boolean interrupted) { // can be stopped by other command ending in a ParallelRaceGroup
         Robot.shooter.setNotMoving();
     }
 

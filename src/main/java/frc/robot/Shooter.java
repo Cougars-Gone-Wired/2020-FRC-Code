@@ -7,6 +7,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+// the shooter system 
 public class Shooter {
     public static double SHOOTER_SPEED = 0.5;//.47
 

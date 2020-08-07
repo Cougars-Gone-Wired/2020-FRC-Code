@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
 
+// used to track the heading of the robot
 public class Gyro {
 
     private AHRS navX;
@@ -16,6 +17,7 @@ public class Gyro {
         navX = new AHRS(SPI.Port.kMXP);
     }
 
+    // resets the heading of the robot
     public void zeroHeading() {
         navX.zeroYaw();
     }
@@ -25,7 +27,7 @@ public class Gyro {
         return Math.IEEEremainder(navX.getAngle(), 360) * gyroInvert;
     }
 
-    // returns turning velocity
+    // returns turning velocity in degrees per second
     public double getTurnRate() {
         return navX.getRate() * gyroInvert;
     }

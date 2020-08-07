@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Timer;
 
+// the climber system
 public class Climber {
     private static double CLIMBER_UP_SPEED = 1.0;
     private static double CLIMBER_DOWN_SPEED = 0.7;

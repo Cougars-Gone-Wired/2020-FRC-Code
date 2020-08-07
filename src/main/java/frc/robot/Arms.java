@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
+// the big arm and intake arm systems
 public class Arms {
     /* 
     * original purpose of delays was to ensure that the big arm and the intake arm would never intersect,

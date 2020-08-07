@@ -15,6 +15,6 @@ public class GsonSmartDash {
 
     public static void set() {
         shouldRecord = SmartDashboard.getBoolean("Should Record", false);
-        gsonFileName = SmartDashboard.getString("Gson File Name", "notGood");
+        gsonFileName = SmartDashboard.getString("Gson File Name", "notGood"); // only set to not good if no name is entered
     }
 }

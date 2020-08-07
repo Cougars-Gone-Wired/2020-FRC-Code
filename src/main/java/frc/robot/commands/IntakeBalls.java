@@ -12,7 +12,7 @@ public class IntakeBalls extends CommandBase {
     }
 
     @Override
-    public void end(boolean interrupted) {
+    public void end(boolean interrupted) { // stopped by other command ending in a ParallelRaceGroup
         Robot.intake.setNotMoving();
     }
 }

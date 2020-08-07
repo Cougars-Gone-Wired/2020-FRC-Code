@@ -14,7 +14,7 @@ public class IdleShooterSpin extends CommandBase {
     }
 
     public IdleShooterSpin(double desiredVelocityPercent) {
-        desiredVelocity = desiredVelocityPercent * Shooter.VOLTAGE_TO_VELOCITY;
+        desiredVelocity = desiredVelocityPercent * Shooter.VOLTAGE_TO_VELOCITY; // converts a given voltage % so a usable velocity
     }
 
     @Override

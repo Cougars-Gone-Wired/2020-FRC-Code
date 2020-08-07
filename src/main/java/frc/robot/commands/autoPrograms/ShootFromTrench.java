@@ -14,6 +14,7 @@ import frc.robot.commands.Unaim;
 // starting pose - directly in front of trench, shooter facing wall, front bumper on line
 public class ShootFromTrench extends SequentialCommandGroup {
 
+    // puts shooter arm down, drives back into trench, aims, and shoots
     public ShootFromTrench() {
         addCommands(
             new ArmDown(),

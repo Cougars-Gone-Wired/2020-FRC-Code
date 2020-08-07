@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.recorder.*;
 
+// the robot's main class, used to run all its systems and programs at the right time
 public class Robot extends TimedRobot {
 
     public static Controllers controllers;
@@ -173,6 +174,7 @@ public class Robot extends TimedRobot {
         // }
     }
 
+    // used when the robot is enabled so systems don't overrun when told to stop
     public void setMotorsBrake() {
         climber.setMotorsBrake();
         drive.setMotorsBrake();

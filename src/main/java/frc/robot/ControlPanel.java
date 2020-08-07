@@ -14,6 +14,7 @@ import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
 
+// the system for manipulating the control wheel
 public class ControlPanel {
 	private static final double MANUAL_PANEL_MOTOR_SPEED = .4;
 	private static final double AUTOMATIC_PANEL_MOTOR_SPEED = 1.0;

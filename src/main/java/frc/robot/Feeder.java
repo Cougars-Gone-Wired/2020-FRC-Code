@@ -6,13 +6,17 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+// the system that "feeds" balls from the intake to the shooter
+// assists in intaking balls and feeds shooter when shooting
 public class Feeder {
-    private static final double FEED_SHOOTER_SPEED = 0.82;
-    private static final double AUTO_FEED_SHOOTER_SPEED = 0.7;
-    private static final double FEED_INTAKE_SPEED = 0.6;
+    private static final double FEED_SHOOTER_SPEED = 0.82; // speed for feeding balls to the shooter
+    private static final double AUTO_FEED_SHOOTER_SPEED = 0.7; // speed for feeding balls to the shooter in auto (slower since driver can't fix jams)
+    private static final double FEED_INTAKE_SPEED = 0.6; // speed for intaking balls into the feeder
 
     private WPI_TalonSRX feederMotor;
 
+    // line breaks used to indicate when the feeder had 4 balls in it, so that the feeder could stop intaking while the 
+    // intake could continue to get one more ball, commented out in code since testing was not completed
     private DigitalInput feederUpperLineBreak;
     private DigitalInput feederLowerLineBreak;
 

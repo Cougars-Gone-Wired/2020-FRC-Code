@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 
+// the drive train system
 public class Drive extends SubsystemBase{
     public static double DRIVE_SPEED = 0.9;
     public static double TURN_SPEED = 0.7;
@@ -64,6 +65,7 @@ public class Drive extends SubsystemBase{
     }
 
     public void initMotors() {
+        // set to zero so motors don't take time to ramp up in teleop
         frontLeftMotor.configOpenloopRamp(0);
         middleLeftMotor.configOpenloopRamp(0);
         backLeftMotor.configOpenloopRamp(0);
@@ -72,7 +74,7 @@ public class Drive extends SubsystemBase{
         middleRightMotor.configOpenloopRamp(0);
         backRightMotor.configOpenloopRamp(0);
 
-        // ramping parameter nonzero so that wheels don't slip and screw up position data
+        // ramping parameter nonzero so that wheels don't slip and screw up position data for profiling
         frontLeftMotor.configClosedloopRamp(.1);
         middleLeftMotor.configClosedloopRamp(.1);
         backLeftMotor.configClosedloopRamp(.1);
@@ -113,6 +115,7 @@ public class Drive extends SubsystemBase{
             driveTurnAxis *= TURN_SPEED;
         }
 
+        // switching which side of the robot is the "front"
         switch (currentDriveState) {
             case SHOOTER_SIDE:
                 robotDrive.arcadeDrive(driveSpeedAxis, -driveTurnAxis); // turn axis always inverted for arcade drive
@@ -157,6 +160,7 @@ public class Drive extends SubsystemBase{
     }
 
     // for motion profiling
+    // controls each side of the drive train directly with voltages
     public void tankDriveVolts(double leftVolts, double rightVolts) {
         leftMotors.setVoltage(leftVolts);
         rightMotors.setVoltage(-rightVolts);
@@ -168,6 +172,7 @@ public class Drive extends SubsystemBase{
         driveOdomentry.update(Rotation2d.fromDegrees(gyro.getHeading()), encoders.getLeftEncodersMeters(), encoders.getRightEncodersMeters());
     }
 
+    // resets the odomentry to a specified position
     public void resetOdometry(Pose2d position) {
         resetSensors();
         driveOdomentry.resetPosition(position, Rotation2d.fromDegrees(gyro.getHeading()));
@@ -220,6 +225,7 @@ public class Drive extends SubsystemBase{
         return driveOdomentry.getPoseMeters();
     }
 
+    // used for motion profiling
     public DifferentialDriveKinematics getDriveKinematics() {
         return driveKinematics;
     }

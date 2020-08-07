@@ -13,6 +13,7 @@ public class ShootVoltage extends CommandBase {
         shooterSpeed = Shooter.SHOOTER_SPEED;
     }
 
+    // if changeThreasholds is false the last thresholds used will be used (shooter is initialized with thresholds used for PID)
     public ShootVoltage(double shooterSpeed, boolean changeThresholds) {
         if(changeThresholds) {
             Robot.shooter.setVelocityThresholds(5, 50);
@@ -26,7 +27,7 @@ public class ShootVoltage extends CommandBase {
     }
 
     @Override
-    public void end(boolean interrupted) {
+    public void end(boolean interrupted) { // can be stopped by other command ending in a ParallelRaceGroup
         Robot.shooter.setNotMoving();
     }
 }

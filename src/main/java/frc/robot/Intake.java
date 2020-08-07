@@ -3,6 +3,7 @@ package frc.robot;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+// the system that intakes balls from the ground into the robot
 public class Intake {
     private static final double INTAKE_SPEED = 0.75;
     

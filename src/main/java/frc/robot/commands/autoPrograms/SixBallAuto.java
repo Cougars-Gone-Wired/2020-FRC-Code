@@ -16,6 +16,8 @@ import frc.robot.commands.Unaim;
 // starting pose - directly in front of trench, shooter facing wall, front bumper on line
 public class SixBallAuto extends SequentialCommandGroup {
 
+    // puts shooter arm down, puts intake arm down, drives back into trench and intakes first ball in trench, aims, and shoots
+    // umains, drives back and intakes rest of balls in trench, aims, and shoots
     public SixBallAuto() {
         addCommands(
             new ArmDown(),
